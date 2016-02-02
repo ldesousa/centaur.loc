@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 2, 2016 9:45:06 AM by Hibernate Tools 4.3.1.Final -->
+<hibernate-mapping>
+    <class name="centaur.db.NodeCoordinates" table="node_coordinates" optimistic-lock="version">
+        <composite-id name="id" class="centaur.db.NodeCoordinatesId">
+            <key-property name="idNode" type="java.lang.Integer">
+                <column name="id_node" />
+            </key-property>
+            <key-property name="x" type="big_decimal">
+                <column name="x" precision="131089" scale="0" />
+            </key-property>
+            <key-property name="y" type="big_decimal">
+                <column name="y" precision="131089" scale="0" />
+            </key-property>
+        </composite-id>
+    </class>
+</hibernate-mapping>

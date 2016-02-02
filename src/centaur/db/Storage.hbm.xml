@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 2, 2016 9:45:06 AM by Hibernate Tools 4.3.1.Final -->
+<hibernate-mapping>
+    <class name="centaur.db.Storage" table="storage" optimistic-lock="version">
+        <id name="idNode" type="int">
+            <column name="id_node" />
+            <generator class="foreign">
+                <param name="property">node</param>
+            </generator>
+        </id>
+        <many-to-one name="curve" class="centaur.db.Curve" fetch="select">
+            <column name="id_curve" />
+        </many-to-one>
+        <one-to-one name="node" class="centaur.db.Node" constrained="true"></one-to-one>
+        <property name="maxDepth" type="big_decimal">
+            <column name="max_depth" precision="131089" scale="0" />
+        </property>
+        <property name="initDepth" type="big_decimal">
+            <column name="init_depth" precision="131089" scale="0" />
+        </property>
+        <property name="shape" type="string">
+            <column name="shape" />
+        </property>
+        <property name="nameParams" type="java.lang.Integer">
+            <column name="name_params" />
+        </property>
+        <property name="fevap" type="big_decimal">
+            <column name="fevap" precision="131089" scale="0" />
+        </property>
+        <property name="psi" type="big_decimal">
+            <column name="psi" precision="131089" scale="0" />
+        </property>
+        <property name="ksat" type="big_decimal">
+            <column name="ksat" precision="131089" scale="0" />
+        </property>
+        <property name="imd" type="big_decimal">
+            <column name="imd" precision="131089" scale="0" />
+        </property>
+    </class>
+</hibernate-mapping>

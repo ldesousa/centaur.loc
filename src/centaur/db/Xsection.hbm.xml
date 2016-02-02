@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 2, 2016 9:45:06 AM by Hibernate Tools 4.3.1.Final -->
+<hibernate-mapping>
+    <class name="centaur.db.Xsection" table="xsection" optimistic-lock="version">
+        <id name="idLink" type="int">
+            <column name="id_link" />
+            <generator class="foreign">
+                <param name="property">conduit</param>
+            </generator>
+        </id>
+        <one-to-one name="conduit" class="centaur.db.Conduit" constrained="true"></one-to-one>
+        <property name="shape" type="string">
+            <column name="shape" />
+        </property>
+        <property name="geom1" type="big_decimal">
+            <column name="geom1" precision="131089" scale="0" />
+        </property>
+        <property name="geom2" type="big_decimal">
+            <column name="geom2" precision="131089" scale="0" />
+        </property>
+        <property name="geom3" type="big_decimal">
+            <column name="geom3" precision="131089" scale="0" />
+        </property>
+        <property name="geom4" type="big_decimal">
+            <column name="geom4" precision="131089" scale="0" />
+        </property>
+        <property name="barrels" type="big_decimal">
+            <column name="barrels" precision="131089" scale="0" />
+        </property>
+        <property name="culvert" type="big_decimal">
+            <column name="culvert" precision="131089" scale="0" />
+        </property>
+    </class>
+</hibernate-mapping>

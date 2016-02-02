@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 2, 2016 9:45:06 AM by Hibernate Tools 4.3.1.Final -->
+<hibernate-mapping>
+    <class name="centaur.db.Curve" table="curve" optimistic-lock="version">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <property name="name" type="string">
+            <column name="name" />
+        </property>
+        <property name="type" type="string">
+            <column name="type" />
+        </property>
+        <one-to-one name="curveParameter" class="centaur.db.CurveParameter"></one-to-one>
+        <set name="storages" table="storage" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_curve" />
+            </key>
+            <one-to-many class="centaur.db.Storage" />
+        </set>
+    </class>
+</hibernate-mapping>

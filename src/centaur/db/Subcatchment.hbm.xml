@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 2, 2016 9:45:06 AM by Hibernate Tools 4.3.1.Final -->
+<hibernate-mapping>
+    <class name="centaur.db.Subcatchment" table="subcatchment" optimistic-lock="version">
+        <id name="id" type="string">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="node" class="centaur.db.Node" fetch="select">
+            <column name="id_node_outlet" />
+        </many-to-one>
+        <many-to-one name="raingage" class="centaur.db.Raingage" fetch="select">
+            <column name="id_raingage" />
+        </many-to-one>
+        <property name="area" type="big_decimal">
+            <column name="area" precision="131089" scale="0" />
+        </property>
+        <property name="imperv" type="big_decimal">
+            <column name="imperv" precision="13" scale="10">
+                <comment>This field is a percentage (&lt;= 100)</comment>
+            </column>
+        </property>
+        <property name="width" type="big_decimal">
+            <column name="width" precision="131089" scale="0" />
+        </property>
+        <property name="slope" type="big_decimal">
+            <column name="slope" precision="12" scale="10">
+                <comment>This field is a percentage</comment>
+            </column>
+        </property>
+        <property name="curbLen" type="big_decimal">
+            <column name="curb_len" precision="131089" scale="0" />
+        </property>
+        <property name="snowPack" type="string">
+            <column name="snow_pack" />
+        </property>
+        <one-to-one name="subarea" class="centaur.db.Subarea"></one-to-one>
+    </class>
+</hibernate-mapping>

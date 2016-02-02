@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 2, 2016 9:45:06 AM by Hibernate Tools 4.3.1.Final -->
+<hibernate-mapping>
+    <class name="centaur.db.Subarea" table="subarea" optimistic-lock="version">
+        <id name="idSubcatchment" type="string">
+            <column name="id_subcatchment" />
+            <generator class="foreign">
+                <param name="property">subcatchment</param>
+            </generator>
+        </id>
+        <one-to-one name="subcatchment" class="centaur.db.Subcatchment" constrained="true"></one-to-one>
+        <property name="NImperv" type="big_decimal">
+            <column name="n_imperv" precision="131089" scale="0" />
+        </property>
+        <property name="NPerv" type="big_decimal">
+            <column name="n_perv" precision="131089" scale="0" />
+        </property>
+        <property name="SImperv" type="big_decimal">
+            <column name="s_imperv" precision="131089" scale="0" />
+        </property>
+        <property name="SPerv" type="big_decimal">
+            <column name="s_perv" precision="131089" scale="0" />
+        </property>
+        <property name="pctZero" type="big_decimal">
+            <column name="pct_zero" precision="12" scale="10">
+                <comment>This field is a percentage</comment>
+            </column>
+        </property>
+        <property name="routeTo" type="string">
+            <column name="route_to" />
+        </property>
+        <property name="pctRouted" type="big_decimal">
+            <column name="pct_routed" precision="12" scale="10" />
+        </property>
+    </class>
+</hibernate-mapping>

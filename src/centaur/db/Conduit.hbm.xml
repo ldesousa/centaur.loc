@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 2, 2016 9:45:06 AM by Hibernate Tools 4.3.1.Final -->
+<hibernate-mapping>
+    <class name="centaur.db.Conduit" table="conduit" optimistic-lock="version">
+        <id name="idLink" type="int">
+            <column name="id_link" />
+            <generator class="foreign">
+                <param name="property">link</param>
+            </generator>
+        </id>
+        <one-to-one name="link" class="centaur.db.Link" constrained="true"></one-to-one>
+        <property name="name" type="string">
+            <column name="name" />
+        </property>
+        <property name="length" type="big_decimal">
+            <column name="length" precision="131089" scale="0">
+                <comment>This can be calculated from the junctions coordinates</comment>
+            </column>
+        </property>
+        <property name="roughness" type="big_decimal">
+            <column name="roughness" precision="131089" scale="0" />
+        </property>
+        <property name="inOffset" type="big_decimal">
+            <column name="in_offset" precision="131089" scale="0" />
+        </property>
+        <property name="outOffset" type="big_decimal">
+            <column name="out_offset" precision="131089" scale="0" />
+        </property>
+        <property name="initFlow" type="big_decimal">
+            <column name="init_flow" precision="131089" scale="0" />
+        </property>
+        <property name="maxFlow" type="big_decimal">
+            <column name="max_flow" precision="131089" scale="0" />
+        </property>
+        <one-to-one name="xsection" class="centaur.db.Xsection"></one-to-one>
+    </class>
+</hibernate-mapping>

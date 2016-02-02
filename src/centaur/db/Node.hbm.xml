@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 2, 2016 9:45:06 AM by Hibernate Tools 4.3.1.Final -->
+<hibernate-mapping>
+    <class name="centaur.db.Node" table="node" optimistic-lock="version">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <property name="elevation" type="big_decimal">
+            <column name="elevation" precision="131089" scale="0" />
+        </property>
+        <one-to-one name="junction" class="centaur.db.Junction"></one-to-one>
+        <one-to-one name="outfall" class="centaur.db.Outfall"></one-to-one>
+        <set name="linksForIdNodeTo" table="link" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_node_to" />
+            </key>
+            <one-to-many class="centaur.db.Link" />
+        </set>
+        <set name="linksForIdNodeFrom" table="link" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_node_from" />
+            </key>
+            <one-to-many class="centaur.db.Link" />
+        </set>
+        <one-to-one name="storage" class="centaur.db.Storage"></one-to-one>
+        <set name="subcatchments" table="subcatchment" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_node_outlet" />
+            </key>
+            <one-to-many class="centaur.db.Subcatchment" />
+        </set>
+    </class>
+</hibernate-mapping>

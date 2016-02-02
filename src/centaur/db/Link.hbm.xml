@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 2, 2016 9:45:06 AM by Hibernate Tools 4.3.1.Final -->
+<hibernate-mapping>
+    <class name="centaur.db.Link" table="link" optimistic-lock="version">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="nodeByIdNodeTo" class="centaur.db.Node" fetch="select">
+            <column name="id_node_to" />
+        </many-to-one>
+        <many-to-one name="nodeByIdNodeFrom" class="centaur.db.Node" fetch="select">
+            <column name="id_node_from" />
+        </many-to-one>
+        <one-to-one name="weir" class="centaur.db.Weir"></one-to-one>
+        <one-to-one name="conduit" class="centaur.db.Conduit"></one-to-one>
+        <one-to-one name="pump" class="centaur.db.Pump"></one-to-one>
+    </class>
+</hibernate-mapping>

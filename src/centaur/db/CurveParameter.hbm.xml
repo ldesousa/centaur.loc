@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 2, 2016 9:45:06 AM by Hibernate Tools 4.3.1.Final -->
+<hibernate-mapping>
+    <class name="centaur.db.CurveParameter" table="`curve parameter`" optimistic-lock="version">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="foreign">
+                <param name="property">curve</param>
+            </generator>
+        </id>
+        <one-to-one name="curve" class="centaur.db.Curve" constrained="true"></one-to-one>
+        <property name="x" type="big_decimal">
+            <column name="x" precision="131089" scale="0" />
+        </property>
+        <property name="y" type="big_decimal">
+            <column name="y" precision="131089" scale="0" />
+        </property>
+        <property name="idCurve" type="java.lang.Integer">
+            <column name="id_curve" />
+        </property>
+    </class>
+</hibernate-mapping>
