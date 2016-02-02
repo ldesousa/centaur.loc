@@ -1,0 +1,590 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+CAUTION: Do not modify this file unless you know what you are doing.
+         Unexpected results may occur if the code is changed deliberately.
+-->
+<dbmodel pgmodeler-ver="0.8.2-alpha1" last-position="0,0" last-zoom="1"
+	 default-schema="public" default-owner="postgres">
+<database name="centaur">
+</database>
+
+<schema name="public" fill-color="#e1e1e1" sql-disabled="true">
+</schema>
+
+<schema name="centaur" rect-visible="true" fill-color="#e1e1e1">
+	<role name="postgres"/>
+</schema>
+
+<table name="curve">
+	<schema name="centaur"/>
+	<role name="postgres"/>
+	<position x="367" y="43"/>
+	<column name="id" not-null="true">
+		<type name="integer"/>
+	</column>
+	<column name="name">
+		<type name="varchar"/>
+	</column>
+	<column name="type">
+		<type name="varchar"/>
+	</column>
+	<constraint name="pk_curve" type="pk-constr" table="centaur.curve">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="curve parameter">
+	<schema name="centaur"/>
+	<role name="postgres"/>
+	<position x="367" y="134"/>
+	<column name="id" not-null="true">
+		<type name="serial"/>
+	</column>
+	<column name="x">
+		<type name="numeric"/>
+	</column>
+	<column name="y">
+		<type name="numeric"/>
+	</column>
+	<column name="id_curve">
+		<type name="integer"/>
+	</column>
+	<constraint name="pk_curve_parameter" type="pk-constr" table="centaur.&quot;curve parameter&quot;">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="node">
+	<schema name="centaur"/>
+	<role name="postgres"/>
+	<position x="365" y="304"/>
+	<column name="id" not-null="true">
+		<type name="integer"/>
+	</column>
+	<column name="elevation">
+		<type name="numeric"/>
+	</column>
+	<constraint name="pk_node" type="pk-constr" table="centaur.node">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="link">
+	<schema name="centaur"/>
+	<role name="postgres"/>
+	<position x="551" y="283"/>
+	<column name="id" not-null="true">
+		<type name="serial"/>
+	</column>
+	<column name="id_node_from">
+		<type name="integer"/>
+	</column>
+	<column name="id_node_to">
+		<type name="integer"/>
+	</column>
+	<constraint name="pk_link" type="pk-constr" table="centaur.link">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="conduit">
+	<schema name="centaur"/>
+	<role name="postgres"/>
+	<position x="838" y="30"/>
+	<column name="id_link" not-null="true">
+		<type name="integer"/>
+	</column>
+	<column name="name">
+		<type name="varchar"/>
+	</column>
+	<column name="length">
+		<type name="numeric"/>
+		<comment><![CDATA[This can be calculated from the junctions coordinates]]></comment>
+	</column>
+	<column name="roughness">
+		<type name="numeric"/>
+	</column>
+	<column name="in_offset">
+		<type name="numeric"/>
+	</column>
+	<column name="out_offset">
+		<type name="numeric"/>
+	</column>
+	<column name="init_flow">
+		<type name="numeric"/>
+	</column>
+	<column name="max_flow">
+		<type name="numeric"/>
+	</column>
+	<constraint name="pk_conduit" type="pk-constr" table="centaur.conduit">
+		<columns names="id_link" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="pump">
+	<schema name="centaur"/>
+	<role name="postgres"/>
+	<position x="839" y="376"/>
+	<column name="id_link" not-null="true">
+		<type name="integer"/>
+	</column>
+	<column name="name">
+		<type name="varchar"/>
+	</column>
+	<column name="pump_curve">
+		<type name="varchar"/>
+	</column>
+	<column name="status">
+		<type name="varchar"/>
+	</column>
+	<column name="startup">
+		<type name="numeric"/>
+	</column>
+	<column name="shutoff">
+		<type name="numeric"/>
+	</column>
+	<constraint name="pk_pump" type="pk-constr" table="centaur.pump">
+		<columns names="id_link" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="junction">
+	<schema name="centaur"/>
+	<role name="postgres"/>
+	<position x="32" y="379"/>
+	<column name="id_node" not-null="true">
+		<type name="integer"/>
+	</column>
+	<column name="max_depth">
+		<type name="numeric"/>
+	</column>
+	<column name="init_depth">
+		<type name="numeric"/>
+	</column>
+	<column name="sur_depth">
+		<type name="numeric"/>
+	</column>
+	<column name="aponded">
+		<type name="numeric"/>
+	</column>
+	<constraint name="pk_junction" type="pk-constr" table="centaur.junction">
+		<columns names="id_node" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="weir">
+	<schema name="centaur"/>
+	<role name="postgres"/>
+	<position x="838" y="194"/>
+	<column name="id_link" not-null="true">
+		<type name="integer"/>
+	</column>
+	<column name="name">
+		<type name="varchar"/>
+	</column>
+	<column name="type">
+		<type name="varchar"/>
+	</column>
+	<column name="crest_height">
+		<type name="numeric"/>
+	</column>
+	<column name="q_coeff">
+		<type name="numeric"/>
+	</column>
+	<column name="gated">
+		<type name="boolean"/>
+	</column>
+	<column name="end_con">
+		<type name="numeric"/>
+	</column>
+	<column name="end_coeff">
+		<type name="numeric"/>
+	</column>
+	<column name="surcharge">
+		<type name="boolean"/>
+	</column>
+	<constraint name="pk_weir" type="pk-constr" table="centaur.weir">
+		<columns names="id_link" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="outfall">
+	<schema name="centaur"/>
+	<role name="postgres"/>
+	<comment><![CDATA[This is a special kind of junction]]></comment>
+	<position x="32" y="246"/>
+	<column name="id_node" not-null="true">
+		<type name="integer"/>
+	</column>
+	<column name="type">
+		<type name="varchar"/>
+	</column>
+	<column name="stage_date">
+		<type name="varchar"/>
+	</column>
+	<column name="gated">
+		<type name="boolean"/>
+	</column>
+	<column name="route_to">
+		<type name="varchar"/>
+	</column>
+	<constraint name="pk_outfall" type="pk-constr" table="centaur.outfall">
+		<columns names="id_node" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="storage">
+	<schema name="centaur"/>
+	<role name="postgres"/>
+	<position x="12" y="41"/>
+	<column name="id_node" not-null="true">
+		<type name="integer"/>
+	</column>
+	<column name="max_depth">
+		<type name="numeric"/>
+	</column>
+	<column name="init_depth">
+		<type name="numeric"/>
+	</column>
+	<column name="shape">
+		<type name="varchar"/>
+	</column>
+	<column name="id_curve">
+		<type name="integer"/>
+	</column>
+	<column name="name_params">
+		<type name="integer"/>
+	</column>
+	<column name="fevap">
+		<type name="numeric"/>
+	</column>
+	<column name="psi">
+		<type name="numeric"/>
+	</column>
+	<column name="ksat">
+		<type name="numeric"/>
+	</column>
+	<column name="imd">
+		<type name="numeric"/>
+	</column>
+	<constraint name="pk_storage" type="pk-constr" table="centaur.storage">
+		<columns names="id_node" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="xsection">
+	<schema name="centaur"/>
+	<role name="postgres"/>
+	<position x="589" y="30"/>
+	<column name="id_link" not-null="true">
+		<type name="integer"/>
+	</column>
+	<column name="shape">
+		<type name="varchar"/>
+	</column>
+	<column name="geom1">
+		<type name="numeric"/>
+	</column>
+	<column name="geom2">
+		<type name="numeric"/>
+	</column>
+	<column name="geom3">
+		<type name="numeric"/>
+	</column>
+	<column name="geom4">
+		<type name="numeric"/>
+	</column>
+	<column name="barrels">
+		<type name="numeric"/>
+	</column>
+	<column name="culvert">
+		<type name="numeric"/>
+	</column>
+	<constraint name="pk_asection" type="pk-constr" table="centaur.xsection">
+		<columns names="id_link" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="raingage">
+	<schema name="centaur"/>
+	<role name="postgres"/>
+	<position x="136" y="551"/>
+	<column name="id" not-null="true">
+		<type name="integer"/>
+	</column>
+	<column name="format">
+		<type name="varchar"/>
+	</column>
+	<column name="interval">
+		<type name="interval"/>
+	</column>
+	<column name="scf">
+		<type name="numeric"/>
+	</column>
+	<column name="source">
+		<type name="varchar"/>
+	</column>
+	<constraint name="pk_raingage" type="pk-constr" table="centaur.raingage">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="subcatchment">
+	<schema name="centaur"/>
+	<role name="postgres"/>
+	<position x="366" y="521"/>
+	<column name="id" not-null="true">
+		<type name="varchar"/>
+	</column>
+	<column name="id_node_outlet">
+		<type name="integer"/>
+	</column>
+	<column name="id_raingage">
+		<type name="integer"/>
+	</column>
+	<column name="area">
+		<type name="numeric"/>
+	</column>
+	<column name="imperv">
+		<type name="numeric" length="13" precision="10"/>
+		<comment><![CDATA[This field is a percentage (<= 100)]]></comment>
+	</column>
+	<column name="width">
+		<type name="numeric"/>
+	</column>
+	<column name="slope">
+		<type name="numeric" length="12" precision="10"/>
+		<comment><![CDATA[This field is a percentage]]></comment>
+	</column>
+	<column name="curb_len">
+		<type name="numeric"/>
+	</column>
+	<column name="snow_pack">
+		<type name="varchar"/>
+	</column>
+	<constraint name="pk_subcatchment" type="pk-constr" table="centaur.subcatchment">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="subarea">
+	<schema name="centaur"/>
+	<role name="postgres"/>
+	<position x="654" y="521"/>
+	<column name="id_subcatchment" not-null="true">
+		<type name="varchar"/>
+	</column>
+	<column name="n_imperv">
+		<type name="numeric"/>
+	</column>
+	<column name="n_perv">
+		<type name="numeric"/>
+	</column>
+	<column name="s_imperv">
+		<type name="numeric"/>
+	</column>
+	<column name="s_perv">
+		<type name="numeric"/>
+	</column>
+	<column name="pct_zero">
+		<type name="numeric" length="12" precision="10"/>
+		<comment><![CDATA[This field is a percentage]]></comment>
+	</column>
+	<column name="route_to">
+		<type name="varchar"/>
+	</column>
+	<column name="pct_routed">
+		<type name="numeric" length="12" precision="10"/>
+	</column>
+	<constraint name="pk_subarea" type="pk-constr" table="centaur.subarea">
+		<columns names="id_subcatchment" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<schema name="centaur_temp" rect-visible="true" fill-color="#e1e1e1">
+	<role name="postgres"/>
+</schema>
+
+<table name="node_coordinates">
+	<schema name="centaur"/>
+	<role name="postgres"/>
+	<position x="18" y="721"/>
+	<column name="id_node">
+		<type name="integer"/>
+	</column>
+	<column name="x">
+		<type name="numeric"/>
+	</column>
+	<column name="y">
+		<type name="numeric"/>
+	</column>
+</table>
+
+<table name="link_coordinates">
+	<schema name="centaur"/>
+	<role name="postgres"/>
+	<position x="174.461" y="729.2"/>
+	<column name="id">
+		<type name="serial"/>
+	</column>
+	<column name="id_link">
+		<type name="integer"/>
+	</column>
+	<column name="x">
+		<type name="numeric"/>
+	</column>
+	<column name="y">
+		<type name="numeric"/>
+	</column>
+</table>
+
+<constraint name="fk_curve_parameter_curve" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="centaur.curve" table="centaur.&quot;curve parameter&quot;">
+	<columns names="id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_link_node_from" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="centaur.node" table="centaur.link">
+	<columns names="id_node_from" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_link_node_to" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="centaur.node" table="centaur.link">
+	<columns names="id_node_to" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_conduit_link" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="centaur.link" table="centaur.conduit">
+	<columns names="id_link" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_pump_link" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="centaur.link" table="centaur.pump">
+	<columns names="id_link" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_junction_node" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="centaur.node" table="centaur.junction">
+	<columns names="id_node" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_weir_link" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="centaur.link" table="centaur.weir">
+	<columns names="id_link" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_outfall_node" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="centaur.node" table="centaur.outfall">
+	<columns names="id_node" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_storage_node" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="centaur.node" table="centaur.storage">
+	<columns names="id_node" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_storage_curve" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="centaur.curve" table="centaur.storage">
+	<columns names="id_curve" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_xsection_conduit" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="centaur.conduit" table="centaur.xsection">
+	<columns names="id_link" ref-type="src-columns"/>
+	<columns names="id_link" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_subcatchment_raingage" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="centaur.raingage" table="centaur.subcatchment">
+	<columns names="id_raingage" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_subcatchment_node" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="centaur.node" table="centaur.subcatchment">
+	<columns names="id_node_outlet" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_subarea_subcatchment" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="centaur.subcatchment" table="centaur.subarea">
+	<columns names="id_subcatchment" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<relationship name="&quot;rel_curve parameter_curve&quot;" type="relfk"
+	 src-table="centaur.&quot;curve parameter&quot;"
+	 dst-table="centaur.curve"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_link_node" type="relfk"
+	 src-table="centaur.link"
+	 dst-table="centaur.node"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_conduit_cp_link" type="relfk"
+	 src-table="centaur.conduit"
+	 dst-table="centaur.link"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_pump_cp_link" type="relfk"
+	 src-table="centaur.pump"
+	 dst-table="centaur.link"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_weir_cp_link" type="relfk"
+	 src-table="centaur.weir"
+	 dst-table="centaur.link"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_junction_cp_node" type="relfk"
+	 src-table="centaur.junction"
+	 dst-table="centaur.node"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_outfall_cp_node" type="relfk"
+	 src-table="centaur.outfall"
+	 dst-table="centaur.node"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_storage_cp_node" type="relfk"
+	 src-table="centaur.storage"
+	 dst-table="centaur.node"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_storage_curve1" type="relfk"
+	 src-table="centaur.storage"
+	 dst-table="centaur.curve"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_xsection_cp_conduit" type="relfk"
+	 src-table="centaur.xsection"
+	 dst-table="centaur.conduit"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_subarea_cp_subcatchment_cp" type="relfk"
+	 src-table="centaur.subarea"
+	 dst-table="centaur.subcatchment"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_subcatchment_cp_raingage" type="relfk"
+	 src-table="centaur.subcatchment"
+	 dst-table="centaur.raingage"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_subcatchment_cp_node" type="relfk"
+	 src-table="centaur.subcatchment"
+	 dst-table="centaur.node"
+	 src-required="false" dst-required="false"/>
+
+</dbmodel>
