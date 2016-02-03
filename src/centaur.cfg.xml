@@ -10,5 +10,22 @@
         <property name="hibernate.connection.username">desouslu</property>
         <property name="hibernate.default_schema">centaur</property>
         <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+        <!-- "Import" the mapping resources here -->		
+		<mapping resource="centaur/db/Node.hbm.xml"/>
+		<mapping resource="centaur/db/Outfall.hbm.xml"/>
+		<mapping resource="centaur/db/Junction.hbm.xml"/>
+		<mapping resource="centaur/db/Storage.hbm.xml"/>
+		<mapping resource="centaur/db/Curve.hbm.xml"/>
+		<mapping resource="centaur/db/CurveParameter.hbm.xml"/>
+		<mapping resource="centaur/db/Raingage.hbm.xml"/>
+		<mapping resource="centaur/db/Subcatchment.hbm.xml"/>
+		<mapping resource="centaur/db/Subarea.hbm.xml"/>
+		<mapping resource="centaur/db/Link.hbm.xml"/>
+		<mapping resource="centaur/db/Pump.hbm.xml"/>
+		<mapping resource="centaur/db/Weir.hbm.xml"/>
+		<mapping resource="centaur/db/Conduit.hbm.xml"/>
+		<mapping resource="centaur/db/Xsection.hbm.xml"/>
+		<mapping resource="centaur/db/NodeCoordinates.hbm.xml"/>
+		<mapping resource="centaur/db/LinkCoordinates.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>

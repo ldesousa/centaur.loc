@@ -64,6 +64,9 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="elevation">
 		<type name="numeric"/>
 	</column>
+	<column name="name">
+		<type name="varchar"/>
+	</column>
 	<constraint name="pk_node" type="pk-constr" table="centaur.node">
 		<columns names="id" ref-type="src-columns"/>
 	</constraint>
@@ -400,10 +403,6 @@ CAUTION: Do not modify this file unless you know what you are doing.
 		<columns names="id_subcatchment" ref-type="src-columns"/>
 	</constraint>
 </table>
-
-<schema name="centaur_temp" rect-visible="true" fill-color="#e1e1e1">
-	<role name="postgres"/>
-</schema>
 
 <table name="node_coordinates">
 	<schema name="centaur"/>
