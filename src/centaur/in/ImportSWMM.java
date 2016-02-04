@@ -24,7 +24,9 @@ public class ImportSWMM
 	static String commentFlag = ";";
 	static String headNodeCoordinates = "[COORDINATES]";
 	static String headOutfalls = "[OUTFALLS]";
+	static String headJunctions = "[JUNCTIONS]";
 	
+	static Random generator = new Random();
 	static int newIdFloor = 1000000;
 
 	public static void main(String[] args) 
@@ -32,20 +34,8 @@ public class ImportSWMM
 		SessionFactory factory;
 		Session session;
 		Transaction tx;
-		Random generator = new Random();
 		
-		// Open SWMM file
-		try 
-		{
-			 //scanner = new Scanner(new File(filePath));
-			 scanner = new Scanner(new FileInputStream(filePath), "UTF-8");
-		}
-		catch (FileNotFoundException e) 
-		{
-			System.out.println("Failed to open SWMM file.");
-			e.printStackTrace();
-			return;
-		}
+		initScanner();
 		
 		// Initialise database session
 		try
@@ -95,24 +85,13 @@ public class ImportSWMM
 				}
 				line = scanner.nextLine();
 			}
-			
-			try
-			{
-		         tx.commit();
-		    }
-			catch (HibernateException e) 
-			{
-		         if (tx!=null) tx.rollback();
-		         System.err.println("Failed to commit Outfalls to database: " + e);
-		         e.printStackTrace();
-		         scanner.close();
-		         session.close();  
-		         return; 
-		    }
 		}
 		System.out.println("=> Succesfully imported Outfalls");
 		
+		importJunctions(session, tx);
 		
+		commitData(session, tx);
+				
 		// Close file and database session.
 		scanner.close();
 		session.close();
@@ -127,6 +106,61 @@ public class ImportSWMM
 	        if(line.contains(match)) { return line; }
 	    }
 		return null;
+	}
+	
+	static void commitData(Session session, Transaction tx)
+	{
+		try
+		{
+	         tx.commit();
+	    }
+		catch (HibernateException e) 
+		{
+	         //if (tx!=null) tx.rollback();
+	         System.err.println("Failed to commit Junctions to database: " + e);
+	         e.printStackTrace();
+	         scanner.close();
+	         session.close();  
+	         System.exit(-1); 
+	    }
+	}
+	
+	static void initScanner()
+	{
+		if(scanner != null)
+		{
+			scanner.close();
+			scanner=null;
+		}
+		
+		try 
+		{
+			 scanner = new Scanner(new FileInputStream(filePath), "UTF-8");
+		}
+		catch (FileNotFoundException e) 
+		{
+			System.out.println("Failed to open SWMM file.");
+			e.printStackTrace();
+			System.exit(-1);
+		}
+	}
+	
+	static void importJunctions(Session session, Transaction tx)
+	{
+		initScanner();
+			
+		if(advanceToMatchingString(headJunctions) != null);
+		{
+			String line = scanner.nextLine();
+			while(line.replaceAll("\\s+","").length() > 0)
+			{
+				System.out.println("Next line to process: " + line);
+				
+				if(!line.startsWith(commentFlag)) new Junction(line, session, generator);
+				line = scanner.nextLine();
+			}
+		}
+		System.out.println("=> Succesfully imported Junctions");
 	}
 	
 }
