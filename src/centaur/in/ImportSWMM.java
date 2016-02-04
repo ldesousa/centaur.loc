@@ -53,6 +53,8 @@ public class ImportSWMM
 	         return;
 	    }
 		
+		clearDB(session);
+		
 		// Input Outfalls	
 		if(advanceToMatchingString(headOutfalls) != null);
 		{
@@ -88,13 +90,20 @@ public class ImportSWMM
 		}
 		System.out.println("=> Succesfully imported Outfalls");
 		
-		importJunctions(session, tx);
+		importObjects(Junction.class, headJunctions, session, tx);
 		
 		commitData(session, tx);
 				
 		// Close file and database session.
 		scanner.close();
 		session.close();
+	}
+	
+	static void clearDB(Session session)
+	{
+		session.createQuery(String.format("delete from %s", Outfall.class.getName())).executeUpdate();
+		session.createQuery(String.format("delete from %s", Junction.class.getName())).executeUpdate();
+		session.createQuery(String.format("delete from %s", Node.class.getName())).executeUpdate();
 	}
 
 	static String advanceToMatchingString(String match)
@@ -117,7 +126,7 @@ public class ImportSWMM
 		catch (HibernateException e) 
 		{
 	         //if (tx!=null) tx.rollback();
-	         System.err.println("Failed to commit Junctions to database: " + e);
+	         System.err.println("Failed to commit objects to database: " + e);
 	         e.printStackTrace();
 	         scanner.close();
 	         session.close();  
@@ -145,18 +154,30 @@ public class ImportSWMM
 		}
 	}
 	
-	static void importJunctions(Session session, Transaction tx)
+	static void importObjects(Class dbClass, String head, Session session, Transaction tx)
 	{
 		initScanner();
 			
-		if(advanceToMatchingString(headJunctions) != null);
+		if(advanceToMatchingString(head) != null);
 		{
 			String line = scanner.nextLine();
 			while(line.replaceAll("\\s+","").length() > 0)
 			{
 				System.out.println("Next line to process: " + line);
 				
-				if(!line.startsWith(commentFlag)) new Junction(line, session, generator);
+				if(!line.startsWith(commentFlag)) 
+				{
+					try 
+					{
+						Importable ob = (Importable) dbClass.newInstance();
+						ob.importFromSWMMLine(line, session, generator);
+					} 
+					catch (InstantiationException | IllegalAccessException e) 
+					{
+						e.printStackTrace();
+					}
+					
+				}
 				line = scanner.nextLine();
 			}
 		}
