@@ -39,7 +39,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="curve parameter">
 	<schema name="centaur"/>
 	<role name="postgres"/>
-	<position x="367" y="134"/>
+	<position x="368" y="138"/>
 	<column name="id" not-null="true">
 		<type name="serial"/>
 	</column>
@@ -445,7 +445,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <constraint name="fk_curve_parameter_curve" type="fk-constr" comparison-type="MATCH FULL"
 	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="centaur.curve" table="centaur.&quot;curve parameter&quot;">
-	<columns names="id" ref-type="src-columns"/>
+	<columns names="id_curve" ref-type="src-columns"/>
 	<columns names="id" ref-type="dst-columns"/>
 </constraint>
 
