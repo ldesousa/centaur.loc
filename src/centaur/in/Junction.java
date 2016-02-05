@@ -10,27 +10,19 @@ import centaur.db.Node;
 public class Junction /*extends centaur.db.Junction*/ implements Importable
 {
 	centaur.db.Junction junction;
-	static int newIdFloor = 1000000;
 
 	public Junction() 
 	{
-		// TODO Auto-generated constructor stub
 		junction = new centaur.db.Junction();
 	}
 
 	public Junction(Node node) 
 	{
 		junction = new centaur.db.Junction(node);
-		// TODO Auto-generated constructor stub
 	}
-
-	/*public Junction(Node node, BigDecimal maxDepth, BigDecimal initDepth, BigDecimal surDepth, BigDecimal aponded) {
-		super(node, maxDepth, initDepth, surDepth, aponded);
-		// TODO Auto-generated constructor stub
-	}*/
 	
 	@Override
-	public void importFromSWMMLine(String lineSWMM, Session session, Random generator)
+	public void importFromSWMMLine(String lineSWMM, Session session, Random generator, int newIdFloor)
 	{
 		
 		String[] values = lineSWMM.split("\\s+");
@@ -45,8 +37,6 @@ public class Junction /*extends centaur.db.Junction*/ implements Importable
 		junction.setAponded(new BigDecimal(values[5]));
 		junction.setNode(n);
 		session.save(n);
-		/*centaur.db.Junction parent = (centaur.db.Junction) this;
-		session.save(parent);*/
 		session.save(junction);
 	}
 

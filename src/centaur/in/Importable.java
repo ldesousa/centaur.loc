@@ -6,5 +6,5 @@ import org.hibernate.Session;
 
 public interface Importable 
 {
-	public void importFromSWMMLine(String lineSWMM, Session session, Random generator);
+	public void importFromSWMMLine(String lineSWMM, Session session, Random generator, int newIdFLoor);
 }
