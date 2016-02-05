@@ -31,6 +31,9 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<constraint name="pk_curve" type="pk-constr" table="centaur.curve">
 		<columns names="id" ref-type="src-columns"/>
 	</constraint>
+	<constraint name="unq_curve" type="uq-constr" table="centaur.curve">
+		<columns names="name" ref-type="src-columns"/>
+	</constraint>
 </table>
 
 <table name="curve parameter">
@@ -57,7 +60,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="node">
 	<schema name="centaur"/>
 	<role name="postgres"/>
-	<position x="365" y="304"/>
+	<position x="358" y="283"/>
 	<column name="id" not-null="true">
 		<type name="integer"/>
 	</column>
@@ -69,6 +72,9 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</column>
 	<constraint name="pk_node" type="pk-constr" table="centaur.node">
 		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="unq_node" type="uq-constr" table="centaur.node">
+		<columns names="name" ref-type="src-columns"/>
 	</constraint>
 </table>
 
