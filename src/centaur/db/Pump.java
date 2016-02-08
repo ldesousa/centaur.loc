@@ -77,5 +77,4 @@ public class Pump implements java.io.Serializable {
 	public void setShutoff(BigDecimal shutoff) {
 		this.shutoff = shutoff;
 	}
-
 }

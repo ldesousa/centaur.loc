@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Random;
 
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
 import centaur.db.CurveParameter;
@@ -19,13 +18,7 @@ public class Curve /*extends centaur.db.Curve*/ implements Importable
 		curve = new centaur.db.Curve();
 	}
 	
-	/*protected void setCurveParameterFromName(Session session, String curveName)
-	{		
-		List list = session.createQuery(String.format("select * from %s where name like %s", 
-				CurveParameter.class.getName(), curveName)).list();
-		
-		if(list.size() > 0) curve.setCurveParameter((CurveParameter) list.get(0));
-	}*/
+	public centaur.db.Curve getPersistentObject() {return curve;}
 	
 	// Returns: true if it was able to find a corresponding record, false otherwise.
 	protected Boolean loadFromName(Session session, String name)

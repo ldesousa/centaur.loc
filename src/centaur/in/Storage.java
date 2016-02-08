@@ -5,11 +5,9 @@ import java.util.List;
 import java.util.Random;
 
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
 import centaur.db.Node;
-import centaur.db.Outfall;
 import centaur.db.Curve;
 
 public class Storage /*extends centaur.db.Storage*/ implements Importable

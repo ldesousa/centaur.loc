@@ -1,12 +1,11 @@
 package centaur.in;
 
 import centaur.db.CurveParameter;
+import centaur.db.Link;
 import centaur.db.Node;
-import centaur.db.Outfall;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.math.BigDecimal;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -28,6 +27,7 @@ public class ImportSWMM
 	static String headJunctions = "[JUNCTIONS]";
 	static String headCurves = "[CURVES]";
 	static String headStorages = "[STORAGE]";
+	static String headPumps = "[PUMPS]";
 	
 	static Random generator = new Random();
 	static int newIdFloor = 1000000;
@@ -56,50 +56,13 @@ public class ImportSWMM
 	    }
 					
 		//clearDB(session);
-		//commitData(session, tx);
+		//commitData(session, tx);	
 		
-		// Input Outfalls	
-		if(advanceToMatchingString(headOutfalls) != null);
-		{
-			String line = scanner.nextLine();
-			while(line.replaceAll("\\s+","").length() > 0)
-			{
-				System.out.println("Next line to process: " + line);
-				
-				if(!line.startsWith(commentFlag))
-				{			
-					Node n = new Node();
-					String[] values = line.split("\\s+");
-					try // Node ids can be strings
-					{
-						n.setId(Integer.parseInt(values[0]));
-						//n.setId(143418);
-					}
-					catch (NumberFormatException e) 
-					{
-						n.setId(generator.nextInt() + newIdFloor);
-						n.setName(values[0]);
-					}
-					n.setElevation(new BigDecimal(values[1]));
-					
-					System.out.println("The new node: " + n.getId() + " " + n.getElevation());
-					session.save(n);	
-					
-					Outfall o = new Outfall();
-					o.setNode(n);
-					o.setType(values[2]);
-					o.setGated(new Boolean(values[3]));				
-					session.save(o);
-				}
-				line = scanner.nextLine();
-			}
-		}
-		commitData(session, tx);
-		System.out.println("=> Succesfully imported Outfalls");
-		
+		importObjects(Outfall.class, headOutfalls, session, tx);
 		importObjects(Junction.class, headJunctions, session, tx);
 		importObjects(Curve.class, headCurves, session, tx);
 		importObjects(Storage.class, headStorages, session, tx);
+		importObjects(Pump.class, headPumps, session, tx);
 				
 		// Close file and database session.
 		scanner.close();
@@ -110,10 +73,12 @@ public class ImportSWMM
 	{
 		session.createQuery(String.format("delete from %s", Outfall.class.getName())).executeUpdate();
 		session.createQuery(String.format("delete from %s", Junction.class.getName())).executeUpdate();
-		session.createQuery(String.format("delete from %s", CurveParameter.class.getName())).executeUpdate();
-		session.createQuery(String.format("delete from %s", Curve.class.getName())).executeUpdate();
 		session.createQuery(String.format("delete from %s", Storage.class.getName())).executeUpdate();
 		session.createQuery(String.format("delete from %s", Node.class.getName())).executeUpdate();
+		session.createQuery(String.format("delete from %s", Pump.class.getName())).executeUpdate();
+		session.createQuery(String.format("delete from %s", Link.class.getName())).executeUpdate();
+		session.createQuery(String.format("delete from %s", CurveParameter.class.getName())).executeUpdate();
+		session.createQuery(String.format("delete from %s", Curve.class.getName())).executeUpdate();
 		session.flush();
 	}
 
