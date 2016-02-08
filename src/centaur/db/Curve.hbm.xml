@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Feb 3, 2016 11:43:24 AM by Hibernate Tools 4.3.1.Final -->
+<!-- Generated Feb 8, 2016 9:29:23 AM by Hibernate Tools 4.3.1.Final -->
 <hibernate-mapping>
     <class name="centaur.db.Curve" table="curve" optimistic-lock="version">
         <id name="id" type="int">
@@ -9,12 +9,17 @@
             <generator class="assigned" />
         </id>
         <property name="name" type="string">
-            <column name="name" />
+            <column name="name" unique="true" />
         </property>
         <property name="type" type="string">
             <column name="type" />
         </property>
-        <one-to-one name="curveParameter" class="centaur.db.CurveParameter"></one-to-one>
+        <set name="curveParameters" table="curve_parameter" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_curve" />
+            </key>
+            <one-to-many class="centaur.db.CurveParameter" />
+        </set>
         <set name="storages" table="storage" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="id_curve" />

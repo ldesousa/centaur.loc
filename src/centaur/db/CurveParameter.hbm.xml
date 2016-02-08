@@ -1,24 +1,21 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Feb 3, 2016 11:43:24 AM by Hibernate Tools 4.3.1.Final -->
+<!-- Generated Feb 8, 2016 9:29:23 AM by Hibernate Tools 4.3.1.Final -->
 <hibernate-mapping>
-    <class name="centaur.db.CurveParameter" table="`curve parameter`" optimistic-lock="version">
+    <class name="centaur.db.CurveParameter" table="curve_parameter" optimistic-lock="version">
         <id name="id" type="int">
             <column name="id" />
-            <generator class="foreign">
-                <param name="property">curve</param>
-            </generator>
+            <generator class="assigned" />
         </id>
-        <one-to-one name="curve" class="centaur.db.Curve" constrained="true"></one-to-one>
+        <many-to-one name="curve" class="centaur.db.Curve" fetch="select">
+            <column name="id_curve" />
+        </many-to-one>
         <property name="x" type="big_decimal">
             <column name="x" precision="131089" scale="0" />
         </property>
         <property name="y" type="big_decimal">
             <column name="y" precision="131089" scale="0" />
-        </property>
-        <property name="idCurve" type="java.lang.Integer">
-            <column name="id_curve" />
         </property>
     </class>
 </hibernate-mapping>

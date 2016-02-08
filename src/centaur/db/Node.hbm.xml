@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Feb 3, 2016 11:43:24 AM by Hibernate Tools 4.3.1.Final -->
+<!-- Generated Feb 8, 2016 9:29:23 AM by Hibernate Tools 4.3.1.Final -->
 <hibernate-mapping>
     <class name="centaur.db.Node" table="node" optimistic-lock="version">
         <id name="id" type="int">
@@ -12,7 +12,7 @@
             <column name="elevation" precision="131089" scale="0" />
         </property>
         <property name="name" type="string">
-            <column name="name" />
+            <column name="name" unique="true" />
         </property>
         <one-to-one name="junction" class="centaur.db.Junction"></one-to-one>
         <one-to-one name="outfall" class="centaur.db.Outfall"></one-to-one>

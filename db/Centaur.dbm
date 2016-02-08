@@ -36,7 +36,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</constraint>
 </table>
 
-<table name="curve parameter">
+<table name="curve_parameter">
 	<schema name="centaur"/>
 	<role name="postgres"/>
 	<position x="368" y="138"/>
@@ -52,7 +52,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="id_curve">
 		<type name="integer"/>
 	</column>
-	<constraint name="pk_curve_parameter" type="pk-constr" table="centaur.&quot;curve parameter&quot;">
+	<constraint name="pk_curve_parameter" type="pk-constr" table="centaur.curve_parameter">
 		<columns names="id" ref-type="src-columns"/>
 	</constraint>
 </table>
@@ -444,7 +444,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 </table>
 
 <constraint name="fk_curve_parameter_curve" type="fk-constr" comparison-type="MATCH FULL"
-	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="centaur.curve" table="centaur.&quot;curve parameter&quot;">
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="centaur.curve" table="centaur.curve_parameter">
 	<columns names="id_curve" ref-type="src-columns"/>
 	<columns names="id" ref-type="dst-columns"/>
 </constraint>
@@ -528,7 +528,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 </constraint>
 
 <relationship name="&quot;rel_curve parameter_curve&quot;" type="relfk"
-	 src-table="centaur.&quot;curve parameter&quot;"
+	 src-table="centaur.curve_parameter"
 	 dst-table="centaur.curve"
 	 src-required="false" dst-required="false"/>
 

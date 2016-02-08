@@ -1,5 +1,5 @@
 package centaur.db;
-// Generated Feb 3, 2016 11:43:24 AM by Hibernate Tools 4.3.1.Final
+// Generated Feb 8, 2016 9:29:23 AM by Hibernate Tools 4.3.1.Final
 
 import java.math.BigDecimal;
 
@@ -12,20 +12,19 @@ public class CurveParameter implements java.io.Serializable {
 	private Curve curve;
 	private BigDecimal x;
 	private BigDecimal y;
-	private Integer idCurve;
 
 	public CurveParameter() {
 	}
 
-	public CurveParameter(Curve curve) {
-		this.curve = curve;
+	public CurveParameter(int id) {
+		this.id = id;
 	}
 
-	public CurveParameter(Curve curve, BigDecimal x, BigDecimal y, Integer idCurve) {
+	public CurveParameter(int id, Curve curve, BigDecimal x, BigDecimal y) {
+		this.id = id;
 		this.curve = curve;
 		this.x = x;
 		this.y = y;
-		this.idCurve = idCurve;
 	}
 
 	public int getId() {
@@ -58,14 +57,6 @@ public class CurveParameter implements java.io.Serializable {
 
 	public void setY(BigDecimal y) {
 		this.y = y;
-	}
-
-	public Integer getIdCurve() {
-		return this.idCurve;
-	}
-
-	public void setIdCurve(Integer idCurve) {
-		this.idCurve = idCurve;
 	}
 
 }

@@ -4,7 +4,7 @@
 <hibernate-reverse-engineering>
 	<table-filter match-name="conduit" />
 	<table-filter match-name="curve" />
-	<table-filter match-name="curve parameter" />
+	<table-filter match-name="curve_parameter" />
 	<table-filter match-name="junction" />
 	<table-filter match-name="link" />
 	<table-filter match-name="node" />
