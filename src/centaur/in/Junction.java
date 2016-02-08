@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.Random;
 
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import centaur.db.Node;
 

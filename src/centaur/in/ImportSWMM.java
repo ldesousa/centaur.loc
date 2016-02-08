@@ -1,9 +1,9 @@
 package centaur.in;
 
+import centaur.db.CurveParameter;
 import centaur.db.Node;
 import centaur.db.Outfall;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.math.BigDecimal;
@@ -20,18 +20,20 @@ public class ImportSWMM
 {
 	static String filePath = "data/Wartegg_Luzern.INP";
 	static Scanner scanner;
+	static SessionFactory factory;
 	
 	static String commentFlag = ";";
 	static String headNodeCoordinates = "[COORDINATES]";
 	static String headOutfalls = "[OUTFALLS]";
 	static String headJunctions = "[JUNCTIONS]";
+	static String headCurves = "[CURVES]";
+	static String headStorages = "[STORAGE]";
 	
 	static Random generator = new Random();
 	static int newIdFloor = 1000000;
 
 	public static void main(String[] args) 
 	{
-		SessionFactory factory;
 		Session session;
 		Transaction tx;
 		
@@ -52,8 +54,9 @@ public class ImportSWMM
 	         scanner.close();
 	         return;
 	    }
-		
-		clearDB(session);
+					
+		//clearDB(session);
+		//commitData(session, tx);
 		
 		// Input Outfalls	
 		if(advanceToMatchingString(headOutfalls) != null);
@@ -64,35 +67,39 @@ public class ImportSWMM
 				System.out.println("Next line to process: " + line);
 				
 				if(!line.startsWith(commentFlag))
-				{
+				{			
 					Node n = new Node();
-					Outfall o = new Outfall();
 					String[] values = line.split("\\s+");
 					try // Node ids can be strings
 					{
-						n.setId(new Integer(values[0]));
+						n.setId(Integer.parseInt(values[0]));
+						//n.setId(143418);
 					}
 					catch (NumberFormatException e) 
 					{
 						n.setId(generator.nextInt() + newIdFloor);
 						n.setName(values[0]);
 					}
-					o.setIdNode(new Integer(n.getId()));
 					n.setElevation(new BigDecimal(values[1]));
-					o.setType(values[2]);
-					o.setGated(new Boolean(values[3]));
+					
+					System.out.println("The new node: " + n.getId() + " " + n.getElevation());
+					session.save(n);	
+					
+					Outfall o = new Outfall();
 					o.setNode(n);
-					session.save(n);
+					o.setType(values[2]);
+					o.setGated(new Boolean(values[3]));				
 					session.save(o);
 				}
 				line = scanner.nextLine();
 			}
 		}
+		commitData(session, tx);
 		System.out.println("=> Succesfully imported Outfalls");
 		
 		importObjects(Junction.class, headJunctions, session, tx);
-		
-		commitData(session, tx);
+		importObjects(Curve.class, headCurves, session, tx);
+		importObjects(Storage.class, headStorages, session, tx);
 				
 		// Close file and database session.
 		scanner.close();
@@ -103,7 +110,11 @@ public class ImportSWMM
 	{
 		session.createQuery(String.format("delete from %s", Outfall.class.getName())).executeUpdate();
 		session.createQuery(String.format("delete from %s", Junction.class.getName())).executeUpdate();
+		session.createQuery(String.format("delete from %s", CurveParameter.class.getName())).executeUpdate();
+		session.createQuery(String.format("delete from %s", Curve.class.getName())).executeUpdate();
+		session.createQuery(String.format("delete from %s", Storage.class.getName())).executeUpdate();
 		session.createQuery(String.format("delete from %s", Node.class.getName())).executeUpdate();
+		session.flush();
 	}
 
 	static String advanceToMatchingString(String match)
@@ -122,6 +133,7 @@ public class ImportSWMM
 		try
 		{
 	         tx.commit();
+	         tx = session.beginTransaction();
 	    }
 		catch (HibernateException e) 
 		{
@@ -141,7 +153,6 @@ public class ImportSWMM
 			scanner.close();
 			scanner=null;
 		}
-		
 		try 
 		{
 			 scanner = new Scanner(new FileInputStream(filePath), "UTF-8");
@@ -170,18 +181,18 @@ public class ImportSWMM
 					try 
 					{
 						Importable ob = (Importable) dbClass.newInstance();
-						ob.importFromSWMMLine(line, session, generator);
+						ob.importFromSWMMLine(line, session, generator, newIdFloor);
 					} 
 					catch (InstantiationException | IllegalAccessException e) 
 					{
 						e.printStackTrace();
 					}
-					
 				}
 				line = scanner.nextLine();
 			}
 		}
-		System.out.println("=> Succesfully imported Junctions");
+		commitData(session, tx);
+		System.out.println("=> Succesfully imported " + dbClass.getName());
 	}
 	
 }

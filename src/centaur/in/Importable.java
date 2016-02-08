@@ -3,6 +3,7 @@ package centaur.in;
 import java.util.Random;
 
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 public interface Importable 
 {
