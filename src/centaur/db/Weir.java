@@ -1,5 +1,5 @@
 package centaur.db;
-// Generated Feb 8, 2016 9:29:23 AM by Hibernate Tools 4.3.1.Final
+// Generated Feb 8, 2016 11:39:21 AM by Hibernate Tools 4.3.1.Final
 
 import java.math.BigDecimal;
 
@@ -10,7 +10,6 @@ public class Weir implements java.io.Serializable {
 
 	private int idLink;
 	private Link link;
-	private String name;
 	private String type;
 	private BigDecimal crestHeight;
 	private BigDecimal QCoeff;
@@ -26,10 +25,9 @@ public class Weir implements java.io.Serializable {
 		this.link = link;
 	}
 
-	public Weir(Link link, String name, String type, BigDecimal crestHeight, BigDecimal QCoeff, Boolean gated,
-			BigDecimal endCon, BigDecimal endCoeff, Boolean surcharge) {
+	public Weir(Link link, String type, BigDecimal crestHeight, BigDecimal QCoeff, Boolean gated, BigDecimal endCon,
+			BigDecimal endCoeff, Boolean surcharge) {
 		this.link = link;
-		this.name = name;
 		this.type = type;
 		this.crestHeight = crestHeight;
 		this.QCoeff = QCoeff;
@@ -53,14 +51,6 @@ public class Weir implements java.io.Serializable {
 
 	public void setLink(Link link) {
 		this.link = link;
-	}
-
-	public String getName() {
-		return this.name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public String getType() {

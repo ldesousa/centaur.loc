@@ -1,5 +1,5 @@
 package centaur.db;
-// Generated Feb 8, 2016 9:29:23 AM by Hibernate Tools 4.3.1.Final
+// Generated Feb 8, 2016 11:39:21 AM by Hibernate Tools 4.3.1.Final
 
 import java.math.BigDecimal;
 
@@ -9,9 +9,8 @@ import java.math.BigDecimal;
 public class Pump implements java.io.Serializable {
 
 	private int idLink;
+	private Curve curve;
 	private Link link;
-	private String name;
-	private String pumpCurve;
 	private String status;
 	private BigDecimal startup;
 	private BigDecimal shutoff;
@@ -23,10 +22,9 @@ public class Pump implements java.io.Serializable {
 		this.link = link;
 	}
 
-	public Pump(Link link, String name, String pumpCurve, String status, BigDecimal startup, BigDecimal shutoff) {
+	public Pump(Curve curve, Link link, String status, BigDecimal startup, BigDecimal shutoff) {
+		this.curve = curve;
 		this.link = link;
-		this.name = name;
-		this.pumpCurve = pumpCurve;
 		this.status = status;
 		this.startup = startup;
 		this.shutoff = shutoff;
@@ -40,28 +38,20 @@ public class Pump implements java.io.Serializable {
 		this.idLink = idLink;
 	}
 
+	public Curve getCurve() {
+		return this.curve;
+	}
+
+	public void setCurve(Curve curve) {
+		this.curve = curve;
+	}
+
 	public Link getLink() {
 		return this.link;
 	}
 
 	public void setLink(Link link) {
 		this.link = link;
-	}
-
-	public String getName() {
-		return this.name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getPumpCurve() {
-		return this.pumpCurve;
-	}
-
-	public void setPumpCurve(String pumpCurve) {
-		this.pumpCurve = pumpCurve;
 	}
 
 	public String getStatus() {

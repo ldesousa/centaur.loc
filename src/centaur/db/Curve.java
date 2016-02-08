@@ -1,5 +1,5 @@
 package centaur.db;
-// Generated Feb 8, 2016 9:29:23 AM by Hibernate Tools 4.3.1.Final
+// Generated Feb 8, 2016 11:39:21 AM by Hibernate Tools 4.3.1.Final
 
 import java.util.HashSet;
 import java.util.Set;
@@ -13,6 +13,7 @@ public class Curve implements java.io.Serializable {
 	private String name;
 	private String type;
 	private Set curveParameters = new HashSet(0);
+	private Set pumps = new HashSet(0);
 	private Set storages = new HashSet(0);
 
 	public Curve() {
@@ -22,11 +23,12 @@ public class Curve implements java.io.Serializable {
 		this.id = id;
 	}
 
-	public Curve(int id, String name, String type, Set curveParameters, Set storages) {
+	public Curve(int id, String name, String type, Set curveParameters, Set pumps, Set storages) {
 		this.id = id;
 		this.name = name;
 		this.type = type;
 		this.curveParameters = curveParameters;
+		this.pumps = pumps;
 		this.storages = storages;
 	}
 
@@ -60,6 +62,14 @@ public class Curve implements java.io.Serializable {
 
 	public void setCurveParameters(Set curveParameters) {
 		this.curveParameters = curveParameters;
+	}
+
+	public Set getPumps() {
+		return this.pumps;
+	}
+
+	public void setPumps(Set pumps) {
+		this.pumps = pumps;
 	}
 
 	public Set getStorages() {

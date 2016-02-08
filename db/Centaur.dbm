@@ -18,7 +18,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="curve">
 	<schema name="centaur"/>
 	<role name="postgres"/>
-	<position x="367" y="43"/>
+	<position x="461" y="41"/>
 	<column name="id" not-null="true">
 		<type name="integer"/>
 	</column>
@@ -39,7 +39,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="curve_parameter">
 	<schema name="centaur"/>
 	<role name="postgres"/>
-	<position x="368" y="138"/>
+	<position x="456" y="132"/>
 	<column name="id" not-null="true">
 		<type name="serial"/>
 	</column>
@@ -60,7 +60,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="node">
 	<schema name="centaur"/>
 	<role name="postgres"/>
-	<position x="358" y="283"/>
+	<position x="362" y="260"/>
 	<column name="id" not-null="true">
 		<type name="integer"/>
 	</column>
@@ -81,9 +81,12 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="link">
 	<schema name="centaur"/>
 	<role name="postgres"/>
-	<position x="551" y="283"/>
+	<position x="563" y="259"/>
 	<column name="id" not-null="true">
 		<type name="serial"/>
+	</column>
+	<column name="name">
+		<type name="varchar"/>
 	</column>
 	<column name="id_node_from">
 		<type name="integer"/>
@@ -94,17 +97,17 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<constraint name="pk_link" type="pk-constr" table="centaur.link">
 		<columns names="id" ref-type="src-columns"/>
 	</constraint>
+	<constraint name="unq_link_name" type="uq-constr" table="centaur.link">
+		<columns names="name" ref-type="src-columns"/>
+	</constraint>
 </table>
 
 <table name="conduit">
 	<schema name="centaur"/>
 	<role name="postgres"/>
-	<position x="838" y="30"/>
+	<position x="837" y="351"/>
 	<column name="id_link" not-null="true">
 		<type name="integer"/>
-	</column>
-	<column name="name">
-		<type name="varchar"/>
 	</column>
 	<column name="length">
 		<type name="numeric"/>
@@ -133,15 +136,12 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="pump">
 	<schema name="centaur"/>
 	<role name="postgres"/>
-	<position x="839" y="376"/>
+	<position x="837" y="32"/>
 	<column name="id_link" not-null="true">
 		<type name="integer"/>
 	</column>
-	<column name="name">
-		<type name="varchar"/>
-	</column>
-	<column name="pump_curve">
-		<type name="varchar"/>
+	<column name="id_curve">
+		<type name="integer"/>
 	</column>
 	<column name="status">
 		<type name="varchar"/>
@@ -184,12 +184,9 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="weir">
 	<schema name="centaur"/>
 	<role name="postgres"/>
-	<position x="838" y="194"/>
+	<position x="837" y="171"/>
 	<column name="id_link" not-null="true">
 		<type name="integer"/>
-	</column>
-	<column name="name">
-		<type name="varchar"/>
 	</column>
 	<column name="type">
 		<type name="varchar"/>
@@ -284,7 +281,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="xsection">
 	<schema name="centaur"/>
 	<role name="postgres"/>
-	<position x="589" y="30"/>
+	<position x="616" y="374"/>
 	<column name="id_link" not-null="true">
 		<type name="integer"/>
 	</column>
@@ -317,7 +314,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="raingage">
 	<schema name="centaur"/>
 	<role name="postgres"/>
-	<position x="136" y="551"/>
+	<position x="139" y="541"/>
 	<column name="id" not-null="true">
 		<type name="integer"/>
 	</column>
@@ -341,7 +338,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="subcatchment">
 	<schema name="centaur"/>
 	<role name="postgres"/>
-	<position x="366" y="521"/>
+	<position x="365" y="543"/>
 	<column name="id" not-null="true">
 		<type name="varchar"/>
 	</column>
@@ -379,7 +376,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="subarea">
 	<schema name="centaur"/>
 	<role name="postgres"/>
-	<position x="654" y="521"/>
+	<position x="654" y="542"/>
 	<column name="id_subcatchment" not-null="true">
 		<type name="varchar"/>
 	</column>
@@ -470,6 +467,12 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <constraint name="fk_pump_link" type="fk-constr" comparison-type="MATCH FULL"
 	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="centaur.link" table="centaur.pump">
 	<columns names="id_link" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_pump_curve" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="centaur.curve" table="centaur.pump">
+	<columns names="id_curve" ref-type="src-columns"/>
 	<columns names="id" ref-type="dst-columns"/>
 </constraint>
 
@@ -590,6 +593,11 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <relationship name="rel_subcatchment_cp_node" type="relfk"
 	 src-table="centaur.subcatchment"
 	 dst-table="centaur.node"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_pump_curve" type="relfk"
+	 src-table="centaur.pump"
+	 dst-table="centaur.curve"
 	 src-required="false" dst-required="false"/>
 
 </dbmodel>
