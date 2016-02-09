@@ -29,6 +29,7 @@ public class ImportSWMM
 	static String headStorages = "[STORAGE]";
 	static String headPumps = "[PUMPS]";
 	static String headWeirs = "[WEIRS]";
+	static String headConduits = "[CONDUITS]";
 	
 	static Random generator = new Random();
 	static int newIdFloor = 1000000;
@@ -59,12 +60,13 @@ public class ImportSWMM
 		//clearDB(session);
 		//commitData(session, tx);	
 		
-		importObjects(Outfall.class, headOutfalls, session, tx);
+		/*importObjects(Outfall.class, headOutfalls, session, tx);
 		importObjects(Junction.class, headJunctions, session, tx);
 		importObjects(Curve.class, headCurves, session, tx);
 		importObjects(Storage.class, headStorages, session, tx);
 		importObjects(Pump.class, headPumps, session, tx);
-		importObjects(Weir.class, headWeirs, session, tx);
+		importObjects(Weir.class, headWeirs, session, tx);*/
+		importObjects(Conduit.class, headConduits, session, tx);
 				
 		// Close file and database session.
 		scanner.close();
@@ -79,6 +81,7 @@ public class ImportSWMM
 		session.createQuery(String.format("delete from %s", Node.class.getName())).executeUpdate();
 		session.createQuery(String.format("delete from %s", Pump.class.getName())).executeUpdate();
 		session.createQuery(String.format("delete from %s", Weir.class.getName())).executeUpdate();
+		session.createQuery(String.format("delete from %s", Conduit.class.getName())).executeUpdate();
 		session.createQuery(String.format("delete from %s", Link.class.getName())).executeUpdate();
 		session.createQuery(String.format("delete from %s", CurveParameter.class.getName())).executeUpdate();
 		session.createQuery(String.format("delete from %s", Curve.class.getName())).executeUpdate();
