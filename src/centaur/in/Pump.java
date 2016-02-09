@@ -35,7 +35,7 @@ public class Pump /*extends centaur.db.Pump*/ implements Importable
 		catch (NumberFormatException e) 
 		{
 			l.setId(generator.nextInt() + newIdFloor);
-			//l.setName(values[0]);
+			l.setName(values[0]);
 		}
 		if (values.length > 1) 
 			l.setNodeByIdNodeFrom((Node) session.load(
