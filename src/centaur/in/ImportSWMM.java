@@ -60,13 +60,13 @@ public class ImportSWMM
 		//clearDB(session);
 		//commitData(session, tx);	
 		
-		/*importObjects(Outfall.class, headOutfalls, session, tx);
+		importObjects(Outfall.class, headOutfalls, session, tx);
 		importObjects(Junction.class, headJunctions, session, tx);
 		importObjects(Curve.class, headCurves, session, tx);
 		importObjects(Storage.class, headStorages, session, tx);
 		importObjects(Pump.class, headPumps, session, tx);
 		importObjects(Weir.class, headWeirs, session, tx);
-		importObjects(Conduit.class, headConduits, session, tx);*/
+		importObjects(Conduit.class, headConduits, session, tx);
 		importObjects(Xsection.class, headXSections, session, tx);
 				
 		// Close file and database session.
@@ -83,6 +83,7 @@ public class ImportSWMM
 		session.createQuery(String.format("delete from %s", Pump.class.getName())).executeUpdate();
 		session.createQuery(String.format("delete from %s", Weir.class.getName())).executeUpdate();
 		session.createQuery(String.format("delete from %s", Conduit.class.getName())).executeUpdate();
+		session.createQuery(String.format("delete from %s", Xsection.class.getName())).executeUpdate();
 		session.createQuery(String.format("delete from %s", Link.class.getName())).executeUpdate();
 		session.createQuery(String.format("delete from %s", CurveParameter.class.getName())).executeUpdate();
 		session.createQuery(String.format("delete from %s", Curve.class.getName())).executeUpdate();

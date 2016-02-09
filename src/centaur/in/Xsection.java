@@ -14,9 +14,9 @@ public class Xsection /*extends centaur.db.Xsection*/ implements Importable
 		xsection = new centaur.db.Xsection();
 	}
 
-	public Xsection(Conduit conduit) 
+	public Xsection(Link link) 
 	{
-		xsection = new centaur.db.Xsection(conduit.getPersistentObject());
+		xsection = new centaur.db.Xsection(link.getPersistentObject());
 	}
 	
 	@Override
@@ -25,16 +25,16 @@ public class Xsection /*extends centaur.db.Xsection*/ implements Importable
 		String[] values = lineSWMM.split("\\s+");
 
 		xsection = new centaur.db.Xsection();
-		try // Conduit ids can be strings
+		try // Link ids can be strings
 		{	
-			xsection.setConduit(
-					session.load(centaur.db.Conduit.class, new Integer(values[0])));
+			xsection.setLink(
+					session.load(centaur.db.Link.class, new Integer(values[0])));
 		}
 		catch (NumberFormatException e) 
 		{
-			Conduit c = new Conduit();
-			if(c.loadFromName(session, values[0])) 
-				xsection.setConduit(c.getPersistentObject());
+			Link l = new Link();
+			if(l.loadFromName(session, values[0])) 
+				xsection.setLink(l.getPersistentObject());
 		}
 		if (values.length > 1) xsection.setShape(values[1]);
 		if (values.length > 2) xsection.setGeom1(new BigDecimal(values[2]));
