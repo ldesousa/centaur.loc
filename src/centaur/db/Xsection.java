@@ -1,5 +1,5 @@
 package centaur.db;
-// Generated Feb 8, 2016 11:39:21 AM by Hibernate Tools 4.3.1.Final
+// Generated Feb 9, 2016 1:48:42 PM by Hibernate Tools 4.3.1.Final
 
 import java.math.BigDecimal;
 
@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 public class Xsection implements java.io.Serializable {
 
 	private int idLink;
-	private Conduit conduit;
+	private Link link;
 	private String shape;
 	private BigDecimal geom1;
 	private BigDecimal geom2;
@@ -21,13 +21,13 @@ public class Xsection implements java.io.Serializable {
 	public Xsection() {
 	}
 
-	public Xsection(Conduit conduit) {
-		this.conduit = conduit;
+	public Xsection(Link link) {
+		this.link = link;
 	}
 
-	public Xsection(Conduit conduit, String shape, BigDecimal geom1, BigDecimal geom2, BigDecimal geom3,
-			BigDecimal geom4, BigDecimal barrels, BigDecimal culvert) {
-		this.conduit = conduit;
+	public Xsection(Link link, String shape, BigDecimal geom1, BigDecimal geom2, BigDecimal geom3, BigDecimal geom4,
+			BigDecimal barrels, BigDecimal culvert) {
+		this.link = link;
 		this.shape = shape;
 		this.geom1 = geom1;
 		this.geom2 = geom2;
@@ -45,12 +45,12 @@ public class Xsection implements java.io.Serializable {
 		this.idLink = idLink;
 	}
 
-	public Conduit getConduit() {
-		return this.conduit;
+	public Link getLink() {
+		return this.link;
 	}
 
-	public void setConduit(Conduit conduit) {
-		this.conduit = conduit;
+	public void setLink(Link link) {
+		this.link = link;
 	}
 
 	public String getShape() {

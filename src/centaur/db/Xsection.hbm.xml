@@ -1,16 +1,16 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Feb 8, 2016 11:39:21 AM by Hibernate Tools 4.3.1.Final -->
+<!-- Generated Feb 9, 2016 1:48:42 PM by Hibernate Tools 4.3.1.Final -->
 <hibernate-mapping>
     <class name="centaur.db.Xsection" table="xsection" optimistic-lock="version">
         <id name="idLink" type="int">
             <column name="id_link" />
             <generator class="foreign">
-                <param name="property">conduit</param>
+                <param name="property">link</param>
             </generator>
         </id>
-        <one-to-one name="conduit" class="centaur.db.Conduit" constrained="true"></one-to-one>
+        <one-to-one name="link" class="centaur.db.Link" constrained="true"></one-to-one>
         <property name="shape" type="string">
             <column name="shape" />
         </property>

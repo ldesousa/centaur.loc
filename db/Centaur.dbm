@@ -281,7 +281,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="xsection">
 	<schema name="centaur"/>
 	<role name="postgres"/>
-	<position x="616" y="374"/>
+	<position x="635" y="377"/>
 	<column name="id_link" not-null="true">
 		<type name="integer"/>
 	</column>
@@ -306,7 +306,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="culvert">
 		<type name="numeric"/>
 	</column>
-	<constraint name="pk_asection" type="pk-constr" table="centaur.xsection">
+	<constraint name="pk_xsection" type="pk-constr" table="centaur.xsection">
 		<columns names="id_link" ref-type="src-columns"/>
 	</constraint>
 </table>
@@ -506,10 +506,10 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<columns names="id" ref-type="dst-columns"/>
 </constraint>
 
-<constraint name="fk_xsection_conduit" type="fk-constr" comparison-type="MATCH FULL"
-	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="centaur.conduit" table="centaur.xsection">
+<constraint name="fk_xsection_link" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="centaur.link" table="centaur.xsection">
 	<columns names="id_link" ref-type="src-columns"/>
-	<columns names="id_link" ref-type="dst-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
 </constraint>
 
 <constraint name="fk_subcatchment_raingage" type="fk-constr" comparison-type="MATCH FULL"
@@ -575,11 +575,6 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 dst-table="centaur.curve"
 	 src-required="false" dst-required="false"/>
 
-<relationship name="rel_xsection_cp_conduit" type="relfk"
-	 src-table="centaur.xsection"
-	 dst-table="centaur.conduit"
-	 src-required="false" dst-required="false"/>
-
 <relationship name="rel_subarea_cp_subcatchment_cp" type="relfk"
 	 src-table="centaur.subarea"
 	 dst-table="centaur.subcatchment"
@@ -598,6 +593,11 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <relationship name="rel_pump_curve" type="relfk"
 	 src-table="centaur.pump"
 	 dst-table="centaur.curve"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_xsection_link" type="relfk"
+	 src-table="centaur.xsection"
+	 dst-table="centaur.link"
 	 src-required="false" dst-required="false"/>
 
 </dbmodel>
