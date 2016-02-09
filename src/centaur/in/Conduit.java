@@ -1,9 +1,11 @@
 package centaur.in;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Random;
 
 import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 
 import centaur.db.Link;
 
@@ -19,6 +21,23 @@ public class Conduit /*extends centaur.db.Conduit*/ implements Importable
 	public Conduit(Link link) 
 	{
 		conduit = new centaur.db.Conduit(link);
+	}
+	
+	public centaur.db.Conduit getPersistentObject() {return conduit;}
+	
+	// Returns: true if it was able to find a corresponding record, false otherwise.
+	protected Boolean loadFromName(Session session, String name)
+	{		
+		List list = session.createCriteria(centaur.db.Conduit.class)
+			    .add(Restrictions.like("name", name))
+			    .list();
+		
+		if(list.size() > 0)
+		{	
+			conduit = (centaur.db.Conduit) list.get(0);
+			return true;
+		}
+		else return false;
 	}
 	
 	@Override

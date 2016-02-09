@@ -2,7 +2,6 @@ package centaur.in;
 
 import centaur.db.CurveParameter;
 import centaur.db.Link;
-import centaur.db.Node;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -30,6 +29,7 @@ public class ImportSWMM
 	static String headPumps = "[PUMPS]";
 	static String headWeirs = "[WEIRS]";
 	static String headConduits = "[CONDUITS]";
+	static String headXSections = "[XSECTIONS]";
 	
 	static Random generator = new Random();
 	static int newIdFloor = 1000000;
@@ -65,8 +65,9 @@ public class ImportSWMM
 		importObjects(Curve.class, headCurves, session, tx);
 		importObjects(Storage.class, headStorages, session, tx);
 		importObjects(Pump.class, headPumps, session, tx);
-		importObjects(Weir.class, headWeirs, session, tx);*/
-		importObjects(Conduit.class, headConduits, session, tx);
+		importObjects(Weir.class, headWeirs, session, tx);
+		importObjects(Conduit.class, headConduits, session, tx);*/
+		importObjects(Xsection.class, headXSections, session, tx);
 				
 		// Close file and database session.
 		scanner.close();
