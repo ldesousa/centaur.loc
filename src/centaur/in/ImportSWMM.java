@@ -30,6 +30,10 @@ public class ImportSWMM
 	static String headWeirs = "[WEIRS]";
 	static String headConduits = "[CONDUITS]";
 	static String headXSections = "[XSECTIONS]";
+	static String headSubcatchment = "[SUBCATCHMENTS]";
+	static String headSubareas = "[SUBAREAS]";
+	static String headRaingages = "[RAINGAGES]";
+	
 	
 	static Random generator = new Random();
 	static int newIdFloor = 1000000;
@@ -68,6 +72,9 @@ public class ImportSWMM
 		importObjects(Weir.class, headWeirs, session, tx);
 		importObjects(Conduit.class, headConduits, session, tx);
 		importObjects(Xsection.class, headXSections, session, tx);
+		importObjects(Raingage.class, headRaingages, session, tx);
+		importObjects(Subcatchment.class, headSubcatchment, session, tx);
+		importObjects(Subarea.class, headSubareas, session, tx);
 				
 		// Close file and database session.
 		scanner.close();
@@ -79,6 +86,9 @@ public class ImportSWMM
 		session.createQuery(String.format("delete from %s", Outfall.class.getName())).executeUpdate();
 		session.createQuery(String.format("delete from %s", Junction.class.getName())).executeUpdate();
 		session.createQuery(String.format("delete from %s", Storage.class.getName())).executeUpdate();
+		session.createQuery(String.format("delete from %s", Subarea.class.getName())).executeUpdate();
+		session.createQuery(String.format("delete from %s", Subcatchment.class.getName())).executeUpdate();
+		session.createQuery(String.format("delete from %s", Raingage.class.getName())).executeUpdate();
 		session.createQuery(String.format("delete from %s", Node.class.getName())).executeUpdate();
 		session.createQuery(String.format("delete from %s", Pump.class.getName())).executeUpdate();
 		session.createQuery(String.format("delete from %s", Weir.class.getName())).executeUpdate();
