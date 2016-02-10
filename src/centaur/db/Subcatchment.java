@@ -1,5 +1,5 @@
 package centaur.db;
-// Generated Feb 9, 2016 1:48:42 PM by Hibernate Tools 4.3.1.Final
+// Generated Feb 10, 2016 11:02:20 AM by Hibernate Tools 4.3.1.Final
 
 import java.math.BigDecimal;
 
@@ -8,9 +8,10 @@ import java.math.BigDecimal;
  */
 public class Subcatchment implements java.io.Serializable {
 
-	private String id;
+	private int id;
 	private Node node;
 	private Raingage raingage;
+	private String name;
 	private BigDecimal area;
 	private BigDecimal imperv;
 	private BigDecimal width;
@@ -22,15 +23,16 @@ public class Subcatchment implements java.io.Serializable {
 	public Subcatchment() {
 	}
 
-	public Subcatchment(String id) {
+	public Subcatchment(int id) {
 		this.id = id;
 	}
 
-	public Subcatchment(String id, Node node, Raingage raingage, BigDecimal area, BigDecimal imperv, BigDecimal width,
-			BigDecimal slope, BigDecimal curbLen, String snowPack, Subarea subarea) {
+	public Subcatchment(int id, Node node, Raingage raingage, String name, BigDecimal area, BigDecimal imperv,
+			BigDecimal width, BigDecimal slope, BigDecimal curbLen, String snowPack, Subarea subarea) {
 		this.id = id;
 		this.node = node;
 		this.raingage = raingage;
+		this.name = name;
 		this.area = area;
 		this.imperv = imperv;
 		this.width = width;
@@ -40,11 +42,11 @@ public class Subcatchment implements java.io.Serializable {
 		this.subarea = subarea;
 	}
 
-	public String getId() {
+	public int getId() {
 		return this.id;
 	}
 
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -62,6 +64,14 @@ public class Subcatchment implements java.io.Serializable {
 
 	public void setRaingage(Raingage raingage) {
 		this.raingage = raingage;
+	}
+
+	public String getName() {
+		return this.name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public BigDecimal getArea() {

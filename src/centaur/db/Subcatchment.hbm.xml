@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Feb 9, 2016 1:48:42 PM by Hibernate Tools 4.3.1.Final -->
+<!-- Generated Feb 10, 2016 11:02:20 AM by Hibernate Tools 4.3.1.Final -->
 <hibernate-mapping>
     <class name="centaur.db.Subcatchment" table="subcatchment" optimistic-lock="version">
-        <id name="id" type="string">
+        <id name="id" type="int">
             <column name="id" />
             <generator class="assigned" />
         </id>
@@ -14,6 +14,9 @@
         <many-to-one name="raingage" class="centaur.db.Raingage" fetch="select">
             <column name="id_raingage" />
         </many-to-one>
+        <property name="name" type="string">
+            <column name="name" unique="true" />
+        </property>
         <property name="area" type="big_decimal">
             <column name="area" precision="131089" scale="0" />
         </property>

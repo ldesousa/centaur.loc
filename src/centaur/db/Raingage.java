@@ -1,7 +1,6 @@
 package centaur.db;
-// Generated Feb 9, 2016 1:48:42 PM by Hibernate Tools 4.3.1.Final
+// Generated Feb 10, 2016 11:02:20 AM by Hibernate Tools 4.3.1.Final
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
@@ -13,7 +12,7 @@ public class Raingage implements java.io.Serializable {
 
 	private int id;
 	private String format;
-	private Serializable interval;
+	private String interval;
 	private BigDecimal scf;
 	private String source;
 	private Set subcatchments = new HashSet(0);
@@ -25,7 +24,7 @@ public class Raingage implements java.io.Serializable {
 		this.id = id;
 	}
 
-	public Raingage(int id, String format, Serializable interval, BigDecimal scf, String source, Set subcatchments) {
+	public Raingage(int id, String format, String interval, BigDecimal scf, String source, Set subcatchments) {
 		this.id = id;
 		this.format = format;
 		this.interval = interval;
@@ -50,11 +49,11 @@ public class Raingage implements java.io.Serializable {
 		this.format = format;
 	}
 
-	public Serializable getInterval() {
+	public String getInterval() {
 		return this.interval;
 	}
 
-	public void setInterval(Serializable interval) {
+	public void setInterval(String interval) {
 		this.interval = interval;
 	}
 

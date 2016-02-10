@@ -1,5 +1,5 @@
 package centaur.db;
-// Generated Feb 9, 2016 1:48:42 PM by Hibernate Tools 4.3.1.Final
+// Generated Feb 10, 2016 11:02:20 AM by Hibernate Tools 4.3.1.Final
 
 import java.math.BigDecimal;
 
@@ -8,7 +8,7 @@ import java.math.BigDecimal;
  */
 public class Subarea implements java.io.Serializable {
 
-	private String idSubcatchment;
+	private int idSubcatchment;
 	private Subcatchment subcatchment;
 	private BigDecimal NImperv;
 	private BigDecimal NPerv;
@@ -37,11 +37,11 @@ public class Subarea implements java.io.Serializable {
 		this.pctRouted = pctRouted;
 	}
 
-	public String getIdSubcatchment() {
+	public int getIdSubcatchment() {
 		return this.idSubcatchment;
 	}
 
-	public void setIdSubcatchment(String idSubcatchment) {
+	public void setIdSubcatchment(int idSubcatchment) {
 		this.idSubcatchment = idSubcatchment;
 	}
 

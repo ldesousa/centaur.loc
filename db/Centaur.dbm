@@ -314,7 +314,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="raingage">
 	<schema name="centaur"/>
 	<role name="postgres"/>
-	<position x="139" y="541"/>
+	<position x="113" y="573"/>
 	<column name="id" not-null="true">
 		<type name="integer"/>
 	</column>
@@ -322,7 +322,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 		<type name="varchar"/>
 	</column>
 	<column name="interval">
-		<type name="interval"/>
+		<type name="varchar"/>
 	</column>
 	<column name="scf">
 		<type name="numeric"/>
@@ -340,6 +340,9 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<role name="postgres"/>
 	<position x="365" y="543"/>
 	<column name="id" not-null="true">
+		<type name="serial"/>
+	</column>
+	<column name="name">
 		<type name="varchar"/>
 	</column>
 	<column name="id_node_outlet">
@@ -371,6 +374,9 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<constraint name="pk_subcatchment" type="pk-constr" table="centaur.subcatchment">
 		<columns names="id" ref-type="src-columns"/>
 	</constraint>
+	<constraint name="unq_subcatchment_name" type="uq-constr" table="centaur.subcatchment">
+		<columns names="name" ref-type="src-columns"/>
+	</constraint>
 </table>
 
 <table name="subarea">
@@ -378,7 +384,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<role name="postgres"/>
 	<position x="654" y="542"/>
 	<column name="id_subcatchment" not-null="true">
-		<type name="varchar"/>
+		<type name="serial"/>
 	</column>
 	<column name="n_imperv">
 		<type name="numeric"/>
