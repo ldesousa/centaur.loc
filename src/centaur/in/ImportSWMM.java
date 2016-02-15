@@ -33,6 +33,8 @@ public class ImportSWMM
 	static String headSubcatchment = "[SUBCATCHMENTS]";
 	static String headSubareas = "[SUBAREAS]";
 	static String headRaingages = "[RAINGAGES]";
+	static String headCoordinates = "[COORDINATES]";
+	static String headPolygons = "[Polygons]";
 	
 	
 	static Random generator = new Random();
@@ -75,6 +77,10 @@ public class ImportSWMM
 		importObjects(Raingage.class, headRaingages, session, tx);
 		importObjects(Subcatchment.class, headSubcatchment, session, tx);
 		importObjects(Subarea.class, headSubareas, session, tx);
+		
+		//Geometries
+		importObjects(Coordinates.class, headCoordinates, session, tx);
+		importObjects(Polygon.class, headPolygons, session, tx);
 				
 		// Close file and database session.
 		scanner.close();
