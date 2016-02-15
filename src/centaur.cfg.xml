@@ -10,6 +10,7 @@
         <property name="hibernate.connection.username">desouslu</property>
         <property name="hibernate.default_schema">centaur</property>
         <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+        <!-- <property name="hibernate.dialect">org.hibernate.spatial.dialect.postgis.PostgisDialect</property> -->
         <!-- "Import" the mapping resources here -->		
 		<mapping resource="centaur/db/Node.hbm.xml"/>
 		<mapping resource="centaur/db/Outfall.hbm.xml"/>
@@ -25,7 +26,7 @@
 		<mapping resource="centaur/db/Weir.hbm.xml"/>
 		<mapping resource="centaur/db/Conduit.hbm.xml"/>
 		<mapping resource="centaur/db/Xsection.hbm.xml"/>
-		<mapping resource="centaur/db/NodeCoordinates.hbm.xml"/>
-		<mapping resource="centaur/db/LinkCoordinates.hbm.xml"/>
+		<mapping resource="centaur/db/Coordinates.hbm.xml"/>
+		<mapping resource="centaur/db/Polygon.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>

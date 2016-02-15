@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Feb 10, 2016 11:02:20 AM by Hibernate Tools 4.3.1.Final -->
+<!-- Generated Feb 15, 2016 9:54:40 AM by Hibernate Tools 4.3.1.Final -->
 <hibernate-mapping>
-    <class name="centaur.db.NodeCoordinates" table="node_coordinates" optimistic-lock="version">
-        <composite-id name="id" class="centaur.db.NodeCoordinatesId">
+    <class name="centaur.db.Coordinates" table="coordinates" optimistic-lock="version">
+        <composite-id name="id" class="centaur.db.CoordinatesId">
             <key-property name="idNode" type="java.lang.Integer">
                 <column name="id_node" />
             </key-property>
@@ -15,5 +15,8 @@
                 <column name="y" precision="131089" scale="0" />
             </key-property>
         </composite-id>
+        <many-to-one name="node" class="centaur.db.Node" update="false" insert="false" fetch="select">
+            <column name="id_node" />
+        </many-to-one>
     </class>
 </hibernate-mapping>

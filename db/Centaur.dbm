@@ -281,7 +281,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="xsection">
 	<schema name="centaur"/>
 	<role name="postgres"/>
-	<position x="635" y="377"/>
+	<position x="581" y="377"/>
 	<column name="id_link" not-null="true">
 		<type name="integer"/>
 	</column>
@@ -413,10 +413,10 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</constraint>
 </table>
 
-<table name="node_coordinates">
+<table name="coordinates">
 	<schema name="centaur"/>
 	<role name="postgres"/>
-	<position x="18" y="721"/>
+	<position x="92" y="739"/>
 	<column name="id_node">
 		<type name="integer"/>
 	</column>
@@ -428,14 +428,14 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</column>
 </table>
 
-<table name="link_coordinates">
+<table name="polygon">
 	<schema name="centaur"/>
 	<role name="postgres"/>
-	<position x="174.461" y="729.2"/>
-	<column name="id">
+	<position x="290.461" y="745.2"/>
+	<column name="id" not-null="true">
 		<type name="serial"/>
 	</column>
-	<column name="id_link">
+	<column name="id_subcatchment">
 		<type name="integer"/>
 	</column>
 	<column name="x">
@@ -444,6 +444,9 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="y">
 		<type name="numeric"/>
 	</column>
+	<constraint name="pk_polygon" type="pk-constr" table="centaur.polygon">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
 </table>
 
 <constraint name="fk_curve_parameter_curve" type="fk-constr" comparison-type="MATCH FULL"
@@ -536,6 +539,18 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<columns names="id" ref-type="dst-columns"/>
 </constraint>
 
+<constraint name="fk_coordinates_node" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="centaur.node" table="centaur.coordinates">
+	<columns names="id_node" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_polygon_subcatchment" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="centaur.subcatchment" table="centaur.polygon">
+	<columns names="id_subcatchment" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
 <relationship name="&quot;rel_curve parameter_curve&quot;" type="relfk"
 	 src-table="centaur.curve_parameter"
 	 dst-table="centaur.curve"
@@ -604,6 +619,16 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <relationship name="rel_xsection_link" type="relfk"
 	 src-table="centaur.xsection"
 	 dst-table="centaur.link"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_link_coordinates_subcatchment" type="relfk"
+	 src-table="centaur.polygon"
+	 dst-table="centaur.subcatchment"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_node_coordinates_node" type="relfk"
+	 src-table="centaur.coordinates"
+	 dst-table="centaur.node"
 	 src-required="false" dst-required="false"/>
 
 </dbmodel>

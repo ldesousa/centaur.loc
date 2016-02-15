@@ -2,6 +2,7 @@
 <!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd" >
 
 <hibernate-reverse-engineering>
+
 	<table-filter match-name="conduit" />
 	<table-filter match-name="curve" />
 	<table-filter match-name="curve_parameter" />
@@ -16,6 +17,15 @@
 	<table-filter match-name="subcatchment" />
 	<table-filter match-name="weir" />
 	<table-filter match-name="xsection" />
-	<table-filter match-name="node_coordinates"></table-filter>
-	<table-filter match-name="link_coordinates"></table-filter>
+	<table-filter match-name="coordinates"></table-filter>
+	<table-filter match-name="polygon"></table-filter>
+	
+	<table name="polygon">
+		<primary-key>
+            <generator class="sequence">
+                <param name="sequence">polygon_id_seq</param>
+            </generator>
+        </primary-key>
+	</table>
+	
 </hibernate-reverse-engineering>

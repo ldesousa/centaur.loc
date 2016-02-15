@@ -12,5 +12,7 @@
 	<classpathentry kind="lib" path="/usr/share/java/hibernate-release-5.0.7/lib/required/jandex-2.0.0.Final.jar"/>
 	<classpathentry kind="lib" path="/usr/share/java/hibernate-release-5.0.7/lib/required/javassist-3.18.1-GA.jar"/>
 	<classpathentry kind="lib" path="/usr/share/java/postgresql-jdbc4-9.2.jar"/>
+	<classpathentry kind="lib" path="/usr/share/java/jts.jar"/>
+	<classpathentry kind="lib" path="/usr/share/java/postgis-jdbc.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
