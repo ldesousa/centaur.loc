@@ -24,25 +24,31 @@ UPDATE centaur.node n
 -- Check if something was missing
 SELECT COUNT(*) FROM centaur.node WHERE geom IS NULL;
 
--- Import polygns: does not work
-UPDATE centaur.subcatchment s
-   SET geom = ST_Union(ST_GeomFromText('POINT(' || p.x || ' ' || p.y || ')'))
-  FROM centaur.polygon p
- WHERE p.id_subcatchment = s.id;
-
 -- Create polygons
 CREATE OR REPLACE FUNCTION centaur.create_polygons() RETURNS VOID AS $$
   DECLARE
     subcatch_rec RECORD;
+    poly_rec RECORD;
     line GEOMETRY;
   BEGIN
     FOR subcatch_rec IN SELECT id FROM centaur.subcatchment LOOP
 
-        line := (SELECT ST_SetSRID(ST_LineFromMultiPoint(
-                         ST_Union(ST_GeomFromText('POINT(' || x || ' ' || y || ')'))),
-			 3035)
-                   FROM centaur.polygon 
-                  WHERE id_subcatchment = subcatch_rec.id);
+	-- Initialise line
+	line := ST_GeomFromText('LINESTRING(0 0, 0 0)', 3035);
+
+	-- Loop through the points of this catchment
+	FOR poly_rec IN 
+	  SELECT x,y 
+	    FROM centaur.polygon 
+	   WHERE id_subcatchment = subcatch_rec.id
+        LOOP
+          line := ST_AddPoint(line, 
+		ST_GeomFromText('POINT(' || poly_rec.x || ' ' || poly_rec.y || ')', 3035));
+        END LOOP;
+
+	-- Remove initialising points
+	line := ST_RemovePoint(line, 0);
+	line := ST_RemovePoint(line, 0);
                         
 	UPDATE centaur.subcatchment 
            SET geom = ST_MakePolygon(ST_AddPoint(line, ST_StartPoint(line)))
@@ -55,7 +61,24 @@ $$ LANGUAGE plpgsql;
 
 SELECT centaur.create_polygons();
 
--- Import links
+-- Check if something was missing
+SELECT COUNT(*) FROM centaur.subcatchment WHERE geom IS NULL;
+
+-- Create links
+UPDATE centaur.link l
+   SET geom = ST_SetSRID(ST_LineFromMultiPoint(ST_Union(
+	 (SELECT geom FROM centaur.node WHERE id = l.id_node_from),
+	 (SELECT geom FROM centaur.node WHERE id = l.id_node_to))),
+	3035);
+
+-- Check if something was missing
+SELECT COUNT(*) FROM centaur.link WHERE geom IS NULL;
+
+
+
+
+
+-- Annotations - do not run these
 SELECT array_to_string(array(select (x, y) from centaur.polygon where id_subcatchment = 1655765), ',');
 
 select (x, y) from centaur.polygon where id_subcatchment = 464779544; 
@@ -83,3 +106,26 @@ SELECT ST_AsText(geom)
  WHERE id = 2102470699;
 
 SELECT ST_Union(ST_GeomFromText('POINT(' || x || ' ' || y || ')')) FROM centaur.polygon;
+
+
+SELECT ST_GeomFromText('', 3035);
+
+
+SELECT COUNT(*), id_subcatchment FROM centaur.polygon GROUP BY id_subcatchment ORDER BY count;
+
+SELECT * FROM centaur.polygon WHERE id_subcatchment = 1416155336;
+
+CREATE TABLE centaur.poly_temp
+( 
+  id SERIAL NOT NULL,
+  geom GEOMETRY(POLYGON,3035),
+  CONSTRAINT pk_poly_temp PRIMARY KEY (id)
+);
+
+INSERT INTO centaur.poly_temp (geom) VALUES
+(ST_GeomFromText(
+'POLYGON((667327.838 210139.157,
+         667337.661 210132.281, 
+         667344.373 210136.865, 
+         667343.227 210149.961,
+         667327.838 210139.157))', 3035));
