@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Feb 15, 2016 9:54:40 AM by Hibernate Tools 4.3.1.Final -->
+<!-- Generated Feb 15, 2016 11:31:22 AM by Hibernate Tools 4.3.1.Final -->
 <hibernate-mapping>
     <class name="centaur.db.Node" table="node" optimistic-lock="version">
         <id name="id" type="int">
@@ -35,11 +35,6 @@
             </key>
             <one-to-many class="centaur.db.Subcatchment" />
         </set>
-        <set name="coordinateses" table="coordinates" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="id_node" />
-            </key>
-            <one-to-many class="centaur.db.Coordinates" />
-        </set>
+        <one-to-one name="coordinates" class="centaur.db.Coordinates"></one-to-one>
     </class>
 </hibernate-mapping>

@@ -1,22 +1,21 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Feb 15, 2016 9:54:40 AM by Hibernate Tools 4.3.1.Final -->
+<!-- Generated Feb 15, 2016 11:31:22 AM by Hibernate Tools 4.3.1.Final -->
 <hibernate-mapping>
     <class name="centaur.db.Coordinates" table="coordinates" optimistic-lock="version">
-        <composite-id name="id" class="centaur.db.CoordinatesId">
-            <key-property name="idNode" type="java.lang.Integer">
-                <column name="id_node" />
-            </key-property>
-            <key-property name="x" type="big_decimal">
-                <column name="x" precision="131089" scale="0" />
-            </key-property>
-            <key-property name="y" type="big_decimal">
-                <column name="y" precision="131089" scale="0" />
-            </key-property>
-        </composite-id>
-        <many-to-one name="node" class="centaur.db.Node" update="false" insert="false" fetch="select">
+        <id name="idNode" type="int">
             <column name="id_node" />
-        </many-to-one>
+            <generator class="foreign">
+                <param name="property">node</param>
+            </generator>
+        </id>
+        <one-to-one name="node" class="centaur.db.Node" constrained="true"></one-to-one>
+        <property name="x" type="big_decimal">
+            <column name="x" precision="131089" scale="0" />
+        </property>
+        <property name="y" type="big_decimal">
+            <column name="y" precision="131089" scale="0" />
+        </property>
     </class>
 </hibernate-mapping>

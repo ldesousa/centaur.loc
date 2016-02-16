@@ -24,7 +24,6 @@ public class Coordinates /*extends centaur.db.Coordinates*/ implements Importabl
 		String[] values = lineSWMM.split("\\s+");
 		
 		coordinates = new centaur.db.Coordinates();
-		centaur.db.CoordinatesId coordinatesId = new centaur.db.CoordinatesId();
 		if (values.length > 0) 
 		{
 			try
@@ -39,9 +38,8 @@ public class Coordinates /*extends centaur.db.Coordinates*/ implements Importabl
 					coordinates.setNode(n.getPersistentObject());
 			}
 		}
-		if (values.length > 1) coordinatesId.setX(new BigDecimal(values[1]));
-		if (values.length > 2) coordinatesId.setY(new BigDecimal(values[2]));
-		coordinates.setId(coordinatesId);
+		if (values.length > 1) coordinates.setX(new BigDecimal(values[1]));
+		if (values.length > 2) coordinates.setY(new BigDecimal(values[2]));
 		session.save(coordinates);
 	}
 
