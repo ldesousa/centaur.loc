@@ -50,10 +50,11 @@ public class ImportSWMM
 		// Initialise database session
 		try
 		{
-	         factory = new Configuration()
-	        		 .configure("centaur.cfg.xml").buildSessionFactory();
-	         session = factory.openSession();
-	         tx = session.beginTransaction();
+			Configuration config = new Configuration().configure("centaur.cfg.xml");
+			System.out.println("new_generator_mapping: " + config.getProperty("hibernate.id.new_generator_mappings"));
+	        factory = config.buildSessionFactory();
+	        session = factory.openSession();
+	        tx = session.beginTransaction();
 	    }
 		catch (Throwable e) 
 		{ 
@@ -66,7 +67,7 @@ public class ImportSWMM
 		//clearDB(session);
 		//commitData(session, tx);	
 		
-		importObjects(Outfall.class, headOutfalls, session, tx);
+		/*importObjects(Outfall.class, headOutfalls, session, tx);
 		importObjects(Junction.class, headJunctions, session, tx);
 		importObjects(Curve.class, headCurves, session, tx);
 		importObjects(Storage.class, headStorages, session, tx);
@@ -79,7 +80,7 @@ public class ImportSWMM
 		importObjects(Subarea.class, headSubareas, session, tx);
 		
 		//Geometries
-		importObjects(Coordinates.class, headCoordinates, session, tx);
+		importObjects(Coordinates.class, headCoordinates, session, tx);*/
 		importObjects(Polygon.class, headPolygons, session, tx);
 				
 		// Close file and database session.

@@ -23,13 +23,13 @@ public class Polygon /*extends centaur.db.Polygon*/ implements Importable
 		
 		polygon = new centaur.db.Polygon();
 		//centaur.db.PolygonId polygonId = new centaur.db.PolygonId();
-		polygon.setId(generator.nextInt(Integer.MAX_VALUE) + newIdFloor);
-		if (values.length > 0) 
+		//polygon.setId(generator.nextInt(Integer.MAX_VALUE) + newIdFloor);
+		/*if (values.length > 0) 
 		{
 				Subcatchment s = new Subcatchment();
 				if(s.loadFromName(session, values[0])) 
 					polygon.setSubcatchment(s.getPersistentObject());
-		}
+		}*/
 		if (values.length > 1) polygon.setX(new BigDecimal(values[1]));
 		if (values.length > 2) polygon.setY(new BigDecimal(values[2]));
 		//polygon.setId(polygonId);
