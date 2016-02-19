@@ -1,7 +1,9 @@
 package centaur.in;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -19,8 +21,11 @@ public class IdentifyCandidates {
 
 	static SessionFactory factory;
 	
+	static LinkedList<Node> candidates;
+	static ArrayList<Node> gates = new ArrayList<Node>();
+	static ArrayList<Link> floodedLinks = new ArrayList<Link>();
+	
 	static BigDecimal currentOverflow = BigDecimal.valueOf(Double.MAX_VALUE);
-	static int linkNum = 0;
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -50,31 +55,52 @@ public class IdentifyCandidates {
 				"       SELECT id_node_from" +
                 "         FROM centaur.link)")).addEntity(Node.class);
 	
-		List<Node> outlets = query.list();
-		for (Node n : outlets)
+		candidates = new LinkedList<Node>(query.list());
+		
+		while(candidates.size() > 0)
 		{
-			currentOverflow = BigDecimal.valueOf(Double.MAX_VALUE);
-			linkNum = 0;
-			System.out.println("--------\nId: " + n.getId() + " arrivals: " + n.getLinksForIdNodeTo().size());
+			Node n = candidates.pop();
 			
-			analyseNode(n);
+			// => Before anything else: check if this has already been searched.
+			// => Check if it is already in the gates list.
+			
+			currentOverflow = BigDecimal.valueOf(Double.MAX_VALUE);
+			floodedLinks = new ArrayList<Link>();
+			
+			Set<Link> links = n.getLinksForIdNodeTo();
+			System.out.println("--------\nId: " + n.getId() + " arrivals: " + links.size());
+			if(links.size() > 0)
+			{
+				gates.add(n);
+				searchLinks(links);
+			}
 			System.out.println("Calculated overflow: " + currentOverflow);
-			System.out.println("Number of links: " + linkNum);
+			System.out.println("Number of links: " + floodedLinks.size());
 		}
 		
+		System.out.println("\nProposed gates: ");
+		for (Node g : gates) System.out.println(g.getId());
 	}
 
 	protected static void analyseNode(Node n)
 	{
 		Set<Link> links = n.getLinksForIdNodeTo();
 		
-		if(links.size() <= 0)
+		// Search stops if:
+		// 1. No links arrive at this node;
+		// 2. This node is an outfall or a storage.
+		if((links.size() <= 0) || (n.getOutfall() != null) || (n.getStorage() != null))
 		{
 			updateCurrentOverflow(n.getElevation());
+			candidates.push(n);
 			return;
 		}
-		
-		for (centaur.db.Link l : links)
+		searchLinks(links);
+	}
+	
+	protected static void searchLinks(Set<Link> links)
+	{
+		for (Link l : links)
 		{
 			//if it is a weir
 			if (l.getWeir() != null) 
@@ -83,21 +109,21 @@ public class IdentifyCandidates {
 				// Keep searching if the previous node is below the crest height.
 				if (l.getNodeByIdNodeFrom().getElevation().compareTo(currentOverflow) < 0)
 				{
-					linkNum++;
+					floodedLinks.add(l);
 					analyseNode(l.getNodeByIdNodeFrom());
 				}
 			}
 			//if it is a pump
 			else if (l.getPump() != null) 
 			{
-				updateCurrentOverflow(n.getElevation());
+				updateCurrentOverflow(l.getNodeByIdNodeTo().getElevation());
 				return;
 			}
 			//if it is conduit
 			else
 			{
+				floodedLinks.add(l);
 				analyseNode(l.getNodeByIdNodeFrom());
-				linkNum++;
 			}
 		}
 	}
