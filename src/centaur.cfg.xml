@@ -10,7 +10,7 @@
         <property name="hibernate.connection.username">desouslu</property>
         <property name="hibernate.default_schema">centaur</property>
         <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
-        <property name="hibernate.id.new_generator_mappings">true</property>
+        <!-- <property name="hibernate.id.new_generator_mappings">true</property> -->
         <!-- <property name="hibernate.dialect">org.hibernate.spatial.dialect.postgis.PostgisDialect</property> -->
         <!-- "Import" the mapping resources here -->		
 		<mapping resource="centaur/db/Node.hbm.xml"/>

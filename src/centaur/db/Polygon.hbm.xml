@@ -6,9 +6,14 @@
     <class name="centaur.db.Polygon" table="polygon" optimistic-lock="version">
         <id name="id" type="java.lang.Integer">
             <column name="id" />
-            <generator class="sequence">
+            <!--  <generator class="sequence">
                 <param name="sequence">polygon_id_seq</param>
-            </generator>
+            </generator> -->
+            <generator class="org.hibernate.id.enhanced.SequenceStyleGenerator">
+			    <param name="optimizer">none</param>
+			    <param name="increment_size">1</param>
+			    <param name="sequence_name">polygon_id_seq</param>
+			</generator>
         </id>
         <many-to-one name="subcatchment" class="centaur.db.Subcatchment" fetch="select">
             <column name="id_subcatchment" />
