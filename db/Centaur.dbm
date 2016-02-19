@@ -242,7 +242,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="storage">
 	<schema name="centaur"/>
 	<role name="postgres"/>
-	<position x="12" y="41"/>
+	<position x="12" y="38"/>
 	<column name="id_node" not-null="true">
 		<type name="integer"/>
 	</column>
@@ -281,7 +281,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="xsection">
 	<schema name="centaur"/>
 	<role name="postgres"/>
-	<position x="581" y="377"/>
+	<position x="779" y="490"/>
 	<column name="id_link" not-null="true">
 		<type name="integer"/>
 	</column>
@@ -314,7 +314,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="raingage">
 	<schema name="centaur"/>
 	<role name="postgres"/>
-	<position x="113" y="573"/>
+	<position x="113" y="702"/>
 	<column name="id" not-null="true">
 		<type name="integer"/>
 	</column>
@@ -338,7 +338,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="subcatchment">
 	<schema name="centaur"/>
 	<role name="postgres"/>
-	<position x="365" y="543"/>
+	<position x="367" y="661"/>
 	<column name="id" not-null="true">
 		<type name="serial"/>
 	</column>
@@ -382,7 +382,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="subarea">
 	<schema name="centaur"/>
 	<role name="postgres"/>
-	<position x="654" y="542"/>
+	<position x="683" y="666"/>
 	<column name="id_subcatchment" not-null="true">
 		<type name="serial"/>
 	</column>
@@ -416,7 +416,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="coordinates">
 	<schema name="centaur"/>
 	<role name="postgres"/>
-	<position x="92" y="739"/>
+	<position x="53" y="501"/>
 	<column name="id_node" not-null="true">
 		<type name="integer"/>
 	</column>
@@ -434,7 +434,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="polygon">
 	<schema name="centaur"/>
 	<role name="postgres"/>
-	<position x="290.461" y="745.2"/>
+	<position x="639.461" y="838.2"/>
 	<column name="id" not-null="true">
 		<type name="serial"/>
 	</column>
@@ -449,6 +449,42 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</column>
 	<constraint name="pk_polygon" type="pk-constr" table="centaur.polygon">
 		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="candidate">
+	<schema name="centaur"/>
+	<role name="postgres"/>
+	<position x="438" y="405"/>
+	<column name="id_node" not-null="true">
+		<type name="integer"/>
+	</column>
+	<column name="ouflow_elevation" not-null="true">
+		<type name="numeric"/>
+	</column>
+	<constraint name="pk_candidate" type="pk-constr" table="centaur.candidate">
+		<columns names="id_node" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="flooded">
+	<schema name="centaur"/>
+	<role name="postgres"/>
+	<position x="448" y="494"/>
+	<column name="id_node" not-null="true">
+		<type name="integer"/>
+	</column>
+	<column name="id_link" not-null="true">
+		<type name="integer"/>
+	</column>
+	<column name="id_flooded" not-null="true">
+		<type name="serial"/>
+	</column>
+	<constraint name="pk_flooded" type="pk-constr" table="centaur.flooded">
+		<columns names="id_flooded" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="unq_flooded" type="uq-constr" table="centaur.flooded">
+		<columns names="id_node,id_link" ref-type="src-columns"/>
 	</constraint>
 </table>
 
@@ -554,6 +590,24 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<columns names="id" ref-type="dst-columns"/>
 </constraint>
 
+<constraint name="fk_candidate_node" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="centaur.node" table="centaur.candidate">
+	<columns names="id_node" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_flooded_link" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="centaur.link" table="centaur.flooded">
+	<columns names="id_link" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_flooded_candidate" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="centaur.candidate" table="centaur.flooded">
+	<columns names="id_node" ref-type="src-columns"/>
+	<columns names="id_node" ref-type="dst-columns"/>
+</constraint>
+
 <relationship name="&quot;rel_curve parameter_curve&quot;" type="relfk"
 	 src-table="centaur.curve_parameter"
 	 dst-table="centaur.curve"
@@ -632,6 +686,21 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <relationship name="rel_node_coordinates_node" type="relfk"
 	 src-table="centaur.coordinates"
 	 dst-table="centaur.node"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_candidate_node" type="relfk"
+	 src-table="centaur.candidate"
+	 dst-table="centaur.node"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_flooded_link" type="relfk"
+	 src-table="centaur.flooded"
+	 dst-table="centaur.link"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_flooded_candidate" type="relfk"
+	 src-table="centaur.flooded"
+	 dst-table="centaur.candidate"
 	 src-required="false" dst-required="false"/>
 
 </dbmodel>
