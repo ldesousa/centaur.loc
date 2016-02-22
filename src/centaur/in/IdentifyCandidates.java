@@ -23,6 +23,7 @@ public class IdentifyCandidates {
 	
 	static LinkedList<Node> candidates;
 	static ArrayList<Node> gates = new ArrayList<Node>();
+	static ArrayList<Node> visited = new ArrayList<Node>();
 	static ArrayList<Link> floodedLinks = new ArrayList<Link>();
 	
 	static BigDecimal currentOverflow = BigDecimal.valueOf(Double.MAX_VALUE);
@@ -59,23 +60,31 @@ public class IdentifyCandidates {
 		
 		while(candidates.size() > 0)
 		{
+			System.out.println("Candidates: " + candidates.size());
 			Node n = candidates.pop();
-			
-			// => Before anything else: check if this has already been searched.
-			// => Check if it is already in the gates list.
-			
-			currentOverflow = BigDecimal.valueOf(Double.MAX_VALUE);
-			floodedLinks = new ArrayList<Link>();
-			
-			Set<Link> links = n.getLinksForIdNodeTo();
-			System.out.println("--------\nId: " + n.getId() + " arrivals: " + links.size());
-			if(links.size() > 0)
+			if(!visited.contains(n))
 			{
-				gates.add(n);
-				searchLinks(links);
+				visited.add(n);		
+				
+				currentOverflow = BigDecimal.valueOf(Double.MAX_VALUE);
+				floodedLinks = new ArrayList<Link>();
+				
+				Set<Link> links = n.getLinksForIdNodeTo();
+				if(links.size() > 0)
+				{
+					System.out.println("--------\nId: " + n.getId() + " arrivals: " + links.size());
+					gates.add(n);
+					searchLinks(links);
+					System.out.println("Calculated overflow: " + currentOverflow);
+					System.out.println("Number of links: " + floodedLinks.size());
+					prune();
+					System.out.println("Number of links after pruning: " + floodedLinks.size());
+					save();
+					System.out.println("Gates: " + gates.size());
+					System.out.println("Visited: " + visited.size());
+				}
 			}
-			System.out.println("Calculated overflow: " + currentOverflow);
-			System.out.println("Number of links: " + floodedLinks.size());
+			
 		}
 		
 		System.out.println("\nProposed gates: ");
@@ -90,12 +99,8 @@ public class IdentifyCandidates {
 		// 1. No links arrive at this node;
 		// 2. This node is an outfall or a storage.
 		if((links.size() <= 0) || (n.getOutfall() != null) || (n.getStorage() != null))
-		{
 			updateCurrentOverflow(n.getElevation());
-			candidates.push(n);
-			return;
-		}
-		searchLinks(links);
+		else searchLinks(links);
 	}
 	
 	protected static void searchLinks(Set<Link> links)
@@ -131,6 +136,29 @@ public class IdentifyCandidates {
 	protected static void updateCurrentOverflow(BigDecimal newLevel)
 	{
 		if(newLevel.compareTo(currentOverflow) < 0) currentOverflow = newLevel;
+	}
+	
+	protected static void prune()
+	{
+		for (Iterator<Link> it = floodedLinks.iterator(); it.hasNext(); ) 
+		{
+		    Link l = it.next();
+		    Node arrivalNode = l.getNodeByIdNodeTo();
+		    if (arrivalNode.getElevation().compareTo(currentOverflow) > 0)
+		    {
+				it.remove();
+				if(!visited.contains(arrivalNode))
+					candidates.push(arrivalNode);
+		    }
+		}
+	}
+	
+	protected static void save()
+	{
+		for(Link l : floodedLinks)
+		{
+			
+		}
 	}
 
 }
