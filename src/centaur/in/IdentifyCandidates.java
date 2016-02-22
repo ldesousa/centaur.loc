@@ -79,6 +79,7 @@ public class IdentifyCandidates {
 					System.out.println("Number of links: " + floodedLinks.size());
 					prune();
 					System.out.println("Number of links after pruning: " + floodedLinks.size());
+					searchFollowingCandidates();
 					save();
 					System.out.println("Gates: " + gates.size());
 					System.out.println("Visited: " + visited.size());
@@ -145,11 +146,26 @@ public class IdentifyCandidates {
 		    Link l = it.next();
 		    Node arrivalNode = l.getNodeByIdNodeTo();
 		    if (arrivalNode.getElevation().compareTo(currentOverflow) > 0)
-		    {
 				it.remove();
-				if(!visited.contains(arrivalNode))
-					candidates.push(arrivalNode);
-		    }
+		}
+	}
+	
+	// Searches for the tips of the flooded sub-network.
+	// Adds to candidates nodes in the following conditions
+	// 1. node elevation > gate overflow
+	// 2. node is an out fall
+	// 3. node is a storage
+	protected static void searchFollowingCandidates()
+	{
+		for(Link l : floodedLinks)
+		{
+			Node startNode =  l.getNodeByIdNodeFrom();
+			if(!visited.contains(startNode) && 
+			   (startNode.getElevation().compareTo(currentOverflow) > 0 ||
+				startNode.getOutfall() != null || 
+				startNode.getStorage() != null)
+			  )
+				candidates.push(startNode);
 		}
 	}
 	
