@@ -1,5 +1,5 @@
 package centaur.db;
-// Generated Feb 23, 2016 9:47:25 AM by Hibernate Tools 4.3.1.Final
+// Generated Feb 23, 2016 12:00:33 PM by Hibernate Tools 4.3.1.Final
 
 import java.io.Serializable;
 import java.math.BigDecimal;

@@ -28,5 +28,7 @@
 		<mapping resource="centaur/db/Xsection.hbm.xml"/>
 		<mapping resource="centaur/db/Coordinates.hbm.xml"/>
 		<mapping resource="centaur/db/Polygon.hbm.xml"/>
+		<mapping resource="centaur/db/Candidate.hbm.xml"/>
+		<mapping resource="centaur/db/Flooded.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>
