@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -14,6 +15,8 @@ import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
 import centaur.db.Node;
+import centaur.db.Candidate;
+import centaur.db.Flooded;
 import centaur.db.Link;
 
 
@@ -21,8 +24,8 @@ public class IdentifyCandidates {
 
 	static SessionFactory factory;
 	
-	static LinkedList<Node> candidates;
-	static ArrayList<Node> gates = new ArrayList<Node>();
+	static LinkedList<Node> prospects;
+	static ArrayList<Node> candidates = new ArrayList<Node>();
 	static ArrayList<Node> visited = new ArrayList<Node>();
 	static ArrayList<Link> floodedLinks = new ArrayList<Link>();
 	
@@ -56,12 +59,12 @@ public class IdentifyCandidates {
 				"       SELECT id_node_from" +
                 "         FROM centaur.link)")).addEntity(Node.class);
 	
-		candidates = new LinkedList<Node>(query.list());
+		prospects = new LinkedList<Node>(query.list());
 		
-		while(candidates.size() > 0)
+		while(prospects.size() > 0)
 		{
-			System.out.println("Candidates: " + candidates.size());
-			Node n = candidates.pop();
+			System.out.println("Candidates: " + prospects.size());
+			Node n = prospects.pop();
 			if(!visited.contains(n))
 			{
 				visited.add(n);		
@@ -73,23 +76,26 @@ public class IdentifyCandidates {
 				if(links.size() > 0)
 				{
 					System.out.println("--------\nId: " + n.getId() + " arrivals: " + links.size());
-					gates.add(n);
+					candidates.add(n);
 					searchLinks(links);
 					System.out.println("Calculated overflow: " + currentOverflow);
 					System.out.println("Number of links: " + floodedLinks.size());
 					prune();
 					System.out.println("Number of links after pruning: " + floodedLinks.size());
 					searchFollowingCandidates();
-					save();
-					System.out.println("Gates: " + gates.size());
+					save(n, session);
+					System.out.println("Gate candidates: " + candidates.size());
 					System.out.println("Visited: " + visited.size());
 				}
 			}
 			
 		}
 		
-		System.out.println("\nProposed gates: ");
-		for (Node g : gates) System.out.println(g.getId());
+		System.out.println("\nProposed candidates: ");
+		for (Node g : candidates) System.out.println(g.getId());
+		
+		commitData(session, tx);		
+		session.close();
 	}
 
 	protected static void analyseNode(Node n)
@@ -151,7 +157,7 @@ public class IdentifyCandidates {
 	}
 	
 	// Searches for the tips of the flooded sub-network.
-	// Adds to candidates nodes in the following conditions
+	// Adds to prospects nodes in the following conditions
 	// 1. node elevation > gate overflow
 	// 2. node is an out fall
 	// 3. node is a storage
@@ -165,16 +171,46 @@ public class IdentifyCandidates {
 				startNode.getOutfall() != null || 
 				startNode.getStorage() != null)
 			  )
-				candidates.push(startNode);
+				prospects.push(startNode);
 		}
 	}
 	
-	protected static void save()
+	protected static void save(Node n, Session session)
 	{
+		Candidate c = new Candidate(n, currentOverflow);
+		session.save(c);
 		for(Link l : floodedLinks)
 		{
-			
+			Flooded f = new Flooded(c, l);
+			f.setIdLink(l.getId());
+			try
+			{
+				session.save(f);
+			}
+			catch(Exception ex)
+			{
+				System.err.println("Failed to add link " + f.getIdLink() + " to flooded network." + 
+					" Candidate: " + c.getIdNode() + 
+					" From: " + f.getLink().getNodeByIdNodeFrom().getId() + 
+					" To: " + f.getLink().getNodeByIdNodeTo().getId());
+			}
 		}
+	}
+	
+	protected static void commitData(Session session, Transaction tx)
+	{
+		try
+		{
+	         tx.commit();
+	         tx = session.beginTransaction();
+	    }
+		catch (HibernateException e) 
+		{
+	         System.err.println("Failed to commit objects to database: " + e);
+	         e.printStackTrace();
+	         session.close();  
+	         System.exit(-1); 
+	    }
 	}
 
 }
