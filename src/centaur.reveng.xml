@@ -39,7 +39,4 @@
 			</generator>
         </primary-key>
 	</table>
-	
-	
-	
 </hibernate-reverse-engineering>

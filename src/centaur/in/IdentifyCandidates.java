@@ -88,7 +88,6 @@ public class IdentifyCandidates {
 					System.out.println("Visited: " + visited.size());
 				}
 			}
-			
 		}
 		
 		System.out.println("\nProposed candidates: ");
@@ -114,28 +113,25 @@ public class IdentifyCandidates {
 	{
 		for (Link l : links)
 		{
-			//if it is a weir
-			if (l.getWeir() != null) 
+			//if it is a pump
+			if (l.getPump() != null) 
+				updateCurrentOverflow(l.getNodeByIdNodeTo().getElevation());
+			else 
 			{
-				updateCurrentOverflow(l.getWeir().getCrestHeight());
-				// Keep searching if the previous node is below the crest height.
-				if (l.getNodeByIdNodeFrom().getElevation().compareTo(currentOverflow) < 0)
+				//if it is a weir
+				if (l.getWeir() != null) 
+				{
+					updateCurrentOverflow(l.getWeir().getCrestHeight());
+					// Stop searching this path if the upstream node is below the crest height.
+					if (l.getNodeByIdNodeFrom().getElevation().compareTo(currentOverflow) > 0)
+						continue;
+				}
+				//if it is conduit (or a high weir)
+				if(!floodedLinks.contains(l)) 
 				{
 					floodedLinks.add(l);
 					analyseNode(l.getNodeByIdNodeFrom());
 				}
-			}
-			//if it is a pump
-			else if (l.getPump() != null) 
-			{
-				updateCurrentOverflow(l.getNodeByIdNodeTo().getElevation());
-				return;
-			}
-			//if it is conduit
-			else
-			{
-				floodedLinks.add(l);
-				analyseNode(l.getNodeByIdNodeFrom());
 			}
 		}
 	}

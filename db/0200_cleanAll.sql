@@ -16,4 +16,3 @@ DELETE FROM centaur.curve_parameter;
 DELETE FROM centaur.curve;
 DELETE FROM centaur.flooded;
 DELETE FROM centaur.candidate;
-

@@ -1,11 +1,11 @@
-﻿
-DROP VIEW centaur.v_weir;
+﻿DROP VIEW centaur.v_weir;
 DROP VIEW centaur.v_pump;
 DROP VIEW centaur.v_conduit;
 DROP VIEW centaur.v_outfall;
 DROP VIEW centaur.v_storage;
 DROP VIEW centaur.v_junction;
-
+DROP VIEW centaur.v_candidate;
+DROP VIEW centaur.v_flooded;
 
 CREATE OR REPLACE VIEW centaur.v_weir AS
 SELECT l.id,
@@ -97,3 +97,24 @@ SELECT n.id,
   FROM centaur.junction j,
        centaur.node n	
  WHERE j.id_node = n.id;
+
+CREATE OR REPLACE VIEW centaur.v_candidate AS
+SELECT n.id,
+       n.elevation,
+       n.name,
+       n.geom
+  FROM centaur.candidate c,
+       centaur.node n	
+ WHERE c.id_node = n.id;
+
+CREATE OR REPLACE VIEW centaur.v_flooded AS
+SELECT f.id_flooded,
+       f.id_node as id_node_candidate,
+       l.id,
+       l.name,
+       l.id_node_from,
+       l.id_node_to,
+       l.geom
+  FROM centaur.flooded f,
+       centaur.link l	
+ WHERE f.id_link = l.id;
