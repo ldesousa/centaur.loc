@@ -1,5 +1,5 @@
 package centaur.db;
-// Generated Feb 23, 2016 12:00:33 PM by Hibernate Tools 4.3.1.Final
+// Generated Feb 23, 2016 9:47:25 AM by Hibernate Tools 4.3.1.Final
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -14,7 +14,7 @@ public class Node implements java.io.Serializable {
 	private int id;
 	private BigDecimal elevation;
 	private String name;
-	private Serializable geom;
+	//private Serializable geom;
 	private Junction junction;
 	private Outfall outfall;
 	private Set linksForIdNodeTo = new HashSet(0);
@@ -31,13 +31,13 @@ public class Node implements java.io.Serializable {
 		this.id = id;
 	}
 
-	public Node(int id, BigDecimal elevation, String name, Serializable geom, Junction junction, Outfall outfall,
+	public Node(int id, BigDecimal elevation, String name, /*Serializable geom,*/ Junction junction, Outfall outfall,
 			Set linksForIdNodeTo, Candidate candidate, Set linksForIdNodeFrom, Storage storage, Set subcatchments,
 			Coordinates coordinates) {
 		this.id = id;
 		this.elevation = elevation;
 		this.name = name;
-		this.geom = geom;
+		//this.geom = geom;
 		this.junction = junction;
 		this.outfall = outfall;
 		this.linksForIdNodeTo = linksForIdNodeTo;
@@ -72,13 +72,13 @@ public class Node implements java.io.Serializable {
 		this.name = name;
 	}
 
-	public Serializable getGeom() {
+	/*public Serializable getGeom() {
 		return this.geom;
 	}
 
 	public void setGeom(Serializable geom) {
 		this.geom = geom;
-	}
+	}*/
 
 	public Junction getJunction() {
 		return this.junction;

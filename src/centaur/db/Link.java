@@ -1,5 +1,5 @@
 package centaur.db;
-// Generated Feb 23, 2016 12:00:33 PM by Hibernate Tools 4.3.1.Final
+// Generated Feb 23, 2016 9:47:25 AM by Hibernate Tools 4.3.1.Final
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -14,7 +14,7 @@ public class Link implements java.io.Serializable {
 	private Node nodeByIdNodeTo;
 	private Node nodeByIdNodeFrom;
 	private String name;
-	private Serializable geom;
+	//private Serializable geom;
 	private Weir weir;
 	private Set floodeds = new HashSet(0);
 	private Conduit conduit;
@@ -28,13 +28,13 @@ public class Link implements java.io.Serializable {
 		this.id = id;
 	}
 
-	public Link(int id, Node nodeByIdNodeTo, Node nodeByIdNodeFrom, String name, Serializable geom, Weir weir,
+	public Link(int id, Node nodeByIdNodeTo, Node nodeByIdNodeFrom, String name, /*Serializable geom,*/ Weir weir,
 			Set floodeds, Conduit conduit, Pump pump, Xsection xsection) {
 		this.id = id;
 		this.nodeByIdNodeTo = nodeByIdNodeTo;
 		this.nodeByIdNodeFrom = nodeByIdNodeFrom;
 		this.name = name;
-		this.geom = geom;
+		//this.geom = geom;
 		this.weir = weir;
 		this.floodeds = floodeds;
 		this.conduit = conduit;
@@ -74,13 +74,13 @@ public class Link implements java.io.Serializable {
 		this.name = name;
 	}
 
-	public Serializable getGeom() {
+	/*public Serializable getGeom() {
 		return this.geom;
 	}
 
 	public void setGeom(Serializable geom) {
 		this.geom = geom;
-	}
+	}*/
 
 	public Weir getWeir() {
 		return this.weir;
