@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 23, 2016 9:47:26 AM by Hibernate Tools 4.3.1.Final -->
+<hibernate-mapping>
+    <class name="centaur.db.Flooded" table="flooded" optimistic-lock="version">
+        <id name="idFlooded" type="int">
+            <column name="id_flooded" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="candidate" class="centaur.db.Candidate" fetch="select">
+            <column name="id_node" not-null="true" />
+        </many-to-one>
+        <many-to-one name="link" class="centaur.db.Link" fetch="select">
+            <column name="id_link" not-null="true" />
+        </many-to-one>
+    </class>
+</hibernate-mapping>

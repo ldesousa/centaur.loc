@@ -19,6 +19,8 @@
 	<table-filter match-name="xsection" />
 	<table-filter match-name="coordinates"></table-filter>
 	<table-filter match-name="polygon"></table-filter>
+	<table-filter match-name="flooded" />
+	<table-filter match-name="candidate" />
 	
 	<table name="polygon">
 		<primary-key>

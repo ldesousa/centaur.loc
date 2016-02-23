@@ -3,8 +3,7 @@
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <!-- Generated Feb 23, 2016 9:47:26 AM by Hibernate Tools 4.3.1.Final -->
 <hibernate-mapping>
-    <class name="centaur.db.Outfall" table="outfall" optimistic-lock="version">
-        <comment>This is a special kind of junction</comment>
+    <class name="centaur.db.Candidate" table="candidate" optimistic-lock="version">
         <id name="idNode" type="int">
             <column name="id_node" />
             <generator class="foreign">
@@ -12,17 +11,14 @@
             </generator>
         </id>
         <one-to-one name="node" class="centaur.db.Node" constrained="true"></one-to-one>
-        <property name="type" type="string">
-            <column name="type" />
+        <property name="ouflowElevation" type="big_decimal">
+            <column name="ouflow_elevation" precision="131089" scale="0" not-null="true" />
         </property>
-        <property name="stageDate" type="string">
-            <column name="stage_date" />
-        </property>
-        <property name="gated" type="java.lang.Boolean">
-            <column name="gated" />
-        </property>
-        <property name="routeTo" type="string">
-            <column name="route_to" />
-        </property>
+        <set name="floodeds" table="flooded" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_node" not-null="true" />
+            </key>
+            <one-to-many class="centaur.db.Flooded" />
+        </set>
     </class>
 </hibernate-mapping>

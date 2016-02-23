@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Feb 15, 2016 11:31:22 AM by Hibernate Tools 4.3.1.Final -->
+<!-- Generated Feb 23, 2016 9:47:26 AM by Hibernate Tools 4.3.1.Final -->
 <hibernate-mapping>
     <class name="centaur.db.Node" table="node" optimistic-lock="version">
         <id name="id" type="int">
@@ -14,6 +14,9 @@
         <property name="name" type="string">
             <column name="name" unique="true" />
         </property>
+        <property name="geom" type="serializable">
+            <column name="geom" />
+        </property>
         <one-to-one name="junction" class="centaur.db.Junction"></one-to-one>
         <one-to-one name="outfall" class="centaur.db.Outfall"></one-to-one>
         <set name="linksForIdNodeTo" table="link" inverse="true" lazy="true" fetch="select">
@@ -22,6 +25,7 @@
             </key>
             <one-to-many class="centaur.db.Link" />
         </set>
+        <one-to-one name="candidate" class="centaur.db.Candidate"></one-to-one>
         <set name="linksForIdNodeFrom" table="link" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="id_node_from" />

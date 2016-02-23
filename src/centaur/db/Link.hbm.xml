@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Feb 15, 2016 11:31:22 AM by Hibernate Tools 4.3.1.Final -->
+<!-- Generated Feb 23, 2016 9:47:26 AM by Hibernate Tools 4.3.1.Final -->
 <hibernate-mapping>
     <class name="centaur.db.Link" table="link" optimistic-lock="version">
         <id name="id" type="int">
@@ -17,7 +17,16 @@
         <property name="name" type="string">
             <column name="name" unique="true" />
         </property>
+        <property name="geom" type="serializable">
+            <column name="geom" />
+        </property>
         <one-to-one name="weir" class="centaur.db.Weir"></one-to-one>
+        <set name="floodeds" table="flooded" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_link" not-null="true" />
+            </key>
+            <one-to-many class="centaur.db.Flooded" />
+        </set>
         <one-to-one name="conduit" class="centaur.db.Conduit"></one-to-one>
         <one-to-one name="pump" class="centaur.db.Pump"></one-to-one>
         <one-to-one name="xsection" class="centaur.db.Xsection"></one-to-one>

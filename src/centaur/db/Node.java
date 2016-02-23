@@ -1,6 +1,7 @@
 package centaur.db;
-// Generated Feb 15, 2016 11:31:22 AM by Hibernate Tools 4.3.1.Final
+// Generated Feb 23, 2016 9:47:25 AM by Hibernate Tools 4.3.1.Final
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
@@ -13,9 +14,11 @@ public class Node implements java.io.Serializable {
 	private int id;
 	private BigDecimal elevation;
 	private String name;
+	private Serializable geom;
 	private Junction junction;
 	private Outfall outfall;
 	private Set linksForIdNodeTo = new HashSet(0);
+	private Candidate candidate;
 	private Set linksForIdNodeFrom = new HashSet(0);
 	private Storage storage;
 	private Set subcatchments = new HashSet(0);
@@ -28,14 +31,17 @@ public class Node implements java.io.Serializable {
 		this.id = id;
 	}
 
-	public Node(int id, BigDecimal elevation, String name, Junction junction, Outfall outfall, Set linksForIdNodeTo,
-			Set linksForIdNodeFrom, Storage storage, Set subcatchments, Coordinates coordinates) {
+	public Node(int id, BigDecimal elevation, String name, Serializable geom, Junction junction, Outfall outfall,
+			Set linksForIdNodeTo, Candidate candidate, Set linksForIdNodeFrom, Storage storage, Set subcatchments,
+			Coordinates coordinates) {
 		this.id = id;
 		this.elevation = elevation;
 		this.name = name;
+		this.geom = geom;
 		this.junction = junction;
 		this.outfall = outfall;
 		this.linksForIdNodeTo = linksForIdNodeTo;
+		this.candidate = candidate;
 		this.linksForIdNodeFrom = linksForIdNodeFrom;
 		this.storage = storage;
 		this.subcatchments = subcatchments;
@@ -66,6 +72,14 @@ public class Node implements java.io.Serializable {
 		this.name = name;
 	}
 
+	public Serializable getGeom() {
+		return this.geom;
+	}
+
+	public void setGeom(Serializable geom) {
+		this.geom = geom;
+	}
+
 	public Junction getJunction() {
 		return this.junction;
 	}
@@ -88,6 +102,14 @@ public class Node implements java.io.Serializable {
 
 	public void setLinksForIdNodeTo(Set linksForIdNodeTo) {
 		this.linksForIdNodeTo = linksForIdNodeTo;
+	}
+
+	public Candidate getCandidate() {
+		return this.candidate;
+	}
+
+	public void setCandidate(Candidate candidate) {
+		this.candidate = candidate;
 	}
 
 	public Set getLinksForIdNodeFrom() {
