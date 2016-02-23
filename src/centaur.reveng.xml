@@ -30,4 +30,16 @@
         </primary-key>
 	</table>
 	
+	<table name="flooded">
+		<primary-key>
+            <generator class="org.hibernate.id.enhanced.SequenceStyleGenerator">
+		    	<param name="optimizer">none</param>
+		    	<param name="increment_size">1</param>
+		    	<param name="sequence_name">centaur.flooded_id_flooded_seq</param>
+			</generator>
+        </primary-key>
+	</table>
+	
+	
+	
 </hibernate-reverse-engineering>

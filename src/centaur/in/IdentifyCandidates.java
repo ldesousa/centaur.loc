@@ -182,18 +182,7 @@ public class IdentifyCandidates {
 		for(Link l : floodedLinks)
 		{
 			Flooded f = new Flooded(c, l);
-			f.setIdLink(l.getId());
-			try
-			{
-				session.save(f);
-			}
-			catch(Exception ex)
-			{
-				System.err.println("Failed to add link " + f.getIdLink() + " to flooded network." + 
-					" Candidate: " + c.getIdNode() + 
-					" From: " + f.getLink().getNodeByIdNodeFrom().getId() + 
-					" To: " + f.getLink().getNodeByIdNodeTo().getId());
-			}
+			session.save(f);
 		}
 	}
 	

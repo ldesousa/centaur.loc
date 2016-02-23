@@ -1,12 +1,16 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Feb 23, 2016 12:00:33 PM by Hibernate Tools 4.3.1.Final -->
+<!-- Generated Feb 23, 2016 2:14:25 PM by Hibernate Tools 4.3.1.Final -->
 <hibernate-mapping>
     <class name="centaur.db.Flooded" table="flooded" optimistic-lock="version">
-        <id name="idFlooded" type="int">
+        <id name="idFlooded" type="java.lang.Integer">
             <column name="id_flooded" />
-            <generator class="assigned" />
+            <generator class="org.hibernate.id.enhanced.SequenceStyleGenerator">
+                <param name="optimizer">none</param>
+                <param name="sequence_name">centaur.flooded_id_flooded_seq</param>
+                <param name="increment_size">1</param>
+            </generator>
         </id>
         <many-to-one name="candidate" class="centaur.db.Candidate" fetch="select">
             <column name="id_node" not-null="true" />
