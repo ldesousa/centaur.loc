@@ -67,8 +67,7 @@ public class IdentifyCandidates {
 			Node n = prospects.pop();
 			if(!visited.contains(n))
 			{
-				visited.add(n);		
-				
+				visited.add(n);						
 				currentOverflow = BigDecimal.valueOf(Double.MAX_VALUE);
 				floodedLinks = new ArrayList<Link>();
 				
@@ -113,20 +112,21 @@ public class IdentifyCandidates {
 	{
 		for (Link l : links)
 		{
-			//if it is a pump
+			// Pump: search stops at downstream junction
 			if (l.getPump() != null) 
 				updateCurrentOverflow(l.getNodeByIdNodeTo().getElevation());
-			else 
+
+			// Weir: search stops at crest height
+			else if (l.getWeir() != null) 
 			{
-				//if it is a weir
-				if (l.getWeir() != null) 
-				{
-					updateCurrentOverflow(l.getWeir().getCrestHeight());
-					// Stop searching this path if the upstream node is below the crest height.
-					if (l.getNodeByIdNodeFrom().getElevation().compareTo(currentOverflow) > 0)
-						continue;
-				}
-				//if it is conduit (or a high weir)
+				updateCurrentOverflow(
+						l.getNodeByIdNodeTo().getElevation().add(l.getWeir().getCrestHeight()));
+				if(!floodedLinks.contains(l)) floodedLinks.add(l);
+			}
+			
+			// Conduit: search continues
+			else
+			{ 
 				if(!floodedLinks.contains(l)) 
 				{
 					floodedLinks.add(l);
