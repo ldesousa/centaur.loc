@@ -100,7 +100,7 @@ SELECT n.id,
 
 CREATE OR REPLACE VIEW centaur.v_candidate AS
 SELECT n.id,
-       n.elevation,
+       c.outflow_elevation,
        n.name,
        n.geom
   FROM centaur.candidate c,

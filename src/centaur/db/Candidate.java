@@ -1,5 +1,5 @@
 package centaur.db;
-// Generated Feb 23, 2016 2:14:25 PM by Hibernate Tools 4.3.1.Final
+// Generated Feb 25, 2016 10:04:09 AM by Hibernate Tools 4.3.1.Final
 
 import java.math.BigDecimal;
 import java.util.HashSet;
@@ -12,20 +12,20 @@ public class Candidate implements java.io.Serializable {
 
 	private int idNode;
 	private Node node;
-	private BigDecimal ouflowElevation;
+	private BigDecimal outflowElevation;
 	private Set floodeds = new HashSet(0);
 
 	public Candidate() {
 	}
 
-	public Candidate(Node node, BigDecimal ouflowElevation) {
+	public Candidate(Node node, BigDecimal outflowElevation) {
 		this.node = node;
-		this.ouflowElevation = ouflowElevation;
+		this.outflowElevation = outflowElevation;
 	}
 
-	public Candidate(Node node, BigDecimal ouflowElevation, Set floodeds) {
+	public Candidate(Node node, BigDecimal outflowElevation, Set floodeds) {
 		this.node = node;
-		this.ouflowElevation = ouflowElevation;
+		this.outflowElevation = outflowElevation;
 		this.floodeds = floodeds;
 	}
 
@@ -45,12 +45,12 @@ public class Candidate implements java.io.Serializable {
 		this.node = node;
 	}
 
-	public BigDecimal getOuflowElevation() {
-		return this.ouflowElevation;
+	public BigDecimal getOutflowElevation() {
+		return this.outflowElevation;
 	}
 
-	public void setOuflowElevation(BigDecimal ouflowElevation) {
-		this.ouflowElevation = ouflowElevation;
+	public void setOutflowElevation(BigDecimal outflowElevation) {
+		this.outflowElevation = outflowElevation;
 	}
 
 	public Set getFloodeds() {

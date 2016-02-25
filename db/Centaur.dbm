@@ -455,11 +455,11 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="candidate">
 	<schema name="centaur"/>
 	<role name="postgres"/>
-	<position x="438" y="405"/>
+	<position x="439" y="403"/>
 	<column name="id_node" not-null="true">
 		<type name="integer"/>
 	</column>
-	<column name="ouflow_elevation" not-null="true">
+	<column name="outflow_elevation" not-null="true">
 		<type name="numeric"/>
 	</column>
 	<constraint name="pk_candidate" type="pk-constr" table="centaur.candidate">
