@@ -24,6 +24,7 @@ public class IdentifyCandidates {
 
 	static SessionFactory factory;
 	
+	static BigDecimal safetyMargin = new BigDecimal(0.9);
 	static LinkedList<Node> prospects;
 	static ArrayList<Node> candidates = new ArrayList<Node>();
 	static ArrayList<Node> visited = new ArrayList<Node>();
@@ -71,6 +72,11 @@ public class IdentifyCandidates {
 				currentOverflow = BigDecimal.valueOf(Double.MAX_VALUE);
 				floodedLinks = new ArrayList<Link>();
 				
+				if(n.getId() == 144791)
+				{
+					System.out.println("Got it.");
+				}
+				
 				Set<Link> links = n.getLinksForIdNodeTo();
 				if(links.size() > 0)
 				{
@@ -104,8 +110,12 @@ public class IdentifyCandidates {
 		// 1. No links arrive at this node;
 		// 2. This node is an outfall or a storage.
 		if((links.size() <= 0) || (n.getOutfall() != null) || (n.getStorage() != null))
-			updateCurrentOverflow(n.getElevation());
-		else searchLinks(links);
+			updateCurrentOverflow(n.getElevation(), BigDecimal.ZERO);
+		else
+		{
+			updateCurrentOverflow(n.getElevation(), n.getJunction().getMaxDepth());
+			searchLinks(links);
+		}
 	}
 	
 	protected static void searchLinks(Set<Link> links)
@@ -114,31 +124,31 @@ public class IdentifyCandidates {
 		{
 			// Pump: search stops at downstream junction
 			if (l.getPump() != null) 
-				updateCurrentOverflow(l.getNodeByIdNodeTo().getElevation());
+				updateCurrentOverflow(l.getNodeByIdNodeTo().getElevation(), BigDecimal.ZERO);
 
 			// Weir: search stops at crest height
 			else if (l.getWeir() != null) 
 			{
 				updateCurrentOverflow(
-						l.getNodeByIdNodeTo().getElevation().add(l.getWeir().getCrestHeight()));
+						l.getNodeByIdNodeTo().getElevation(), l.getWeir().getCrestHeight());
 				if(!floodedLinks.contains(l)) floodedLinks.add(l);
 			}
 			
-			// Conduit: search continues
+			// Conduit: search continues if upstream junction is lower than current overflow
 			else
-			{ 
-				if(!floodedLinks.contains(l)) 
-				{
-					floodedLinks.add(l);
+			{ 						
+				if(!floodedLinks.contains(l)) floodedLinks.add(l);
+				if(l.getNodeByIdNodeFrom().getElevation().compareTo(currentOverflow) < 0)
 					analyseNode(l.getNodeByIdNodeFrom());
-				}
 			}
 		}
 	}
 	
-	protected static void updateCurrentOverflow(BigDecimal newLevel)
+	protected static void updateCurrentOverflow(BigDecimal newLevel, BigDecimal depth)
 	{
-		if(newLevel.compareTo(currentOverflow) < 0) currentOverflow = newLevel;
+		newLevel = newLevel.add(depth.multiply(safetyMargin));
+		if(newLevel.compareTo(currentOverflow) < 0) 
+			currentOverflow = newLevel;
 	}
 	
 	protected static void prune()
