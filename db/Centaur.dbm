@@ -471,14 +471,14 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<schema name="centaur"/>
 	<role name="postgres"/>
 	<position x="448" y="494"/>
+	<column name="id_flooded" not-null="true">
+		<type name="serial"/>
+	</column>
 	<column name="id_node" not-null="true">
 		<type name="integer"/>
 	</column>
 	<column name="id_link" not-null="true">
 		<type name="integer"/>
-	</column>
-	<column name="id_flooded" not-null="true">
-		<type name="serial"/>
 	</column>
 	<constraint name="pk_flooded" type="pk-constr" table="centaur.flooded">
 		<columns names="id_flooded" ref-type="src-columns"/>

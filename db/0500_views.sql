@@ -49,10 +49,37 @@ SELECT l.id,
        c.in_offset,
        c.out_offset,
        c.init_flow,
-       c.max_flow 
+       c.max_flow,
+       (st_y(st_pointn(l.geom, 2)) - st_y(st_pointn(l.geom, 1))) / 
+       (st_x(st_pointn(l.geom, 2)) - st_x(st_pointn(l.geom, 1))) AS slope,
+       pi() * ((x.geom1/2) ^ 2) * c.length AS volume
   FROM centaur.conduit c,
-       centaur.link l	
- WHERE c.id_link = l.id;
+       centaur.link l,
+       centaur.xsection x	
+ WHERE c.id_link = l.id
+   AND x.id_link = l.id
+   AND x.shape LIKE 'CIRC%'
+ UNION
+SELECT l.id,
+       l.name,
+       l.id_node_from,
+       l.id_node_to,
+       l.geom,
+       c.length,
+       c.roughness,
+       c.in_offset,
+       c.out_offset,
+       c.init_flow,
+       c.max_flow,
+       (st_y(st_pointn(l.geom, 2)) - st_y(st_pointn(l.geom, 1))) / 
+       (st_x(st_pointn(l.geom, 2)) - st_x(st_pointn(l.geom, 1))) AS slope,
+       x.geom1 * x.geom2 AS volume
+  FROM centaur.conduit c,
+       centaur.link l,
+       centaur.xsection x	
+ WHERE c.id_link = l.id
+   AND x.id_link = l.id
+   AND x.shape LIKE 'RECT%';
 
 CREATE OR REPLACE VIEW centaur.v_outfall AS
 SELECT n.id,
