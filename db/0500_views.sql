@@ -135,17 +135,29 @@ SELECT c.id_node,
    AND c.id_node = f.id_node
  GROUP BY(c.id_node);
 
+-- Computes the subcatchment area served by each node
+CREATE OR REPLACE VIEW centaur.v_candidate_area AS
+SELECT c.id_node, 
+       sum(s.area) AS served_area
+  FROM centaur.candidate c,
+       centaur.subcatchment s
+ WHERE c.id_node = s.id_node_outlet
+ GROUP BY(c.id_node);
+
 CREATE OR REPLACE VIEW centaur.v_candidate AS
 SELECT n.id, 
        c.outflow_elevation,
        n.name,
        n.geom,
-       v.flooded_volume
+       v.flooded_volume,
+       a.served_area
   FROM centaur.candidate c,
        centaur.node n,
-       centaur.v_candidate_volume v
+       centaur.v_candidate_volume v,
+       centaur.v_candidate_area a
  WHERE c.id_node = n.id
-   AND c.id_node = v.id_node;
+   AND c.id_node = v.id_node
+   AND c.id_node = a.id_node;
 
 SELECT c.id, sum(l.volume)
   FROM centaur.v_candidate c,
