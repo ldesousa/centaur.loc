@@ -125,14 +125,35 @@ SELECT n.id,
        centaur.node n	
  WHERE j.id_node = n.id;
 
+CREATE OR REPLACE VIEW centaur.v_candidate_volume AS
+SELECT c.id_node, 
+       sum(l.volume) AS flooded_volume
+  FROM centaur.candidate c,
+       centaur.flooded f,
+       centaur.v_conduit l	
+ WHERE l.id = f.id_link
+   AND c.id_node = f.id_node
+ GROUP BY(c.id_node);
+
 CREATE OR REPLACE VIEW centaur.v_candidate AS
-SELECT n.id,
+SELECT n.id, 
        c.outflow_elevation,
        n.name,
-       n.geom
+       n.geom,
+       v.flooded_volume
   FROM centaur.candidate c,
-       centaur.node n	
- WHERE c.id_node = n.id;
+       centaur.node n,
+       centaur.v_candidate_volume v
+ WHERE c.id_node = n.id
+   AND c.id_node = v.id_node;
+
+SELECT c.id, sum(l.volume)
+  FROM centaur.v_candidate c,
+       centaur.flooded f,
+       centaur.v_conduit l
+ WHERE l.id = f.id_link
+   AND c.id_node = f.id_node
+ GROUP BY(c.id);
 
 CREATE OR REPLACE VIEW centaur.v_flooded AS
 SELECT f.id_flooded,
