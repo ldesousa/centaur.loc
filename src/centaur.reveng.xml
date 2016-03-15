@@ -3,6 +3,12 @@
 
 <hibernate-reverse-engineering>
 
+	<!-- Spatial Types -->
+	<type-mapping>
+	 	<sql-type jdbc-type="java.sql.Types.OTHER" hibernate-type="JTSGeometryType"/>
+	</type-mapping> 
+
+	<!-- Tables -->
 	<table-filter match-name="conduit" />
 	<table-filter match-name="curve" />
 	<table-filter match-name="curve_parameter" />
@@ -22,14 +28,34 @@
 	<table-filter match-name="flooded" />
 	<table-filter match-name="candidate" />
 	
-	<table name="polygon">
+	<!-- Sequences -->
+	<table name="link">
 		<primary-key>
-            <generator class="sequence">
-                <param name="sequence">polygon_id_seq</param>
-            </generator>
+            <generator class="org.hibernate.id.enhanced.SequenceStyleGenerator">
+		    	<param name="optimizer">none</param>
+		    	<param name="increment_size">1</param>
+		    	<param name="sequence_name">centaur.link_id_seq</param>
+			</generator>
         </primary-key>
 	</table>
-	
+	<table name="polygon">
+		<primary-key>
+            <generator class="org.hibernate.id.enhanced.SequenceStyleGenerator">
+		    	<param name="optimizer">none</param>
+		    	<param name="increment_size">1</param>
+		    	<param name="sequence_name">centaur.polygon_id_seq</param>
+			</generator>
+        </primary-key>
+	</table>
+	<table name="subcatchment">
+		<primary-key>
+            <generator class="org.hibernate.id.enhanced.SequenceStyleGenerator">
+		    	<param name="optimizer">none</param>
+		    	<param name="increment_size">1</param>
+		    	<param name="sequence_name">centaur.subcatchment_id_seq</param>
+			</generator>
+        </primary-key>
+	</table>
 	<table name="flooded">
 		<primary-key>
             <generator class="org.hibernate.id.enhanced.SequenceStyleGenerator">
@@ -39,4 +65,5 @@
 			</generator>
         </primary-key>
 	</table>
+	
 </hibernate-reverse-engineering>

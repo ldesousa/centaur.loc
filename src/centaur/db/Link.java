@@ -1,5 +1,5 @@
 package centaur.db;
-// Generated Feb 23, 2016 9:47:25 AM by Hibernate Tools 4.3.1.Final
+// Generated Feb 25, 2016 11:31:40 AM by Hibernate Tools 4.3.1.Final
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -10,7 +10,7 @@ import java.util.Set;
  */
 public class Link implements java.io.Serializable {
 
-	private int id;
+	private Integer id;
 	private Node nodeByIdNodeTo;
 	private Node nodeByIdNodeFrom;
 	private String name;
@@ -24,13 +24,8 @@ public class Link implements java.io.Serializable {
 	public Link() {
 	}
 
-	public Link(int id) {
-		this.id = id;
-	}
-
-	public Link(int id, Node nodeByIdNodeTo, Node nodeByIdNodeFrom, String name, /*Serializable geom,*/ Weir weir,
-			Set floodeds, Conduit conduit, Pump pump, Xsection xsection) {
-		this.id = id;
+	public Link(Node nodeByIdNodeTo, Node nodeByIdNodeFrom, String name, /*Serializable geom,*/ Weir weir, Set floodeds,
+			Conduit conduit, Pump pump, Xsection xsection) {
 		this.nodeByIdNodeTo = nodeByIdNodeTo;
 		this.nodeByIdNodeFrom = nodeByIdNodeFrom;
 		this.name = name;
@@ -42,11 +37,11 @@ public class Link implements java.io.Serializable {
 		this.xsection = xsection;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return this.id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

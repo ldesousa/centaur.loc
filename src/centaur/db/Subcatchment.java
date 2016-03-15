@@ -1,5 +1,5 @@
 package centaur.db;
-// Generated Feb 25, 2016 10:04:09 AM by Hibernate Tools 4.3.1.Final
+// Generated Feb 25, 2016 11:31:40 AM by Hibernate Tools 4.3.1.Final
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -11,7 +11,7 @@ import java.util.Set;
  */
 public class Subcatchment implements java.io.Serializable {
 
-	private int id;
+	private Integer id;
 	private Node node;
 	private Raingage raingage;
 	private String name;
@@ -21,21 +21,15 @@ public class Subcatchment implements java.io.Serializable {
 	private BigDecimal slope;
 	private BigDecimal curbLen;
 	private String snowPack;
-	//private Serializable geom;
+	private Serializable geom;
 	private Subarea subarea;
 	private Set polygons = new HashSet(0);
 
 	public Subcatchment() {
 	}
 
-	public Subcatchment(int id) {
-		this.id = id;
-	}
-
-	public Subcatchment(int id, Node node, Raingage raingage, String name, BigDecimal area, BigDecimal imperv,
-			BigDecimal width, BigDecimal slope, BigDecimal curbLen, String snowPack, /*Serializable geom,*/ Subarea subarea,
-			Set polygons) {
-		this.id = id;
+	public Subcatchment(Node node, Raingage raingage, String name, BigDecimal area, BigDecimal imperv, BigDecimal width,
+			BigDecimal slope, BigDecimal curbLen, String snowPack, Serializable geom, Subarea subarea, Set polygons) {
 		this.node = node;
 		this.raingage = raingage;
 		this.name = name;
@@ -45,16 +39,16 @@ public class Subcatchment implements java.io.Serializable {
 		this.slope = slope;
 		this.curbLen = curbLen;
 		this.snowPack = snowPack;
-		//this.geom = geom;
+		this.geom = geom;
 		this.subarea = subarea;
 		this.polygons = polygons;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return this.id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -130,13 +124,13 @@ public class Subcatchment implements java.io.Serializable {
 		this.snowPack = snowPack;
 	}
 
-	/*public Serializable getGeom() {
+	public Serializable getGeom() {
 		return this.geom;
 	}
 
 	public void setGeom(Serializable geom) {
 		this.geom = geom;
-	}*/
+	}
 
 	public Subarea getSubarea() {
 		return this.subarea;
