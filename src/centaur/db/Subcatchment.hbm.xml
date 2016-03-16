@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Feb 25, 2016 11:31:40 AM by Hibernate Tools 4.3.1.Final -->
+<!-- Generated Mar 16, 2016 11:11:21 AM by Hibernate Tools 4.3.1.Final -->
 <hibernate-mapping>
     <class name="centaur.db.Subcatchment" table="subcatchment" optimistic-lock="version">
         <id name="id" type="java.lang.Integer">
@@ -43,9 +43,9 @@
         <property name="snowPack" type="string">
             <column name="snow_pack" />
         </property>
-        <property name="geom" type="serializable">
+        <!-- <property name="geom" type="serializable">
             <column name="geom" />
-        </property>
+        </property> -->
         <one-to-one name="subarea" class="centaur.db.Subarea"></one-to-one>
         <set name="polygons" table="polygon" inverse="true" lazy="true" fetch="select">
             <key>
