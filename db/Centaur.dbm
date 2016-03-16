@@ -281,7 +281,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="xsection">
 	<schema name="centaur"/>
 	<role name="postgres"/>
-	<position x="779" y="490"/>
+	<position x="778" y="498"/>
 	<column name="id_link" not-null="true">
 		<type name="integer"/>
 	</column>
@@ -460,6 +460,9 @@ CAUTION: Do not modify this file unless you know what you are doing.
 		<type name="integer"/>
 	</column>
 	<column name="outflow_elevation" not-null="true">
+		<type name="numeric"/>
+	</column>
+	<column name="served_area">
 		<type name="numeric"/>
 	</column>
 	<constraint name="pk_candidate" type="pk-constr" table="centaur.candidate">

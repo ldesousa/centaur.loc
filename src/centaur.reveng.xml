@@ -4,9 +4,9 @@
 <hibernate-reverse-engineering>
 
 	<!-- Spatial Types -->
-	<type-mapping>
+	<!-- <type-mapping>
 	 	<sql-type jdbc-type="java.sql.Types.OTHER" hibernate-type="JTSGeometryType"/>
-	</type-mapping> 
+	</type-mapping> --> 
 
 	<!-- Tables -->
 	<table-filter match-name="conduit" />

@@ -1,5 +1,5 @@
 package centaur.db;
-// Generated Feb 25, 2016 11:31:40 AM by Hibernate Tools 4.3.1.Final
+// Generated Mar 16, 2016 11:11:21 AM by Hibernate Tools 4.3.1.Final
 
 import java.util.HashSet;
 import java.util.Set;
