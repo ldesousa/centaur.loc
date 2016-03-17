@@ -1,5 +1,9 @@
 package centaur.opt;
 
+import java.io.BufferedOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -50,6 +54,8 @@ public class ComputeServedAreas {
 		
 		System.out.println("Starting up");
 		
+		clearAreas(session);
+		
 		Query query =  session.createQuery("from Subcatchment s");
 		subcatchments = new LinkedList<Subcatchment>(query.list());
 		
@@ -62,25 +68,34 @@ public class ComputeServedAreas {
 			
 			if(s.getNode() != null)
 			{
-				Candidate c = s.getNode().getCandidate();
+				BigDecimal servedArea = BigDecimal.valueOf(
+						s.getArea().doubleValue() * s.getImperv().doubleValue() / 100);
 				
+				Candidate c = s.getNode().getCandidate();
+				// If there is no candidate this is a leaf node
 				if (c != null)
-				{
-					if (c.getServedArea() == null) c.setServedArea(s.getArea());
-					else c.setServedArea(c.getServedArea().add(s.getArea()));
+				{					
+					if (c.getServedArea() == null) c.setServedArea(servedArea);
+					else c.setServedArea(c.getServedArea().add(servedArea));
+				}	
 					
-					System.out.println("Processing node: " + c.getIdNode());
-					transportDownstream(
-							c.getServedArea(), 
-							s.getNode().getLinksForIdNodeFrom());
-				}
+				transportDownstream(
+						servedArea, 
+						s.getNode().getLinksForIdNodeFrom());
 			}
+			
 		}
 		
 		commitData(session, tx);		
 		session.close();
 		
 		System.out.println("\nSucessfully calculated served areas.");
+	}
+	
+	static void clearAreas(Session session)
+	{
+		session.createQuery(String.format("UPDATE %s SET served_area = 0", Candidate.class.getName())).executeUpdate();
+		session.flush();
 	}
 	
 	static void transportDownstream(BigDecimal area, Set<Link> outwardLinks)
@@ -91,7 +106,6 @@ public class ComputeServedAreas {
 			if (l.getPump() == null) 
 			{	
 				Node n = l.getNodeByIdNodeTo();
-				
 				BigDecimal areaShare = new BigDecimal(area.doubleValue() / outwardLinks.size());
 				
 				if (n.getCandidate().getServedArea() == null)
@@ -100,11 +114,8 @@ public class ComputeServedAreas {
 					n.getCandidate().setServedArea(
 						n.getCandidate().getServedArea().add(areaShare));
 				
-				System.out.println("Processing node: " + n.getCandidate().getIdNode() + 
-						" sub-nodes: " + n.getLinksForIdNodeFrom().size());
-				
 				if(n.getLinksForIdNodeFrom().size() > 0)
-					transportDownstream(n.getCandidate().getServedArea(), n.getLinksForIdNodeFrom());
+					transportDownstream(areaShare, n.getLinksForIdNodeFrom());
 			}
 		}
 	}
