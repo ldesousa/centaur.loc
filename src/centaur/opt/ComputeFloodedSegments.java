@@ -26,7 +26,6 @@ public class ComputeFloodedSegments {
 	static BigDecimal safetyMargin = new BigDecimal(0.9);
 	static LinkedList<Node> prospects;
 	static ArrayList<Node> candidates = new ArrayList<Node>();
-	static ArrayList<Node> visited = new ArrayList<Node>();
 	static ArrayList<Link> floodedLinks = new ArrayList<Link>();
 	
 	static BigDecimal currentOverflow = BigDecimal.valueOf(Double.MAX_VALUE);
@@ -61,27 +60,22 @@ public class ComputeFloodedSegments {
 		while(prospects.size() > 0)
 		{
 			System.out.println("Candidates: " + prospects.size());
-			Node n = prospects.pop();
-			if(!visited.contains(n))
+			Node n = prospects.pop();					
+			currentOverflow = BigDecimal.valueOf(Double.MAX_VALUE);
+			floodedLinks = new ArrayList<Link>();
+			
+			Set<Link> links = n.getLinksForIdNodeTo();
+			if(links.size() > 0)
 			{
-				visited.add(n);						
-				currentOverflow = BigDecimal.valueOf(Double.MAX_VALUE);
-				floodedLinks = new ArrayList<Link>();
-				
-				Set<Link> links = n.getLinksForIdNodeTo();
-				if(links.size() > 0)
-				{
-					System.out.println("--------\nId: " + n.getId() + " arrivals: " + links.size());
-					candidates.add(n);
-					searchLinks(links);
-					System.out.println("Calculated overflow: " + currentOverflow);
-					System.out.println("Number of links: " + floodedLinks.size());
-					prune();
-					System.out.println("Number of links after pruning: " + floodedLinks.size());
-					save(n, session);
-					System.out.println("Gate candidates: " + candidates.size());
-					System.out.println("Visited: " + visited.size());
-				}
+				System.out.println("--------\nId: " + n.getId() + " arrivals: " + links.size());
+				candidates.add(n);
+				searchLinks(links);
+				System.out.println("Calculated overflow: " + currentOverflow);
+				System.out.println("Number of links: " + floodedLinks.size());
+				prune();
+				System.out.println("Number of links after pruning: " + floodedLinks.size());
+				save(n, session);
+				System.out.println("Gate candidates: " + candidates.size());
 			}
 		}
 		
