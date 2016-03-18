@@ -14,5 +14,7 @@
 	<classpathentry kind="lib" path="/usr/share/java/postgresql-jdbc4-9.2.jar"/>
 	<classpathentry kind="lib" path="/usr/share/java/jts.jar"/>
 	<classpathentry kind="lib" path="/usr/share/java/postgis-jdbc.jar"/>
+	<classpathentry kind="lib" path="/usr/share/java/jfreechart-1.0.19/lib/jcommon-1.0.23.jar"/>
+	<classpathentry kind="lib" path="/usr/share/java/jfreechart-1.0.19/lib/jfreechart-1.0.19.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

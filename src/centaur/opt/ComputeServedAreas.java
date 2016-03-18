@@ -78,7 +78,7 @@ public class ComputeServedAreas {
 					if (c.getServedArea() == null) c.setServedArea(servedArea);
 					else c.setServedArea(c.getServedArea().add(servedArea));
 				}	
-					
+				
 				transportDownstream(
 						servedArea, 
 						s.getNode().getLinksForIdNodeFrom());
@@ -87,9 +87,12 @@ public class ComputeServedAreas {
 		}
 		
 		commitData(session, tx);		
-		session.close();
 		
 		System.out.println("\nSucessfully calculated served areas.");
+		
+		plotData(session);
+		
+		session.close();
 	}
 	
 	static void clearAreas(Session session)
@@ -119,6 +122,7 @@ public class ComputeServedAreas {
 			}
 		}
 	}
+
 	
 	protected static void commitData(Session session, Transaction tx)
 	{
@@ -134,5 +138,28 @@ public class ComputeServedAreas {
 	         session.close();  
 	         System.exit(-1); 
 	    }
+	}
+	
+	
+	protected static void plotData(Session session)
+	{
+		ChartXYPlot chart = new ChartXYPlot(
+				"CENTAUR", 
+				"Candidates capacities", 
+				"Volume", 
+				"Served area", 
+				"Candidate");
+		
+		Query query =  session.createQuery("from Candidate s");
+		LinkedList<Candidate> candidates = new LinkedList<Candidate>(query.list());
+		
+		for (Candidate c : candidates)
+		{
+			if (c.getFloodedVolume() != null)
+				chart.addDataPoint(c.getFloodedVolume().doubleValue(), 
+						c.getServedArea().doubleValue());
+		}
+		
+		chart.display();
 	}
 }
