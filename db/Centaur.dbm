@@ -465,6 +465,9 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="served_area">
 		<type name="numeric"/>
 	</column>
+	<column name="volume">
+		<type name="numeric"/>
+	</column>
 	<constraint name="pk_candidate" type="pk-constr" table="centaur.candidate">
 		<columns names="id_node" ref-type="src-columns"/>
 	</constraint>
