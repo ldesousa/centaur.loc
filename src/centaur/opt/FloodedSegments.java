@@ -19,10 +19,8 @@ import centaur.db.Flooded;
 import centaur.db.Link;
 
 
-public class ComputeFloodedSegments {
-
-	static SessionFactory factory;
-	
+public class FloodedSegments 
+{	
 	static BigDecimal safetyMargin = new BigDecimal(0.9);
 	static LinkedList<Node> prospects;
 	static ArrayList<Node> candidates = new ArrayList<Node>();
@@ -30,27 +28,8 @@ public class ComputeFloodedSegments {
 	
 	static BigDecimal currentOverflow = BigDecimal.valueOf(Double.MAX_VALUE);
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		Session session;
-		Transaction tx;
-		
-		// => This code is common to ImportSWMM - must be refactored
-		// Initialise database session
-		try
-		{
-	         factory = new Configuration()
-	        		 .configure("centaur.cfg.xml").buildSessionFactory();
-	         session = factory.openSession();
-	         tx = session.beginTransaction();
-	    }
-		catch (Throwable e) 
-		{ 
-	         System.err.println("Failed to initialise database session: " + e);
-	         e.printStackTrace();
-	         return;
-	    }
-			
+	public static void compute(Session session) 
+	{
 		System.out.println("Clearing database ...");
 		clearDB(session);
 		
@@ -81,9 +60,6 @@ public class ComputeFloodedSegments {
 		
 		System.out.println("\nProposed candidates: ");
 		for (Node g : candidates) System.out.println(g.getId());
-		
-		commitData(session, tx);		
-		session.close();
 	}
 	
 	static void clearDB(Session session)
@@ -163,21 +139,4 @@ public class ComputeFloodedSegments {
 			session.save(f);
 		}
 	}
-	
-	protected static void commitData(Session session, Transaction tx)
-	{
-		try
-		{
-	         tx.commit();
-	         tx = session.beginTransaction();
-	    }
-		catch (HibernateException e) 
-		{
-	         System.err.println("Failed to commit objects to database: " + e);
-	         e.printStackTrace();
-	         session.close();  
-	         System.exit(-1); 
-	    }
-	}
-
 }

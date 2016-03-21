@@ -36,17 +36,12 @@ public class Main
 	{
 		setUpConnection();
 		
+		FloodedSegments.compute(session);
+		commitData(session, tx);
+		
 		ServedAreas.compute(session);
 		commitData(session, tx);			
 		ServedAreas.plotData(session);
-		
-		/*ChartXYPlot chart = new ChartXYPlot(
-				"CENTAUR", 
-				"Candidates capacities", 
-				"Volume", 
-				"Served area", 
-				"Candidate");
-		chart.tryIt();*/
 		
 		session.close();
     }
