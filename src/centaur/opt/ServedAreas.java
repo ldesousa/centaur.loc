@@ -25,33 +25,12 @@ import centaur.db.Flooded;
 import centaur.db.Link;
 
 
-public class ComputeServedAreas {
-
-	static SessionFactory factory;
+public class ServedAreas {
 	
 	static LinkedList<Subcatchment> subcatchments;
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		Session session;
-		Transaction tx;
-		
-		// => This code is common to ImportSWMM - must be refactored
-		// Initialise database session
-		try
-		{
-	         factory = new Configuration()
-	        		 .configure("centaur.cfg.xml").buildSessionFactory();
-	         session = factory.openSession();
-	         tx = session.beginTransaction();
-	    }
-		catch (Throwable e) 
-		{ 
-	         System.err.println("Failed to initialise database session: " + e);
-	         e.printStackTrace();
-	         return;
-	    }
-		
+	public static void compute(Session session) 
+	{
 		System.out.println("Starting up");
 		
 		clearAreas(session);
@@ -83,16 +62,8 @@ public class ComputeServedAreas {
 						servedArea, 
 						s.getNode().getLinksForIdNodeFrom());
 			}
-			
 		}
-		
-		commitData(session, tx);		
-		
 		System.out.println("\nSucessfully calculated served areas.");
-		
-		plotData(session);
-		
-		session.close();
 	}
 	
 	static void clearAreas(Session session)
@@ -123,25 +94,7 @@ public class ComputeServedAreas {
 		}
 	}
 
-	
-	protected static void commitData(Session session, Transaction tx)
-	{
-		try
-		{
-	         tx.commit();
-	         tx = session.beginTransaction();
-	    }
-		catch (HibernateException e) 
-		{
-	         System.err.println("Failed to commit objects to database: " + e);
-	         e.printStackTrace();
-	         session.close();  
-	         System.exit(-1); 
-	    }
-	}
-	
-	
-	protected static void plotData(Session session)
+	public static void plotData(Session session)
 	{
 		ChartXYPlot chart = new ChartXYPlot(
 				"CENTAUR", 
