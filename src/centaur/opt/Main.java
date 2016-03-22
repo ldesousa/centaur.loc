@@ -36,11 +36,11 @@ public class Main
 	{
 		setUpConnection();
 		
-		FloodedSegments.compute(session);
+		/*FloodedSegments.compute(session);
 		commitData(session, tx);
 		
 		ServedAreas.compute(session);
-		commitData(session, tx);			
+		commitData(session, tx);			*/
 		ServedAreas.plotData(session);
 		
 		session.close();

@@ -1,27 +1,15 @@
 package centaur.opt;
 
-import java.io.BufferedOutputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.PrintStream;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.Scanner;
 import java.util.Set;
 
-import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
 
 import centaur.db.Node;
 import centaur.db.Candidate;
 import centaur.db.Subcatchment;
-import centaur.db.Flooded;
 import centaur.db.Link;
 
 
@@ -99,8 +87,8 @@ public class ServedAreas {
 		ChartXYPlot chart = new ChartXYPlot(
 				"CENTAUR", 
 				"Candidates capacities", 
-				"Volume", 
-				"Served area", 
+				"Served area (?)", 
+				"Volume (m³)", 
 				"Candidate");
 		
 		Query query =  session.createQuery("from Candidate s");
@@ -109,8 +97,8 @@ public class ServedAreas {
 		for (Candidate c : candidates)
 		{
 			if (c.getFloodedVolume() != null)
-				chart.addDataPoint(c.getFloodedVolume().doubleValue(), 
-						c.getServedArea().doubleValue());
+				chart.addDataPoint(c.getServedArea().doubleValue(),
+						c.getFloodedVolume().doubleValue());
 		}
 		
 		chart.display();
