@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Mar 18, 2016 9:34:13 AM by Hibernate Tools 4.3.1.Final -->
+<!-- Generated Mar 23, 2016 11:23:57 AM by Hibernate Tools 4.3.1.Final -->
 <hibernate-mapping>
     <class name="centaur.db.Outfall" table="outfall" optimistic-lock="version">
         <comment>This is a special kind of junction</comment>

@@ -57,9 +57,6 @@ public class FloodedSegments
 				System.out.println("Gate candidates: " + candidates.size());
 			}
 		}
-		
-		System.out.println("\nProposed candidates: ");
-		for (Node g : candidates) System.out.println(g.getId());
 	}
 	
 	static void clearDB(Session session)
@@ -136,6 +133,11 @@ public class FloodedSegments
 		for(Link l : floodedLinks)
 		{
 			Flooded f = new Flooded(c, l);
+			double outletElev = l.getNodeByIdNodeTo().getElevation().doubleValue();
+		    double inletElev = l.getNodeByIdNodeFrom().getElevation().doubleValue();
+		    if (l.getNodeByIdNodeFrom().getElevation().compareTo(currentOverflow) > 0)
+		    	f.setVolumeFraction(new BigDecimal(
+		    			(currentOverflow.doubleValue() - outletElev) / (inletElev - outletElev)));
 			session.save(f);
 		}
 	}

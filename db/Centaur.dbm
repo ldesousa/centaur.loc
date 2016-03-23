@@ -476,7 +476,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="flooded">
 	<schema name="centaur"/>
 	<role name="postgres"/>
-	<position x="448" y="494"/>
+	<position x="428" y="504"/>
 	<column name="id_flooded" not-null="true">
 		<type name="serial"/>
 	</column>
@@ -485,6 +485,9 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</column>
 	<column name="id_link" not-null="true">
 		<type name="integer"/>
+	</column>
+	<column name="volume_fraction">
+		<type name="numeric"/>
 	</column>
 	<constraint name="pk_flooded" type="pk-constr" table="centaur.flooded">
 		<columns names="id_flooded" ref-type="src-columns"/>

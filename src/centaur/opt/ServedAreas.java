@@ -81,26 +81,4 @@ public class ServedAreas {
 			}
 		}
 	}
-
-	public static void plotData(Session session)
-	{
-		ChartXYPlot chart = new ChartXYPlot(
-				"CENTAUR", 
-				"Candidates capacities", 
-				"Served area (?)", 
-				"Volume (m³)", 
-				"Candidate");
-		
-		Query query =  session.createQuery("from Candidate s");
-		LinkedList<Candidate> candidates = new LinkedList<Candidate>(query.list());
-		
-		for (Candidate c : candidates)
-		{
-			if (c.getFloodedVolume() != null)
-				chart.addDataPoint(c.getServedArea().doubleValue(),
-						c.getFloodedVolume().doubleValue());
-		}
-		
-		chart.display();
-	}
 }

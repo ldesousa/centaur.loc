@@ -127,7 +127,7 @@ SELECT n.id,
 
 CREATE OR REPLACE VIEW centaur.v_candidate_volume AS
 SELECT c.id_node, 
-       sum(l.volume) AS flooded_volume
+       sum(l.volume * COALESCE(f.volume_fraction, 1)) AS flooded_volume
   FROM centaur.candidate c,
        centaur.flooded f,
        centaur.v_conduit l	
