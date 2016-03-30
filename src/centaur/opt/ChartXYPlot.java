@@ -1,3 +1,17 @@
+/* ****************************************************************************
+ * Copyright (c) 2016 EAWAG - Swiss Federal Institute for Aquatic Research 
+ *                            and Technology
+ *
+ * Author: Luís de Sousa [luis.desousa@eawag.ch]
+ * Date: 18-03-2016
+ * Description:
+ * An XY chart based on the JFreeChart library. Provides methods to display the
+ * plot and add data points.
+ * 
+ * This software is licenced under the European Union Public Licence V. 1.1,
+ * please check the LICENCE file for details or the web page:
+ * https://joinup.ec.europa.eu/community/eupl/og_page/eupl
+ * ***************************************************************************/
 package centaur.opt;
 
 import java.awt.Color;
@@ -15,14 +29,37 @@ import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.xy.XYSeriesCollection; 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ChartXYPlot.
+ */
 public class ChartXYPlot extends ApplicationFrame 
 {
+	
+	/** The JFreeChart instance. */
 	private JFreeChart xyChart;
+	
+	/** The data series. */
 	private XYSeries series;
+	
+	/** The title. */
 	private String title;
+	
+	/** The xx label. */
 	private String xxLabel;
+	
+	/** The yy label. */
 	private String yyLabel;
 	
+   /**
+    * Instantiates a new xy plot.
+    *
+    * @param applicationTitle the application window title.
+    * @param chartTitle the chart title.
+    * @param xxLabel the xx label.
+    * @param yyLabel the yy label.
+    * @param seriesLabel the series label.
+    */
    public ChartXYPlot( String applicationTitle, String chartTitle, String xxLabel, String yyLabel, String seriesLabel)
    {
 	   super(applicationTitle);
@@ -32,22 +69,38 @@ public class ChartXYPlot extends ApplicationFrame
 	   series = new XYSeries(seriesLabel);
    }
    
+   /**
+    * Adds a new xy data point to chart series.
+    *
+    * @param x the x value.
+    * @param y the y value.
+    */
    public void addDataPoint(double x, double y)
    {
 	   series.add(x, y);
    }
    
-   private void createSampleDataset()
+   /**
+    * Creates a sample data series with 100 data points to test the display.
+    */
+   private void createSampleSeries()
    {    
       for(int i = 0; i < 100; i++) series.add( i , i );               
    }
    
+   /**
+    * Displays the xy plot using a sample data series.
+    */
    public void tryIt()
    {
-	   createSampleDataset();
+	   createSampleSeries();
 	   display();
    }
    
+   /**
+    * Displays the xy plot in a new window, portraying all the data points 
+    * presently in the series.
+    */
    public void display()
    {
 	   final XYSeriesCollection dataset = new XYSeriesCollection();          
@@ -61,7 +114,7 @@ public class ChartXYPlot extends ApplicationFrame
 	     PlotOrientation.VERTICAL,
 	     true, true, false);
 	   
-	   // Colours and shapes
+	  // Colours and shapes
 	  Shape shape  = new Ellipse2D.Double(0,0,5,5);
 	  XYPlot xyPlot = (XYPlot) xyChart.getPlot();
 	  XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) xyPlot.getRenderer();
