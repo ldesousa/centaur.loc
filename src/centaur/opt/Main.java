@@ -1,3 +1,17 @@
+/* ****************************************************************************
+ * Copyright (c) 2016 EAWAG - Swiss Federal Institute for Aquatic Research 
+ *                            and Technology
+ *
+ * Author: Luís de Sousa [luis.desousa@eawag.ch]
+ * Date: 18-03-2016
+ * Description: 
+ * Main class for the optimisation package. Contains utilitary methods managing
+ * the database connection.
+ * 
+ * This software is licenced under the European Union Public Licence V. 1.1,
+ * please check the LICENCE file for details or the web page:
+ * https://joinup.ec.europa.eu/community/eupl/og_page/eupl
+ * ***************************************************************************/
 package centaur.opt;
 
 import java.util.LinkedList;
@@ -10,18 +24,30 @@ import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
 import centaur.db.Candidate;
+import centaur.db.VCandidate;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Main.
+ */
 public class Main
 {
+	
+	/** The database session factory. */
 	protected static SessionFactory factory;
+	
+	/** The database session. */
 	protected static Session session;
+	
+	/** The database transaction. */
 	protected static Transaction tx;
 	
-	public Main() {}
-	
+	/**
+	 * Sets the up the connection to the database, creating a new session and 
+	 * initiating a transaction.
+	 */
 	protected static void setUpConnection()
 	{
-		// Initialise database session
 		try
 		{
 	         factory = new Configuration()
@@ -37,6 +63,13 @@ public class Main
 	    }
 	}
 	
+	/**
+	 * Commits to the database any data modified or created during the present 
+	 * session. If successful, initiates a new transaction.
+	 *
+	 * @param session the database session.
+	 * @param tx the database transaction.
+	 */
 	protected static void commitData(Session session, Transaction tx)
 	{
 		try
@@ -53,6 +86,12 @@ public class Main
 	    }
 	}
 	
+	/**
+	 * Plots in a system window served areas against storage volume for each
+	 * gate Candidate.
+	 *
+	 * @param session the database session.
+	 */
 	public static void plotData(Session session)
 	{
 		ChartXYPlot chart = new ChartXYPlot(
@@ -62,7 +101,10 @@ public class Main
 				"Volume (m³)", 
 				"Candidate");
 		
-		Query query =  session.createQuery("from Candidate s");
+		/*Query query =  session.createQuery("from VCandidate");
+		LinkedList<VCandidate> candidates = new LinkedList<VCandidate>(query.list());*/
+		
+		Query query =  session.createQuery("from Candidate");
 		LinkedList<Candidate> candidates = new LinkedList<Candidate>(query.list());
 		
 		for (Candidate c : candidates)
@@ -76,6 +118,11 @@ public class Main
 	}
 	
 	
+	/**
+	 * The main method.
+	 *
+	 * @param args the arguments
+	 */
 	public static void main(final String[] args) 
 	{
 		setUpConnection();
@@ -83,8 +130,8 @@ public class Main
 		/*FloodedSegments.compute(session);
 		commitData(session, tx);*/
 		
-		ServedAreas.compute(session);
-		commitData(session, tx);			
+		/*ServedAreas.compute(session);
+		commitData(session, tx);	*/		
 		
 		plotData(session);
 		
