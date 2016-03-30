@@ -1,3 +1,18 @@
+/* *****************************************************************************
+ * Copyright (c) 2016 EAWAG - Swiss Federal Institute for Aquatic Research 
+ *                            and Technology
+ *
+ * Author: Luís de Sousa [luis.desousa@eawag.ch]
+ * Date: 17-03-2016
+ * Description:
+ * Computes the area served by each gate Candidate. Recursively assigns the area 
+ * of each Subcatchment to the Candidates downstream. The total served area 
+ * provides a proxy to the maximum flow at the Candidate.
+ * 
+ * This software is licenced under the European Union Public Licence V. 1.1,
+ * please check the LICENCE file for details or the web page:
+ * https://joinup.ec.europa.eu/community/eupl/og_page/eupl
+ * ****************************************************************************/
 package centaur.opt;
 
 import java.math.BigDecimal;
@@ -13,10 +28,20 @@ import centaur.db.Subcatchment;
 import centaur.db.Link;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ServedAreas.
+ */
 public class ServedAreas {
 	
+	/** The subcatchments. */
 	static LinkedList<Subcatchment> subcatchments;
 
+	/**
+	 * Computes the total Subcatchment area served by each gate Candidate.
+	 *
+	 * @param session the database session.
+	 */
 	public static void compute(Session session) 
 	{
 		System.out.println("Starting up");
@@ -54,12 +79,26 @@ public class ServedAreas {
 		System.out.println("\nSucessfully calculated served areas.");
 	}
 	
+	/**
+	 * Clears area served by each Candidate setting it to zero.
+	 *
+	 * @param session the database session.
+	 */
 	static void clearAreas(Session session)
 	{
 		session.createQuery(String.format("UPDATE %s SET served_area = 0", Candidate.class.getName())).executeUpdate();
 		session.flush();
 	}
 	
+	/**
+	 * Recursively transports downstream the area served by a Candidate, 
+	 * summing it up to any Candidates found in the path to the Outfall(s). 
+	 * If more than one link departs from the current Candidate, the served 
+	 * area is split proportionately. 
+	 *
+	 * @param area the area to be transported.
+	 * @param outwardLinks the set of links departing from a particular node.
+	 */
 	static void transportDownstream(BigDecimal area, Set<Link> outwardLinks)
 	{	
 		for (Link l : outwardLinks)
