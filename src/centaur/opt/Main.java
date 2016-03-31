@@ -113,6 +113,56 @@ public class Main
 		chart.display();
 	}
 	
+	/**
+	 * Plots in a system window gate Candidates ranked by floodable volume.
+	 *
+	 * @param session the database session.
+	 */
+	public static void plotVolumeRank(Session session)
+	{
+		ChartXYPlot chart = new ChartXYPlot(
+				"CENTAUR", 
+				"Candidates ranked by floodable volume", 
+				"Rank", 
+				"Volume (m³)", 
+				"Candidate");
+		
+		Query query =  session.createQuery("FROM VCandidate ORDER BY flooded_volume DESC");
+		LinkedList<VCandidate> candidates = new LinkedList<VCandidate>(query.list());
+		
+		int i = 1;
+		for (VCandidate c : candidates)
+			if (c.getFloodedVolume() != null)
+				chart.addDataPoint(i++, c.getFloodedVolume().doubleValue());
+		
+		chart.display();
+	}
+	
+	/**
+	 * Plots in a system window gate Candidates ranked by served area.
+	 *
+	 * @param session the database session.
+	 */
+	public static void plotAreaRank(Session session)
+	{
+		ChartXYPlot chart = new ChartXYPlot(
+				"CENTAUR", 
+				"Candidates ranked by Served Area", 
+				"Rank", 
+				"Area (?)", 
+				"Candidate");
+		
+		Query query =  session.createQuery("FROM VCandidate ORDER BY served_area DESC");
+		LinkedList<VCandidate> candidates = new LinkedList<VCandidate>(query.list());
+		
+		int i = 1;
+		for (VCandidate c : candidates)
+			if (c.getServedArea() != null)
+				chart.addDataPoint(i++, c.getServedArea().doubleValue());
+		
+		chart.display();
+	}
+	
 	
 	/**
 	 * The main method.
@@ -123,13 +173,15 @@ public class Main
 	{
 		setUpConnection();
 		
-		FloodedSegments.compute(session);
+		/*FloodedSegments.compute(session);
 		commitData(session, tx);
 		
 		ServedAreas.compute(session);
-		commitData(session, tx); 		
+		commitData(session, tx); */		
 		
-		plotData(session);
+		//plotData(session);
+		//plotVolumeRank(session);
+		plotAreaRank(session);
 		
 		session.close();
     }
