@@ -23,7 +23,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
-import centaur.db.Candidate;
 import centaur.db.VCandidate;
 
 // TODO: Auto-generated Javadoc
@@ -101,13 +100,10 @@ public class Main
 				"Volume (m³)", 
 				"Candidate");
 		
-		/*Query query =  session.createQuery("from VCandidate");
-		LinkedList<VCandidate> candidates = new LinkedList<VCandidate>(query.list());*/
+		Query query =  session.createQuery("from VCandidate");
+		LinkedList<VCandidate> candidates = new LinkedList<VCandidate>(query.list());
 		
-		Query query =  session.createQuery("from Candidate");
-		LinkedList<Candidate> candidates = new LinkedList<Candidate>(query.list());
-		
-		for (Candidate c : candidates)
+		for (VCandidate c : candidates)
 		{
 			if (c.getFloodedVolume() != null)
 				chart.addDataPoint(c.getServedArea().doubleValue(),
@@ -127,11 +123,11 @@ public class Main
 	{
 		setUpConnection();
 		
-		/*FloodedSegments.compute(session);
-		commitData(session, tx);*/
+		FloodedSegments.compute(session);
+		commitData(session, tx);
 		
-		/*ServedAreas.compute(session);
-		commitData(session, tx);	*/		
+		ServedAreas.compute(session);
+		commitData(session, tx); 		
 		
 		plotData(session);
 		

@@ -30,5 +30,6 @@
 		<mapping resource="centaur/db/Polygon.hbm.xml"/>
 		<mapping resource="centaur/db/Candidate.hbm.xml"/>
 		<mapping resource="centaur/db/Flooded.hbm.xml"/>
+		<mapping resource="centaur/db/VCandidate.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>

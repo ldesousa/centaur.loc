@@ -27,6 +27,7 @@
 	<table-filter match-name="polygon"></table-filter>
 	<table-filter match-name="flooded" />
 	<table-filter match-name="candidate" />
+	<table-filter match-name="v_candidate" />
 	
 	<!-- Sequences -->
 	<table name="link">
@@ -65,5 +66,15 @@
 			</generator>
         </primary-key>
 	</table>
+	
+	<!-- Views -->
+	<table name="v_candidate">
+        <primary-key>
+            <key-column name="id"/>
+        </primary-key>
+        <!-- <column name="outflow_elevation"/>
+        <column name="served_area"/>
+        <column name="flooded_volume"/> -->
+    </table>
 	
 </hibernate-reverse-engineering>
