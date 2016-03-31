@@ -15,6 +15,7 @@
 package centaur.opt;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 import java.awt.BasicStroke; 
@@ -98,10 +99,12 @@ public class ChartXYPlot extends ApplicationFrame
    }
    
    /**
-    * Displays the xy plot in a new window, portraying all the data points 
-    * presently in the series.
+    * Creates a ChartPanel object rendering the present data series and ready 
+    * for display within a JFrame or similar. 
+    * 
+    * @return a ChartPanel object ready for display.
     */
-   public void display()
+   public ChartPanel getChartPanel()
    {
 	   final XYSeriesCollection dataset = new XYSeriesCollection();          
 	   dataset.addSeries(series);          
@@ -113,7 +116,15 @@ public class ChartXYPlot extends ApplicationFrame
 	     dataset,
 	     PlotOrientation.VERTICAL,
 	     true, true, false);
+	
+	   //Fonts   
+	   Font fontLabel = new Font("Arial", Font.BOLD, 12); 
+	   xyChart.getXYPlot().getDomainAxis().setLabelFont(fontLabel);
+	   xyChart.getXYPlot().getRangeAxis().setLabelFont(fontLabel);
+	   xyChart.getTitle().setFont(new Font("Arial", Font.BOLD, 13));
 	   
+	   xyChart.removeLegend();
+   
 	  // Colours and shapes
 	  Shape shape  = new Ellipse2D.Double(0,0,5,5);
 	  XYPlot xyPlot = (XYPlot) xyChart.getPlot();
@@ -126,7 +137,16 @@ public class ChartXYPlot extends ApplicationFrame
 	     
 	  ChartPanel chartPanel = new ChartPanel(xyChart);
 	  chartPanel.setPreferredSize( new java.awt.Dimension(600, 400));
-	  setContentPane(chartPanel); 
+	  return chartPanel; 
+   }
+   
+   /**
+    * Displays the xy plot in a new window, portraying all the data points 
+    * presently in the series.
+    */
+   public void display()
+   {
+	  setContentPane(getChartPanel()); 
 	  this.pack();
 	  RefineryUtilities.centerFrameOnScreen(this);
 	  this.setVisible(true);

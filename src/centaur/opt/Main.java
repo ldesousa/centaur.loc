@@ -14,7 +14,10 @@
  * ***************************************************************************/
 package centaur.opt;
 
+import java.awt.BorderLayout;
 import java.util.LinkedList;
+
+import javax.swing.JFrame;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -40,6 +43,15 @@ public class Main
 	
 	/** The database transaction. */
 	protected static Transaction tx;
+	
+	/** The XY plot of Volume vs Area */
+	protected static ChartXYPlot chartXYVolArea;
+	
+	/** The plot of Volume ranking */
+	protected static ChartXYPlot chartRankVolume;
+	
+	/** The plot of Area ranking */
+	protected static ChartXYPlot chartRankArea;
 	
 	/**
 	 * Sets the up the connection to the database, creating a new session and 
@@ -93,7 +105,7 @@ public class Main
 	 */
 	public static void plotData(Session session)
 	{
-		ChartXYPlot chart = new ChartXYPlot(
+		chartXYVolArea = new ChartXYPlot(
 				"CENTAUR", 
 				"Candidates capacities", 
 				"Served area (?)", 
@@ -106,11 +118,9 @@ public class Main
 		for (VCandidate c : candidates)
 		{
 			if (c.getFloodedVolume() != null)
-				chart.addDataPoint(c.getServedArea().doubleValue(),
+				chartXYVolArea.addDataPoint(c.getServedArea().doubleValue(),
 						c.getFloodedVolume().doubleValue());
 		}
-		
-		chart.display();
 	}
 	
 	/**
@@ -120,9 +130,9 @@ public class Main
 	 */
 	public static void plotVolumeRank(Session session)
 	{
-		ChartXYPlot chart = new ChartXYPlot(
+		chartRankVolume = new ChartXYPlot(
 				"CENTAUR", 
-				"Candidates ranked by floodable volume", 
+				"Candidates ranked by floodable Volume", 
 				"Rank", 
 				"Volume (m³)", 
 				"Candidate");
@@ -133,9 +143,7 @@ public class Main
 		int i = 1;
 		for (VCandidate c : candidates)
 			if (c.getFloodedVolume() != null)
-				chart.addDataPoint(i++, c.getFloodedVolume().doubleValue());
-		
-		chart.display();
+				chartRankVolume.addDataPoint(i++, c.getFloodedVolume().doubleValue());
 	}
 	
 	/**
@@ -145,7 +153,7 @@ public class Main
 	 */
 	public static void plotAreaRank(Session session)
 	{
-		ChartXYPlot chart = new ChartXYPlot(
+		chartRankArea = new ChartXYPlot(
 				"CENTAUR", 
 				"Candidates ranked by Served Area", 
 				"Rank", 
@@ -158,9 +166,21 @@ public class Main
 		int i = 1;
 		for (VCandidate c : candidates)
 			if (c.getServedArea() != null)
-				chart.addDataPoint(i++, c.getServedArea().doubleValue());
+				chartRankArea.addDataPoint(i++, c.getServedArea().doubleValue());
+	}
+	
+	public static void plotAllGraphs(Session session)
+	{		
+		plotData(session);
+		plotVolumeRank(session);
+		plotAreaRank(session);
 		
-		chart.display();
+		JFrame frame = new JFrame("CENTAUR");
+		frame.getContentPane().add(chartXYVolArea.getChartPanel(), BorderLayout.NORTH);
+		frame.getContentPane().add(chartRankArea.getChartPanel(), BorderLayout.WEST);
+		frame.getContentPane().add(chartRankVolume.getChartPanel(), BorderLayout.EAST);
+		frame.pack();
+		frame.setVisible(true);
 	}
 	
 	
@@ -181,7 +201,9 @@ public class Main
 		
 		//plotData(session);
 		//plotVolumeRank(session);
-		plotAreaRank(session);
+		//plotAreaRank(session);
+		
+		plotAllGraphs(session);
 		
 		session.close();
     }
