@@ -108,8 +108,8 @@ public class Main
 		chartXYVolArea = new ChartXYPlot(
 				"CENTAUR", 
 				"Candidates capacities", 
-				"Served area (?)", 
-				"Volume (m³)", 
+				"Served area (ha)", 
+				"Storage volume (m³)", 
 				"Candidate");
 		
 		Query query =  session.createQuery("from VCandidate");
@@ -132,7 +132,7 @@ public class Main
 	{
 		chartRankVolume = new ChartXYPlot(
 				"CENTAUR", 
-				"Candidates ranked by floodable Volume", 
+				"Candidates ranked by storage Volume", 
 				"Rank", 
 				"Volume (m³)", 
 				"Candidate");
@@ -155,9 +155,9 @@ public class Main
 	{
 		chartRankArea = new ChartXYPlot(
 				"CENTAUR", 
-				"Candidates ranked by Served Area", 
+				"Candidates ranked by served Area", 
 				"Rank", 
-				"Area (?)", 
+				"Area (ha)", 
 				"Candidate");
 		
 		Query query =  session.createQuery("FROM VCandidate ORDER BY served_area DESC");
