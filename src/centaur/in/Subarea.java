@@ -1,3 +1,16 @@
+/* ****************************************************************************
+ * Copyright (c) 2016 EAWAG - Swiss Federal Institute for Aquatic Research 
+ *                            and Technology
+ *
+ * Author: Luís de Sousa [luis.desousa@eawag.ch]
+ * Date: 10-02-2016
+ * Description:
+ * CENTAUR specific Subarea Entity.
+ * 
+ * This software is licenced under the European Union Public Licence V. 1.1,
+ * please check the LICENCE file for details or the web page:
+ * https://joinup.ec.europa.eu/community/eupl/og_page/eupl
+ * ***************************************************************************/
 package centaur.in;
 
 import java.math.BigDecimal;
@@ -7,18 +20,39 @@ import java.util.Random;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Subarea.
+ */
 public class Subarea /*extends centaur.db.Subarea*/ implements Importable
 {
+	
+	/** The subarea. */
 	centaur.db.Subarea subarea;
 
+	/**
+	 * Instantiates a new subarea.
+	 */
 	public Subarea() 
 	{
 		subarea = new centaur.db.Subarea();
 	}
 	
+	/**
+	 * Gets the persistent object.
+	 *
+	 * @return the persistent object
+	 */
 	public centaur.db.Subarea getPersistentObject() {return subarea;}
 	
-	// Returns: true if it was able to find a corresponding record, false otherwise.
+	/**
+	 * Loads the Subarea instance from a given name.
+	 *
+	 * @param session the database session.
+	 * @param name the instance name to match. 
+	 * @return true if an instance with a matching name was found, false 
+	 * otherwise.
+	 */
 	protected Boolean loadFromName(Session session, String name)
 	{		
 		List list = session.createCriteria(centaur.db.Subarea.class)
@@ -33,6 +67,9 @@ public class Subarea /*extends centaur.db.Subarea*/ implements Importable
 		else return false;
 	}
 	
+	/* (non-Javadoc)
+	 * @see centaur.in.Importable#importFromSWMMLine(java.lang.String, org.hibernate.Session, java.util.Random, int)
+	 */
 	@Override
 	public void importFromSWMMLine(String lineSWMM, Session session, Random generator, int newIdFloor)
 	{		

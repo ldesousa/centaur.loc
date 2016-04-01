@@ -1,3 +1,16 @@
+/* ****************************************************************************
+ * Copyright (c) 2016 EAWAG - Swiss Federal Institute for Aquatic Research 
+ *                            and Technology
+ *
+ * Author: Luís de Sousa [luis.desousa@eawag.ch]
+ * Date: 08-02-2016
+ * Description:
+ * CENTAUR specific Pump Entity.
+ * 
+ * This software is licenced under the European Union Public Licence V. 1.1,
+ * please check the LICENCE file for details or the web page:
+ * https://joinup.ec.europa.eu/community/eupl/og_page/eupl
+ * ***************************************************************************/
 package centaur.in;
 
 import java.math.BigDecimal;
@@ -8,20 +21,37 @@ import org.hibernate.Session;
 import centaur.db.Link;
 import centaur.db.Node;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Pump.
+ */
 public class Pump /*extends centaur.db.Pump*/ implements Importable
 {
+	
+	/** The pump. */
 	centaur.db.Pump pump;
 
+	/**
+	 * Instantiates a new pump.
+	 */
 	public Pump() 
 	{
 		pump = new centaur.db.Pump();
 	}
 
+	/**
+	 * Instantiates a new pump.
+	 *
+	 * @param link the link
+	 */
 	public Pump(Link link) 
 	{
 		pump = new centaur.db.Pump(link);
 	}
 	
+	/* (non-Javadoc)
+	 * @see centaur.in.Importable#importFromSWMMLine(java.lang.String, org.hibernate.Session, java.util.Random, int)
+	 */
 	@Override
 	public void importFromSWMMLine(String lineSWMM, Session session, Random generator, int newIdFloor)
 	{

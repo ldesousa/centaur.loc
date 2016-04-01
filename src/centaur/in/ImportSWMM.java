@@ -1,3 +1,16 @@
+/* ****************************************************************************
+ * Copyright (c) 2016 EAWAG - Swiss Federal Institute for Aquatic Research 
+ *                            and Technology
+ *
+ * Author: Luís de Sousa [luis.desousa@eawag.ch]
+ * Date: 01-02-2016 
+ * Description:
+ * Imports a SWMM file into a CENTAUR schema in a PostgreSQL database. 
+ * 
+ * This software is licenced under the European Union Public Licence V. 1.1,
+ * please check the LICENCE file for details or the web page:
+ * https://joinup.ec.europa.eu/community/eupl/og_page/eupl
+ * ***************************************************************************/
 package centaur.in;
 
 import centaur.db.CurveParameter;
@@ -14,32 +27,79 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ImportSWMM.
+ */
 public class ImportSWMM 
 {
+	
+	/** The input file path. */
 	static String filePath = "data/Wartegg_Luzern.INP";
+	
+	/** The file scanner. */
 	static Scanner scanner;
+	
+	/** The database sesssion factory. */
 	static SessionFactory factory;
 	
+	/** The SWMM comment flag. */
 	static String commentFlag = ";";
+	
+	/** The header for Node coordinates. */
 	static String headNodeCoordinates = "[COORDINATES]";
+	
+	/** The header for Outfalls. */
 	static String headOutfalls = "[OUTFALLS]";
+	
+	/** The header for Junctions. */
 	static String headJunctions = "[JUNCTIONS]";
+	
+	/** The header for Curves. */
 	static String headCurves = "[CURVES]";
+	
+	/** The header for Storages. */
 	static String headStorages = "[STORAGE]";
+	
+	/** The header for Pumps. */
 	static String headPumps = "[PUMPS]";
+	
+	/** The header for Weirs. */
 	static String headWeirs = "[WEIRS]";
+	
+	/** The header for Conduits. */
 	static String headConduits = "[CONDUITS]";
+	
+	/** The header for XSections. */
 	static String headXSections = "[XSECTIONS]";
-	static String headSubcatchment = "[SUBCATCHMENTS]";
+	
+	/** The head for Subcatchments. */
+	static String headSubcatchments = "[SUBCATCHMENTS]";
+	
+	/** The header for Subareas. */
 	static String headSubareas = "[SUBAREAS]";
+	
+	/** The header for Raingages. */
 	static String headRaingages = "[RAINGAGES]";
+	
+	/** The header for Coordinates. */
 	static String headCoordinates = "[COORDINATES]";
+	
+	/** The header for Polygons. */
 	static String headPolygons = "[Polygons]";
 	
 	
+	/** The random generator. */
 	static Random generator = new Random();
+	
+	/** The new id floor, to distunguish from SWMM ids. */
 	static int newIdFloor = 1000000;
 
+	/**
+	 * The main method.
+	 *
+	 * @param args the arguments
+	 */
 	public static void main(String[] args) 
 	{
 		Session session;
@@ -75,7 +135,7 @@ public class ImportSWMM
 		importObjects(Conduit.class, headConduits, session, tx);
 		importObjects(Xsection.class, headXSections, session, tx);
 		importObjects(Raingage.class, headRaingages, session, tx);
-		importObjects(Subcatchment.class, headSubcatchment, session, tx);
+		importObjects(Subcatchment.class, headSubcatchments, session, tx);
 		importObjects(Subarea.class, headSubareas, session, tx);
 		
 		//Geometries
@@ -87,6 +147,11 @@ public class ImportSWMM
 		session.close();
 	}
 	
+	/**
+	 * Clears all the database tables.
+	 *
+	 * @param session the database session.
+	 */
 	static void clearDB(Session session)
 	{
 		session.createQuery(String.format("delete from %s", Outfall.class.getName())).executeUpdate();
@@ -106,6 +171,13 @@ public class ImportSWMM
 		session.flush();
 	}
 
+	/**
+	 * Advances the file scanner to the line matching a given string.
+	 *
+	 * @param match the string to match
+	 * @return the line containing the string to match, or null if the string 
+	 * is not found.
+	 */
 	static String advanceToMatchingString(String match)
 	{
 		scanner.reset();
@@ -117,6 +189,12 @@ public class ImportSWMM
 		return null;
 	}
 	
+	/**
+	 * Commits new and updated data to the database.
+	 *
+	 * @param session the database session
+	 * @param tx the database transaction
+	 */
 	static void commitData(Session session, Transaction tx)
 	{
 		try
@@ -135,6 +213,9 @@ public class ImportSWMM
 	    }
 	}
 	
+	/**
+	 * Initialises the file scanner.
+	 */
 	static void initScanner()
 	{
 		if(scanner != null)
@@ -154,6 +235,14 @@ public class ImportSWMM
 		}
 	}
 	
+	/**
+	 * Imports all the objects of a given Entity into the CENTAUR schema.
+	 *
+	 * @param dbClass the Entity to import.
+	 * @param head the header string identifying the Entity section in the input SWMM file.
+	 * @param session the database session.
+	 * @param tx the database transaction.
+	 */
 	static void importObjects(Class dbClass, String head, Session session, Transaction tx)
 	{
 		initScanner();

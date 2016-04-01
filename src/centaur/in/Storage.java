@@ -1,3 +1,16 @@
+/* ****************************************************************************
+ * Copyright (c) 2016 EAWAG - Swiss Federal Institute for Aquatic Research 
+ *                            and Technology
+ *
+ * Author: Luís de Sousa [luis.desousa@eawag.ch]
+ * Date: 05-02-2016
+ * Description:
+ * CENTAUR specific Storage Entity.
+ * 
+ * This software is licenced under the European Union Public Licence V. 1.1,
+ * please check the LICENCE file for details or the web page:
+ * https://joinup.ec.europa.eu/community/eupl/og_page/eupl
+ * ***************************************************************************/
 package centaur.in;
 
 import java.math.BigDecimal;
@@ -10,20 +23,40 @@ import org.hibernate.criterion.Restrictions;
 import centaur.db.Node;
 import centaur.db.Curve;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Storage.
+ */
 public class Storage /*extends centaur.db.Storage*/ implements Importable
 {
+	
+	/** The storage. */
 	centaur.db.Storage storage;
 
+	/**
+	 * Instantiates a new storage.
+	 */
 	public Storage() 
 	{
 		storage = new centaur.db.Storage();
 	}
 
+	/**
+	 * Instantiates a new storage.
+	 *
+	 * @param node the node
+	 */
 	public Storage(Node node) 
 	{
 		storage = new centaur.db.Storage(node);
 	}
 	
+	/**
+	 * Sets the curve from name.
+	 *
+	 * @param session the session
+	 * @param curveName the curve name
+	 */
 	protected void setCurveFromName(Session session, String curveName)
 	{		
 		List list = session.createCriteria(centaur.db.Curve.class)
@@ -33,6 +66,9 @@ public class Storage /*extends centaur.db.Storage*/ implements Importable
 		if(list.size() > 0) storage.setCurve((Curve) list.get(0));
 	}
 	
+	/* (non-Javadoc)
+	 * @see centaur.in.Importable#importFromSWMMLine(java.lang.String, org.hibernate.Session, java.util.Random, int)
+	 */
 	@Override
 	public void importFromSWMMLine(String lineSWMM, Session session, Random generator, int newIdFloor)
 	{
