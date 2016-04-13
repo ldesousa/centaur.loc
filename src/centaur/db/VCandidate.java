@@ -1,5 +1,5 @@
 package centaur.db;
-// Generated Mar 23, 2016 12:12:19 PM by Hibernate Tools 4.3.1.Final
+// Generated Apr 13, 2016 4:15:27 PM by Hibernate Tools 4.3.1.Final
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -15,6 +15,7 @@ public class VCandidate implements java.io.Serializable {
 	//private Serializable geom;
 	private Double floodedVolume;
 	private BigDecimal servedArea;
+	private BigDecimal contributions;
 
 	public VCandidate() {
 	}
@@ -24,13 +25,14 @@ public class VCandidate implements java.io.Serializable {
 	}
 
 	public VCandidate(Integer id, BigDecimal outflowElevation, String name, /*Serializable geom,*/ Double floodedVolume,
-			BigDecimal servedArea) {
+			BigDecimal servedArea, BigDecimal contributions) {
 		this.id = id;
 		this.outflowElevation = outflowElevation;
 		this.name = name;
 		//this.geom = geom;
 		this.floodedVolume = floodedVolume;
 		this.servedArea = servedArea;
+		this.contributions = contributions;
 	}
 
 	public Integer getId() {
@@ -79,6 +81,14 @@ public class VCandidate implements java.io.Serializable {
 
 	public void setServedArea(BigDecimal servedArea) {
 		this.servedArea = servedArea;
+	}
+
+	public BigDecimal getContributions() {
+		return this.contributions;
+	}
+
+	public void setContributions(BigDecimal contributions) {
+		this.contributions = contributions;
 	}
 
 }
