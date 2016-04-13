@@ -28,6 +28,7 @@
 	<table-filter match-name="flooded" />
 	<table-filter match-name="candidate" />
 	<table-filter match-name="v_candidate" />
+	<table-filter match-name="contribution" />
 	
 	<!-- Sequences -->
 	<table name="link">
@@ -63,6 +64,15 @@
 		    	<param name="optimizer">none</param>
 		    	<param name="increment_size">1</param>
 		    	<param name="sequence_name">centaur.flooded_id_flooded_seq</param>
+			</generator>
+        </primary-key>
+	</table>
+	<table name="contribution">
+		<primary-key>
+            <generator class="org.hibernate.id.enhanced.SequenceStyleGenerator">
+		    	<param name="optimizer">none</param>
+		    	<param name="increment_size">1</param>
+		    	<param name="sequence_name">centaur.contribution_id_seq</param>
 			</generator>
         </primary-key>
 	</table>

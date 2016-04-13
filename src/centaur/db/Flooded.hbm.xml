@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Mar 23, 2016 3:02:41 PM by Hibernate Tools 4.3.1.Final -->
+<!-- Generated Apr 13, 2016 3:20:15 PM by Hibernate Tools 4.3.1.Final -->
 <hibernate-mapping>
     <class name="centaur.db.Flooded" table="flooded" optimistic-lock="version">
         <id name="idFlooded" type="java.lang.Integer">

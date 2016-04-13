@@ -80,4 +80,5 @@ public class VCandidate implements java.io.Serializable {
 	public void setServedArea(BigDecimal servedArea) {
 		this.servedArea = servedArea;
 	}
+
 }

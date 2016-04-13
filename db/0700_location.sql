@@ -5,6 +5,7 @@ RETURNS BOOLEAN AS $$
 DECLARE 
 	max_id INT;
 	f_vol NUMERIC;
+	f_area NUMERIC;
 	nodes NUMERIC;
 	tot_vol NUMERIC;
 	tot_nodes INT;
@@ -27,8 +28,8 @@ BEGIN
                                (SELECT id 
                                   FROM temp_n_gates_vol_area)));
 
-		-- Get the storage potential
-		SELECT flooded_volume INTO f_vol
+		-- Get the storage potential and area
+		SELECT flooded_volume, served_area INTO f_vol, f_area
 		  FROM centaur.v_candidate 
 		 WHERE id = max_id;
 
@@ -40,8 +41,8 @@ BEGIN
 		   AND f.id_node = max_id;
 
 		INSERT INTO temp_n_gates_vol_area VALUES(max_id, f_vol, nodes);
-		RAISE NOTICE E'Selected node % with % m3 and flooding % nodes', 
-			max_id, f_vol, nodes;
+		RAISE NOTICE E'Selected node % with % m3, serving % ha and flooding % nodes', 
+			max_id, ROUND(f_vol,1), ROUND(f_area,1), nodes;
 	
 		n_gates := n_gates - 1;
 	END LOOP;
@@ -68,6 +69,7 @@ RETURNS BOOLEAN AS $$
 DECLARE 
 	max_id INT;
 	f_vol NUMERIC;
+	f_area NUMERIC;
 	nodes NUMERIC;
 	tot_vol NUMERIC;
 	tot_nodes INT;
@@ -90,8 +92,8 @@ BEGIN
                                (SELECT id 
                                   FROM temp_n_gates_vol)));
 
-		-- Get the storage potential
-		SELECT flooded_volume INTO f_vol
+		-- Get the storage potential and area
+		SELECT flooded_volume, served_area INTO f_vol, f_area
 		  FROM centaur.v_candidate 
 		 WHERE id = max_id;
 
@@ -103,8 +105,8 @@ BEGIN
 		   AND f.id_node = max_id;
 
 		INSERT INTO temp_n_gates_vol VALUES(max_id, f_vol, nodes);
-		RAISE NOTICE E'Selected node % with % m3 and flooding % nodes', 
-			max_id, f_vol, nodes;
+		RAISE NOTICE E'Selected node % with % m3, serving % ha and flooding % nodes', 
+			max_id, ROUND(f_vol,1), ROUND(f_area,1), nodes;
 	
 		n_gates := n_gates - 1;
 	END LOOP;
@@ -171,5 +173,6 @@ SELECT id, (flooded_volume * served_area) as rank
                    WHERE f.id_link = l.id
                      AND f.id_node = 144791)
  ORDER BY rank DESC;
+
 
 
