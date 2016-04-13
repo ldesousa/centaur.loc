@@ -649,7 +649,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <constraint name="fk_contribution_subcatchment" type="fk-constr" comparison-type="MATCH FULL"
 	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="centaur.subcatchment" table="centaur.contribution">
-	<columns names="id" ref-type="src-columns"/>
+	<columns names="id_subcatchment" ref-type="src-columns"/>
 	<columns names="id" ref-type="dst-columns"/>
 </constraint>
 
