@@ -127,12 +127,20 @@ SELECT n.id,
 
 CREATE OR REPLACE VIEW centaur.v_candidate_volume AS
 SELECT c.id_node, 
-       sum(l.volume * COALESCE(f.volume_fraction, 1)) AS flooded_volume
+       SUM(l.volume * COALESCE(f.volume_fraction, 1)) AS flooded_volume
   FROM centaur.candidate c,
        centaur.flooded f,
        centaur.v_conduit l	
  WHERE l.id = f.id_link
    AND c.id_node = f.id_node
+ GROUP BY(c.id_node);
+
+CREATE OR REPLACE VIEW centaur.v_candidate_contribution AS
+SELECT c.id_node,
+       SUM(b.value) as contributions
+  FROM centaur.candidate c,
+       centaur.contribution b
+ WHERE c.id_node = b.id_node
  GROUP BY(c.id_node);
 
 CREATE OR REPLACE VIEW centaur.v_candidate AS
@@ -141,12 +149,15 @@ SELECT n.id,
        n.name,
        n.geom,
        v.flooded_volume,
-       c.served_area
+       c.served_area,
+       b.contributions
   FROM centaur.candidate c,
        centaur.node n,
-       centaur.v_candidate_volume v
+       centaur.v_candidate_volume v,
+       centaur.v_candidate_contribution b
  WHERE c.id_node = n.id
-   AND c.id_node = v.id_node;
+   AND c.id_node = v.id_node
+   AND c.id_node = b.id_node;
 
 SELECT c.id, sum(l.volume)
   FROM centaur.v_candidate c,
@@ -167,3 +178,5 @@ SELECT f.id_flooded,
   FROM centaur.flooded f,
        centaur.link l	
  WHERE f.id_link = l.id;
+
+
