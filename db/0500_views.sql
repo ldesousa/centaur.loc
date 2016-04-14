@@ -137,10 +137,10 @@ SELECT c.id_node,
 
 CREATE OR REPLACE VIEW centaur.v_candidate_contribution AS
 SELECT c.id_node,
-       SUM(b.value) as contributions
-  FROM centaur.candidate c,
-       centaur.contribution b
- WHERE c.id_node = b.id_node
+       COALESCE(SUM(b.value), 0) AS contributions
+  FROM centaur.candidate c
+  LEFT JOIN centaur.contribution b
+    ON c.id_node = b.id_node
  GROUP BY(c.id_node);
 
 CREATE OR REPLACE VIEW centaur.v_candidate AS
@@ -178,5 +178,7 @@ SELECT f.id_flooded,
   FROM centaur.flooded f,
        centaur.link l	
  WHERE f.id_link = l.id;
+
+
 
 
