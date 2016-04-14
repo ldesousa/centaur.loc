@@ -194,16 +194,16 @@ public class Main
 		setUpConnection();
 		
 		/*FloodedSegments.compute(session);
-		commitData(session, tx);
+		commitData(session, tx); */
 		
 		ServedAreas.compute(session);
-		commitData(session, tx); */		
+		commitData(session, tx); 	
 		
 		//plotData(session);
 		//plotVolumeRank(session);
 		//plotAreaRank(session);
 		
-		plotAllGraphs(session);
+		//plotAllGraphs(session);
 		
 		session.close();
     }

@@ -16,15 +16,21 @@
 package centaur.opt;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Set;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.criterion.Order;
 
 import centaur.db.Node;
 import centaur.db.Candidate;
+import centaur.db.Contribution;
 import centaur.db.Subcatchment;
+import centaur.db.VCandidate;
+import centaur.in.Outfall;
 import centaur.db.Link;
 
 
@@ -36,6 +42,9 @@ public class ServedAreas {
 	
 	/** The subcatchments. */
 	static LinkedList<Subcatchment> subcatchments;
+	
+	/** The contributions of each subcatchment */
+	static Map<Integer, BigDecimal> contributions = new HashMap<Integer, BigDecimal>();
 
 	/**
 	 * Computes the total Subcatchment area served by each gate Candidate.
@@ -48,6 +57,35 @@ public class ServedAreas {
 		
 		clearAreas(session);
 		
+		computeContributions(session);
+		 	
+		VCandidate cand = getBestCandidate(session);
+		
+		System.out.println("The best candidate: " + cand.getId());
+		
+		//updateContributions(cand, session);
+	}
+	
+	/**
+	 * Clears the Contribution table and the area served by each Candidate, 
+	 * setting it to zero.
+	 *
+	 * @param session the database session.
+	 */
+	static void clearAreas(Session session)
+	{
+		session.createQuery(String.format("delete from %s", Contribution.class.getName())).executeUpdate();
+		session.createQuery(String.format("UPDATE %s SET served_area = 0", Candidate.class.getName())).executeUpdate();
+		session.flush();
+	}
+	
+	/**
+	 * Computes the contributing areas for each candidate.
+	 * 
+	 * @ param session the database session
+	 */
+	static void computeContributions(Session session)
+	{
 		Query query =  session.createQuery("from Subcatchment s");
 		subcatchments = new LinkedList<Subcatchment>(query.list());
 		
@@ -63,31 +101,67 @@ public class ServedAreas {
 				BigDecimal servedArea = BigDecimal.valueOf(
 						s.getArea().doubleValue() * s.getImperv().doubleValue() / 100);
 				
+				contributions.put(s.getId(), servedArea);
+				
 				Candidate c = s.getNode().getCandidate();
 				// If there is no candidate this is a leaf node
 				if (c != null)
 				{					
+					// => This sum can be removed later on
 					if (c.getServedArea() == null) c.setServedArea(servedArea);
 					else c.setServedArea(c.getServedArea().add(servedArea));
+					
+					createContribution(c, s, servedArea, session);
 				}	
 				
 				transportDownstream(
 						servedArea, 
-						s.getNode().getLinksForIdNodeFrom());
+						s.getNode().getLinksForIdNodeFrom(),
+						s, session);
 			}
 		}
+		
+		session.getTransaction().commit();
+        session.beginTransaction();
+		
 		System.out.println("\nSucessfully calculated served areas.");
 	}
 	
 	/**
-	 * Clears area served by each Candidate setting it to zero.
-	 *
-	 * @param session the database session.
+	 * Creates a new Contribution instance. Checks if the candidate has already
+	 * been registered for the given Subcatchment to avoid double couting with 
+	 * upstream bifurcations. 
+	 * 
+	 * @param candidate the candidate instance.
+	 * @param subcatchment the subcatchment instance.
+	 * @param value the contribution to assign to the pair 
+	 *        (candidate, subcatchment)
+	 * @param session the database session
+	 * @return true if the candidate has already been visited for the given 
+	 *         subcatchment, false otherwise
 	 */
-	static void clearAreas(Session session)
-	{
-		session.createQuery(String.format("UPDATE %s SET served_area = 0", Candidate.class.getName())).executeUpdate();
-		session.flush();
+	static Boolean createContribution(Candidate candidate, Subcatchment subcatchment, 
+			BigDecimal value, Session session)
+	{		
+		// Check if this pair has already been registered.
+		// Bifurcations may carry the same subcatchment more than once downstream.	
+		String check = 	"SELECT c FROM Contribution c WHERE c.candidate.idNode = :idNode " +
+						" AND c.subcatchment.id = :idSubcatchment";
+		Query checkQuery = session.createQuery(check);
+		checkQuery.setParameter("idNode", candidate.getIdNode());
+		checkQuery.setParameter("idSubcatchment", subcatchment.getId());
+		if (checkQuery.list().size() > 0)
+		{
+			System.out.println("Been here before! " + candidate.getIdNode() + "  " + subcatchment.getId());
+			return true;
+		}
+		
+		Contribution cb = new Contribution();
+		cb.setCandidate(candidate);
+		cb.setSubcatchment(subcatchment);
+		cb.setValue(value);
+		session.save(cb);
+		return false;
 	}
 	
 	/**
@@ -98,8 +172,10 @@ public class ServedAreas {
 	 *
 	 * @param area the area to be transported.
 	 * @param outwardLinks the set of links departing from a particular node.
+	 * @param sub the contributing subcatchment.
+	 * @param session the database session.
 	 */
-	static void transportDownstream(BigDecimal area, Set<Link> outwardLinks)
+	static void transportDownstream(BigDecimal area, Set<Link> outwardLinks, Subcatchment sub, Session session)
 	{	
 		for (Link l : outwardLinks)
 		{
@@ -115,9 +191,31 @@ public class ServedAreas {
 					n.getCandidate().setServedArea(
 						n.getCandidate().getServedArea().add(areaShare));
 				
-				if(n.getLinksForIdNodeFrom().size() > 0)
-					transportDownstream(areaShare, n.getLinksForIdNodeFrom());
+				Boolean visited = createContribution(n.getCandidate(), sub, areaShare, session);
+				
+				if(!visited && (n.getLinksForIdNodeFrom().size() > 0))
+					transportDownstream(areaShare, n.getLinksForIdNodeFrom(), sub, session);
 			}
 		}
+	}
+	
+	/**
+	 * Retrieves the best candidate according to a particular objective 
+	 * function. Presently this is storage volume times contributing area.
+	 * 
+	 * @param session the database session.
+	 * @return the best candidate.
+	 */
+	static VCandidate getBestCandidate(Session session)
+	{		
+		String max = "Select max(c.floodedVolume * c.contributions) FROM VCandidate c";
+		Query maxQuery = session.createQuery(max);
+		
+		System.out.println("\nMax: " + maxQuery.list().get(0));
+		
+		String best = "From VCandidate as v where (v.floodedVolume * v.contributions) >= " + 
+				maxQuery.list().get(0);
+		Query bestQuery = session.createQuery(best);
+		return (VCandidate) bestQuery.list().get(0);
 	}
 }
