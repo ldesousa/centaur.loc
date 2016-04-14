@@ -23,56 +23,71 @@ import java.util.Set;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.criterion.Order;
 
 import centaur.db.Node;
 import centaur.db.Candidate;
 import centaur.db.Contribution;
+import centaur.db.Flooded;
 import centaur.db.Subcatchment;
 import centaur.db.VCandidate;
-import centaur.in.Outfall;
 import centaur.db.Link;
 
 
 // TODO: Auto-generated Javadoc
 /**
- * The Class ServedAreas.
+ * The Class OptimalByVolumeArea.
  */
-public class ServedAreas {
+public class OptimalByVolumeArea {
 	
 	/** The subcatchments. */
 	static LinkedList<Subcatchment> subcatchments;
 	
 	/** The contributions of each subcatchment */
 	static Map<Integer, BigDecimal> contributions = new HashMap<Integer, BigDecimal>();
+	
+	/** The database session. */
+	static Session session;
 
 	/**
-	 * Computes the total Subcatchment area served by each gate Candidate.
+	 * Computes the optimal locations for a given number of flood control gates
+	 * taking into account a rain event with a specific intensity during a 
+	 * determined time.
 	 *
-	 * @param session the database session.
+	 * @ param session the database session.
+	 * @ param numGates the number of gates to site.
+	 * @ param intensity the rain event intensity to consider (mm/h == l/m2).
+	 * @ param duration the time length of the rain event (minutes)
 	 */
-	public static void compute(Session session) 
+	public static void compute(Session sess, int numGates, double intensity, double duration) 
 	{
 		System.out.println("Starting up");
 		
-		clearAreas(session);
+		session = sess;
 		
-		computeContributions(session);
+		clearAreas();
+		computeContributions();
 		 	
-		VCandidate cand = getBestCandidate(session);
-		
-		System.out.println("The best candidate: " + cand.getId());
-		
-		//updateContributions(cand, session);
+		for (int i = 1; i <= numGates; i++)
+		{
+			VCandidate cand = getBestCandidate();
+			System.out.println(
+					"Candidate #" + i + ": " + cand.getId() + 
+					"\n\tvolume: " + cand.getFloodedVolume() + " m3" + 
+					"\n\tcontributing area: " + cand.getContributions() + " ha");
+			
+			updateContributions(cand, intensity, duration);
+			removeCandidates(cand);
+			session.getTransaction().commit();
+	        session.beginTransaction();
+		}
 	}
 	
 	/**
 	 * Clears the Contribution table and the area served by each Candidate, 
 	 * setting it to zero.
 	 *
-	 * @param session the database session.
 	 */
-	static void clearAreas(Session session)
+	static void clearAreas()
 	{
 		session.createQuery(String.format("delete from %s", Contribution.class.getName())).executeUpdate();
 		session.createQuery(String.format("UPDATE %s SET served_area = 0", Candidate.class.getName())).executeUpdate();
@@ -84,17 +99,18 @@ public class ServedAreas {
 	 * 
 	 * @ param session the database session
 	 */
-	static void computeContributions(Session session)
+	static void computeContributions()
 	{
 		Query query =  session.createQuery("from Subcatchment s");
 		subcatchments = new LinkedList<Subcatchment>(query.list());
 		
-		System.out.println("Subcatchments: " + subcatchments.size());
+		int numSubs = subcatchments.size();
 		
 		while(subcatchments.size() > 0)
 		{
 			Subcatchment s = subcatchments.pop();
-			System.out.println("==== Processing subcatchment: " + s.getId());
+			System.out.print("\rProcessing subcatchment " + (numSubs - subcatchments.size()) + 
+					" of " + numSubs + " : " + s.getId());
 			
 			if(s.getNode() != null)
 			{
@@ -111,13 +127,13 @@ public class ServedAreas {
 					if (c.getServedArea() == null) c.setServedArea(servedArea);
 					else c.setServedArea(c.getServedArea().add(servedArea));
 					
-					createContribution(c, s, servedArea, session);
+					createContribution(c, s, servedArea);
 				}	
 				
 				transportDownstream(
 						servedArea, 
 						s.getNode().getLinksForIdNodeFrom(),
-						s, session);
+						s);
 			}
 		}
 		
@@ -136,12 +152,12 @@ public class ServedAreas {
 	 * @param subcatchment the subcatchment instance.
 	 * @param value the contribution to assign to the pair 
 	 *        (candidate, subcatchment)
-	 * @param session the database session
+	 
 	 * @return true if the candidate has already been visited for the given 
 	 *         subcatchment, false otherwise
 	 */
 	static Boolean createContribution(Candidate candidate, Subcatchment subcatchment, 
-			BigDecimal value, Session session)
+			BigDecimal value)
 	{		
 		// Check if this pair has already been registered.
 		// Bifurcations may carry the same subcatchment more than once downstream.	
@@ -152,7 +168,7 @@ public class ServedAreas {
 		checkQuery.setParameter("idSubcatchment", subcatchment.getId());
 		if (checkQuery.list().size() > 0)
 		{
-			System.out.println("Been here before! " + candidate.getIdNode() + "  " + subcatchment.getId());
+			//System.out.println("Been here before! " + candidate.getIdNode() + "  " + subcatchment.getId());
 			return true;
 		}
 		
@@ -173,9 +189,8 @@ public class ServedAreas {
 	 * @param area the area to be transported.
 	 * @param outwardLinks the set of links departing from a particular node.
 	 * @param sub the contributing subcatchment.
-	 * @param session the database session.
 	 */
-	static void transportDownstream(BigDecimal area, Set<Link> outwardLinks, Subcatchment sub, Session session)
+	static void transportDownstream(BigDecimal area, Set<Link> outwardLinks, Subcatchment sub)
 	{	
 		for (Link l : outwardLinks)
 		{
@@ -191,10 +206,10 @@ public class ServedAreas {
 					n.getCandidate().setServedArea(
 						n.getCandidate().getServedArea().add(areaShare));
 				
-				Boolean visited = createContribution(n.getCandidate(), sub, areaShare, session);
+				Boolean visited = createContribution(n.getCandidate(), sub, areaShare);
 				
 				if(!visited && (n.getLinksForIdNodeFrom().size() > 0))
-					transportDownstream(areaShare, n.getLinksForIdNodeFrom(), sub, session);
+					transportDownstream(areaShare, n.getLinksForIdNodeFrom(), sub);
 			}
 		}
 	}
@@ -203,10 +218,9 @@ public class ServedAreas {
 	 * Retrieves the best candidate according to a particular objective 
 	 * function. Presently this is storage volume times contributing area.
 	 * 
-	 * @param session the database session.
 	 * @return the best candidate.
 	 */
-	static VCandidate getBestCandidate(Session session)
+	static VCandidate getBestCandidate()
 	{		
 		String max = "Select max(c.floodedVolume * c.contributions) FROM VCandidate c";
 		Query maxQuery = session.createQuery(max);
@@ -217,5 +231,73 @@ public class ServedAreas {
 				maxQuery.list().get(0);
 		Query bestQuery = session.createQuery(best);
 		return (VCandidate) bestQuery.list().get(0);
+	}
+	
+	/**
+	 * 
+	 * @param candidate
+	 * @ param intensity the rain event intensity to consider (mm/h == l/m2).
+	 * @ param duration the time length of the rain event (minutes)
+	 */
+	static void updateContributions(VCandidate candidate, double intensity, double duration)
+	{
+		// Calculate water volume per hectare 
+		// intensity / litres per cubic meter * square meters per hectare * hours
+		Double volumeH = intensity / 1000 * 10000 * duration / 60;
+		
+		// Compute maximum volume stored by this candidate for this event.
+		Double volumeStored = volumeH * candidate.getContributions().doubleValue();
+		if(volumeStored > candidate.getFloodedVolume().doubleValue())
+			volumeStored = candidate.getFloodedVolume().doubleValue();
+		
+		// Get all the subcatchments served by this candidate
+		String select = "SELECT c FROM Contribution c WHERE c.candidate.idNode = :idNode";
+		Query selectQuery = session.createQuery(select);
+		selectQuery.setParameter("idNode", candidate.getId());
+		LinkedList<Contribution> contribs = new LinkedList<Contribution>(selectQuery.list());
+		
+		for (Contribution contrib : contribs) 
+		{
+			// weight of this subcatchment
+			double weight = 
+					contrib.getValue().doubleValue() / 
+					candidate.getContributions().doubleValue();
+			
+			// total contribution from this subcatchment
+			double subValue = contrib.getSubcatchment().getArea().doubleValue() * volumeH;
+			
+			// fraction of the subcatchment contribution stored by the gate
+			double fraction = subValue / (volumeStored * weight);
+			
+			select = "SELECT c FROM Contribution c WHERE c.subcatchment.id = :id";
+			selectQuery = session.createQuery(select);
+			selectQuery.setParameter("id", contrib.getSubcatchment().getId());
+			LinkedList<Contribution> subContribs = 
+					new LinkedList<Contribution>(selectQuery.list());
+			
+			for (Contribution subContrib : subContribs)
+			{
+				subContrib.setValue(new BigDecimal(
+						subContrib.getValue().doubleValue() * (1 - fraction)));
+				session.save(subContrib);
+			}
+		}
+	}
+	
+	/**
+	 * Deletes all the nodes flooded by a gate from the set of candidates.
+	 *  
+	 * @param candidate the node where the is to be installed.
+	 */
+	static void removeCandidates (VCandidate candidate)
+	{
+		String select = "SELECT f FROM Flooded f WHERE f.candidate.id = :id";
+		Query selectQuery = session.createQuery(select);
+		selectQuery.setParameter("id", candidate.getId());
+		LinkedList<Flooded> flooded = 
+				new LinkedList<Flooded>(selectQuery.list());
+		
+		for (Flooded f : flooded)
+			session.delete(f.getLink().getNodeByIdNodeTo().getCandidate());
 	}
 }
