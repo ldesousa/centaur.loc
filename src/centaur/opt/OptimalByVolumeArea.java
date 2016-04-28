@@ -80,6 +80,12 @@ public class OptimalByVolumeArea {
 			session.getTransaction().commit();
 	        session.beginTransaction();
 		}
+		
+		resetCandidates();
+		session.getTransaction().commit();
+        session.beginTransaction();
+        
+		System.out.println("\nSucessfully sited " + numGates + " gates.");
 	}
 	
 	/**
@@ -135,11 +141,7 @@ public class OptimalByVolumeArea {
 						s.getNode().getLinksForIdNodeFrom(),
 						s);
 			}
-		}
-		
-		session.getTransaction().commit();
-        session.beginTransaction();
-		
+		}		
 		System.out.println("\nSucessfully calculated served areas.");
 	}
 	
@@ -200,16 +202,24 @@ public class OptimalByVolumeArea {
 				Node n = l.getNodeByIdNodeTo();
 				BigDecimal areaShare = new BigDecimal(area.doubleValue() / outwardLinks.size());
 				
-				if (n.getCandidate().getServedArea() == null)
-					n.getCandidate().setServedArea(areaShare);
+				/*if(n.getCandidate() == null)
+				{
+					System.out.println("\n!!!! Wierdo: " + n.getId());
+				}
+				
 				else
-					n.getCandidate().setServedArea(
-						n.getCandidate().getServedArea().add(areaShare));
-				
-				Boolean visited = createContribution(n.getCandidate(), sub, areaShare);
-				
-				if(!visited && (n.getLinksForIdNodeFrom().size() > 0))
-					transportDownstream(areaShare, n.getLinksForIdNodeFrom(), sub);
+				{*/
+					if (n.getCandidate().getServedArea() == null)
+						n.getCandidate().setServedArea(areaShare);
+					else
+						n.getCandidate().setServedArea(
+							n.getCandidate().getServedArea().add(areaShare));
+					
+					Boolean visited = createContribution(n.getCandidate(), sub, areaShare);
+					
+					if(!visited && (n.getLinksForIdNodeFrom().size() > 0))
+						transportDownstream(areaShare, n.getLinksForIdNodeFrom(), sub);
+				//}
 			}
 		}
 	}
@@ -285,9 +295,10 @@ public class OptimalByVolumeArea {
 	}
 	
 	/**
-	 * Deletes all the nodes flooded by a gate from the set of candidates.
+	 * Marks all the nodes flooded by a gate as taken. This way they will no 
+	 * longer figure in the VCandidate collection.
 	 *  
-	 * @param candidate the node where the is to be installed.
+	 * @param candidate the node where the gate is to be installed.
 	 */
 	static void removeCandidates (VCandidate candidate)
 	{
@@ -298,6 +309,21 @@ public class OptimalByVolumeArea {
 				new LinkedList<Flooded>(selectQuery.list());
 		
 		for (Flooded f : flooded)
-			session.delete(f.getLink().getNodeByIdNodeTo().getCandidate());
+		{
+			Node node = f.getLink().getNodeByIdNodeTo();
+			node.setTaken(true);
+			session.save(node);
+		}
+	}
+	
+	/**
+	 * Marks all the gate candidates as available for future calculations.
+	 */
+	static void resetCandidates ()
+	{
+		Query query = session.createQuery("update Node set taken = 'FALSE' ");
+		query.executeUpdate();
+		session.getTransaction().commit();
+        session.beginTransaction();
 	}
 }
