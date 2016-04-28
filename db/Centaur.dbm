@@ -70,6 +70,10 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="name">
 		<type name="varchar"/>
 	</column>
+	<column name="taken">
+		<type name="boolean"/>
+		<comment><![CDATA[True if this node is already being used by a gate or flooded by one.]]></comment>
+	</column>
 	<constraint name="pk_node" type="pk-constr" table="centaur.node">
 		<columns names="id" ref-type="src-columns"/>
 	</constraint>
