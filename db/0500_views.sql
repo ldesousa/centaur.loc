@@ -157,7 +157,8 @@ SELECT n.id,
        centaur.v_candidate_contribution b
  WHERE c.id_node = n.id
    AND c.id_node = v.id_node
-   AND c.id_node = b.id_node;
+   AND c.id_node = b.id_node
+   AND (n.taken = FALSE OR n.taken IS NULL);
 
 SELECT c.id, sum(l.volume)
   FROM centaur.v_candidate c,
@@ -178,6 +179,3 @@ SELECT f.id_flooded,
   FROM centaur.flooded f,
        centaur.link l	
  WHERE f.id_link = l.id;
-
-
-
