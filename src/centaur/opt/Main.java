@@ -197,7 +197,7 @@ public class Main
 		commitData(session, tx); */
 		
 		OptimalByVolumeArea.compute(session, 5, 1, 60);
-		commitData(session, tx);	
+		commitData(session, tx);
 		
 		//plotData(session);
 		//plotVolumeRank(session);

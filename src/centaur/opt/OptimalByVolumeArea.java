@@ -142,12 +142,12 @@ public class OptimalByVolumeArea {
 						s);
 			}
 		}		
-		System.out.println("\nSucessfully calculated served areas.");
+		System.out.println("\nSucessfully calculated contributing areas.");
 	}
 	
 	/**
 	 * Creates a new Contribution instance. Checks if the candidate has already
-	 * been registered for the given Subcatchment to avoid double couting with 
+	 * been registered for the given Subcatchment to avoid double counting with 
 	 * upstream bifurcations. 
 	 * 
 	 * @param candidate the candidate instance.
@@ -202,13 +202,13 @@ public class OptimalByVolumeArea {
 				Node n = l.getNodeByIdNodeTo();
 				BigDecimal areaShare = new BigDecimal(area.doubleValue() / outwardLinks.size());
 				
-				/*if(n.getCandidate() == null)
+				if(n.getCandidate() == null)
 				{
 					System.out.println("\n!!!! Wierdo: " + n.getId());
 				}
 				
 				else
-				{*/
+				{
 					if (n.getCandidate().getServedArea() == null)
 						n.getCandidate().setServedArea(areaShare);
 					else
@@ -219,7 +219,7 @@ public class OptimalByVolumeArea {
 					
 					if(!visited && (n.getLinksForIdNodeFrom().size() > 0))
 						transportDownstream(areaShare, n.getLinksForIdNodeFrom(), sub);
-				//}
+				}
 			}
 		}
 	}

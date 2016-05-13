@@ -109,17 +109,20 @@ public class FloodedSegments
 	 */
 	protected static void analyseNode(Node n)
 	{
-		Set<Link> links = n.getLinksForIdNodeTo();
+		Set<Link> linksTo   = n.getLinksForIdNodeTo();
+		Set<Link> linksFrom = n.getLinksForIdNodeFrom();
 		
 		// Search stops if:
 		// 1. No links arrive at this node;
 		// 2. This node is an outfall or a storage.
-		if((links.size() <= 0) || (n.getOutfall() != null) || (n.getStorage() != null))
+		// 3. There is more than one link leading downstream (bifurcation). 
+		if( linksTo.size() <= 0    || linksFrom.size() > 1   ||
+		    n.getOutfall() != null || n.getStorage() != null )
 			updateCurrentOverflow(n.getElevation(), BigDecimal.ZERO);
 		else
 		{
 			updateCurrentOverflow(n.getElevation(), n.getJunction().getMaxDepth());
-			searchLinks(links);
+			searchLinks(linksTo);
 		}
 	}
 	
