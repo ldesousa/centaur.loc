@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Apr 13, 2016 5:05:48 PM by Hibernate Tools 4.3.1.Final -->
+<!-- Generated Jun 17, 2016 8:52:13 AM by Hibernate Tools 4.3.1.Final -->
 <hibernate-mapping>
     <class name="centaur.db.Xsection" table="xsection" optimistic-lock="version">
         <id name="idLink" type="int">

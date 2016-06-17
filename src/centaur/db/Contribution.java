@@ -1,5 +1,5 @@
 package centaur.db;
-// Generated Apr 13, 2016 5:05:48 PM by Hibernate Tools 4.3.1.Final
+// Generated Jun 17, 2016 8:52:13 AM by Hibernate Tools 4.3.1.Final
 
 import java.math.BigDecimal;
 
@@ -11,16 +11,14 @@ public class Contribution implements java.io.Serializable {
 	private Integer id;
 	private Candidate candidate;
 	private Subcatchment subcatchment;
-	//private int idSubcatchment;
 	private BigDecimal value;
 
 	public Contribution() {
 	}
 
-	public Contribution(Candidate candidate, Subcatchment subcatchment, /*int idSubcatchment,*/ BigDecimal value) {
+	public Contribution(Candidate candidate, Subcatchment subcatchment, BigDecimal value) {
 		this.candidate = candidate;
 		this.subcatchment = subcatchment;
-		//this.idSubcatchment = idSubcatchment;
 		this.value = value;
 	}
 
@@ -47,14 +45,6 @@ public class Contribution implements java.io.Serializable {
 	public void setSubcatchment(Subcatchment subcatchment) {
 		this.subcatchment = subcatchment;
 	}
-
-	/*public int getIdSubcatchment() {
-		return this.idSubcatchment;
-	}
-
-	public void setIdSubcatchment(int idSubcatchment) {
-		this.idSubcatchment = idSubcatchment;
-	}*/
 
 	public BigDecimal getValue() {
 		return this.value;

@@ -150,15 +150,21 @@ SELECT n.id,
        n.geom,
        v.flooded_volume,
        c.served_area,
-       b.contributions
+       b.contributions,
+       m.count AS num_subcatchments
   FROM centaur.candidate c,
        centaur.node n,
        centaur.v_candidate_volume v,
-       centaur.v_candidate_contribution b
+       centaur.v_candidate_contribution b,
+       (SELECT t.id_node, 
+               COUNT(*) AS count 
+          FROM centaur.contribution t 
+         GROUP BY t.id_node) m
  WHERE c.id_node = n.id
    AND c.id_node = v.id_node
    AND c.id_node = b.id_node
-   AND (n.taken = FALSE OR n.taken IS NULL);
+   AND (n.taken = FALSE OR n.taken IS NULL)
+   AND c.id_node = m.id_node;
 
 SELECT c.id, sum(l.volume)
   FROM centaur.v_candidate c,

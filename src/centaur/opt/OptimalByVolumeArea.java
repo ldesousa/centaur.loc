@@ -47,45 +47,87 @@ public class OptimalByVolumeArea {
 	
 	/** The database session. */
 	static Session session;
+	
+	protected static void init(Session sess)
+	{
+		System.out.println("Starting up");
+		session = sess;
+		clearAreas();
+		computeContributions();
+	}
+	
+	protected static void finalise(int numGates)
+	{
+		resetCandidates();
+		session.getTransaction().commit();
+        session.beginTransaction();
+        
+		System.out.println("\nSucessfully sited " + numGates + " gates.");
+	}
+	
+	protected static void computeCandidate(VCandidate cand, double intensity, double duration)
+	{
+		updateContributions(cand, intensity, duration);
+		removeCandidates(cand);
+		session.getTransaction().commit();
+        session.beginTransaction();
+	}
 
 	/**
-	 * Computes the optimal locations for a given number of flood control gates
-	 * taking into account a rain event with a specific intensity during a 
-	 * determined time.
+	 * Computes the locations of a number of flood control gates optimising by 
+	 * pipe volume times contributing area. Takes into account a rain event 
+	 * with a specific intensity during a determined time.
 	 *
 	 * @ param session the database session.
 	 * @ param numGates the number of gates to site.
 	 * @ param intensity the rain event intensity to consider (mm/h == l/m2).
 	 * @ param duration the time length of the rain event (minutes)
 	 */
-	public static void compute(Session sess, int numGates, double intensity, double duration) 
+	public static void computeVolumeArea(Session sess, int numGates, double intensity, double duration) 
 	{
-		System.out.println("Starting up");
+		init(sess);
 		
-		session = sess;
-		
-		clearAreas();
-		computeContributions();
-		 	
 		for (int i = 1; i <= numGates; i++)
 		{
-			VCandidate cand = getBestCandidate();
+			VCandidate cand = getBestCandidateVolumeArea();
 			System.out.println(
 					"Candidate #" + i + ": " + cand.getId() + 
 					"\n\tvolume: " + cand.getFloodedVolume() + " m3" + 
 					"\n\tcontributing area: " + cand.getContributions() + " ha");
 			
-			updateContributions(cand, intensity, duration);
-			removeCandidates(cand);
-			session.getTransaction().commit();
-	        session.beginTransaction();
+			computeCandidate(cand, intensity, duration);
 		}
+		finalise(numGates);
+	}
+	
+	/**
+	 * Computes the locations of a number of flood control gates optimising by 
+	 * pipe volume times contributing area divided by the number of 
+	 * contributing sub-catchments. Takes into account a rain event with a 
+	 * specific intensity during a determined time.
+	 *
+	 * @ param session the database session.
+	 * @ param numGates the number of gates to site.
+	 * @ param intensity the rain event intensity to consider (mm/h == l/m2).
+	 * @ param duration the time length of the rain event (minutes)
+	 */
+	public static void computeVolumeAreaNumSubcatchments(Session sess, int numGates, 
+			double intensity, double duration) 
+	{
+		init(sess);
 		
-		resetCandidates();
-		session.getTransaction().commit();
-        session.beginTransaction();
-        
-		System.out.println("\nSucessfully sited " + numGates + " gates.");
+		for (int i = 1; i <= numGates; i++)
+		{
+			VCandidate cand = getBestCandidateVolumeAreaNumSubcatchments();
+			System.out.println(
+					"Candidate #" + i + ": " + cand.getId() + 
+					"\n\tvolume: " + cand.getFloodedVolume() + " m3" + 
+					"\n\tcontributing area: " + cand.getContributions() + " ha" +
+					"\n\tnum subcatchments: " + cand.getNumSubcatchments());
+			
+			computeCandidate(cand, intensity, duration);
+		}
+		finalise(numGates);
 	}
 	
 	/**
@@ -226,11 +268,11 @@ public class OptimalByVolumeArea {
 	
 	/**
 	 * Retrieves the best candidate according to a particular objective 
-	 * function. Presently this is storage volume times contributing area.
+	 * function, in this case storage volume times contributing area.
 	 * 
 	 * @return the best candidate.
 	 */
-	static VCandidate getBestCandidate()
+	static VCandidate getBestCandidateVolumeArea()
 	{		
 		String max = "Select max(c.floodedVolume * c.contributions) FROM VCandidate c";
 		Query maxQuery = session.createQuery(max);
@@ -238,6 +280,25 @@ public class OptimalByVolumeArea {
 		System.out.println("\nMax: " + maxQuery.list().get(0));
 		
 		String best = "From VCandidate as v where (v.floodedVolume * v.contributions) >= " + 
+				maxQuery.list().get(0);
+		Query bestQuery = session.createQuery(best);
+		return (VCandidate) bestQuery.list().get(0);
+	}
+	
+	/**
+	 * Retrieves the best candidate according to a particular objective 
+	 * function. Presently this is storage volume times contributing area.
+	 * 
+	 * @return the best candidate.
+	 */
+	static VCandidate getBestCandidateVolumeAreaNumSubcatchments()
+	{		
+		String max = "Select max(c.floodedVolume * c.contributions / c.numSubcatchments) FROM VCandidate c";
+		Query maxQuery = session.createQuery(max);
+		
+		System.out.println("\nMax: " + maxQuery.list().get(0));
+		
+		String best = "From VCandidate as c where (c.floodedVolume * c.contributions / c.numSubcatchments) >= " + 
 				maxQuery.list().get(0);
 		Query bestQuery = session.createQuery(best);
 		return (VCandidate) bestQuery.list().get(0);
