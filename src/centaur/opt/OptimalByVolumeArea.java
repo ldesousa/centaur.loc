@@ -16,6 +16,7 @@
 package centaur.opt;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -48,6 +49,14 @@ public class OptimalByVolumeArea {
 	/** The database session. */
 	static Session session;
 	
+	/** Number format for Console printing */
+	static DecimalFormat df = new DecimalFormat("###.##");
+	
+	/** 
+	 * Initialises the calculation of contributing areas.
+	 * 
+	 * @param sess the database session.
+	 */
 	protected static void init(Session sess)
 	{
 		System.out.println("Starting up");
@@ -56,6 +65,11 @@ public class OptimalByVolumeArea {
 		computeContributions();
 	}
 	
+	/**
+	 * Finalises the calculation of contributing areas.
+	 * 
+	 * @param numGates the number of gates to site.
+	 */
 	protected static void finalise(int numGates)
 	{
 		resetCandidates();
@@ -65,7 +79,14 @@ public class OptimalByVolumeArea {
 		System.out.println("\nSucessfully sited " + numGates + " gates.");
 	}
 	
-	protected static void computeCandidate(VCandidate cand, double intensity, double duration)
+	/**
+	 * Updates contributing areas after a best candidate is selected.
+	 * 
+	 * @param cand the best candidate in the present iteration
+	 * @param intensity the rain event intensity to consider (mm/h == l/m2).
+	 * @param duration the time length of the rain event (minutes)
+	 */
+	protected static void computeBestCandidate(VCandidate cand, double intensity, double duration)
 	{
 		updateContributions(cand, intensity, duration);
 		removeCandidates(cand);
@@ -92,10 +113,10 @@ public class OptimalByVolumeArea {
 			VCandidate cand = getBestCandidateVolumeArea();
 			System.out.println(
 					"Candidate #" + i + ": " + cand.getId() + 
-					"\n\tvolume: " + cand.getFloodedVolume() + " m3" + 
-					"\n\tcontributing area: " + cand.getContributions() + " ha");
+					"\n\tvolume: " + df.format(cand.getFloodedVolume()) + " m3" + 
+					"\n\tcontributing area: " + df.format(cand.getContributions()) + " ha");
 			
-			computeCandidate(cand, intensity, duration);
+			computeBestCandidate(cand, intensity, duration);
 		}
 		finalise(numGates);
 	}
@@ -121,11 +142,11 @@ public class OptimalByVolumeArea {
 			VCandidate cand = getBestCandidateVolumeAreaNumSubcatchments();
 			System.out.println(
 					"Candidate #" + i + ": " + cand.getId() + 
-					"\n\tvolume: " + cand.getFloodedVolume() + " m3" + 
-					"\n\tcontributing area: " + cand.getContributions() + " ha" +
+					"\n\tvolume: " + df.format(cand.getFloodedVolume()) + " m3" + 
+					"\n\tcontributing area: " + df.format(cand.getContributions()) + " ha" +
 					"\n\tnum subcatchments: " + cand.getNumSubcatchments());
 			
-			computeCandidate(cand, intensity, duration);
+			computeBestCandidate(cand, intensity, duration);
 		}
 		finalise(numGates);
 	}
@@ -277,7 +298,7 @@ public class OptimalByVolumeArea {
 		String max = "Select max(c.floodedVolume * c.contributions) FROM VCandidate c";
 		Query maxQuery = session.createQuery(max);
 		
-		System.out.println("\nMax: " + maxQuery.list().get(0));
+		System.out.println("\nMax: " + df.format(maxQuery.list().get(0)));
 		
 		String best = "From VCandidate as v where (v.floodedVolume * v.contributions) >= " + 
 				maxQuery.list().get(0);
