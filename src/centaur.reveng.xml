@@ -36,7 +36,7 @@
             <generator class="org.hibernate.id.enhanced.SequenceStyleGenerator">
 		    	<param name="optimizer">none</param>
 		    	<param name="increment_size">1</param>
-		    	<param name="sequence_name">centaur.link_id_seq</param>
+		    	<param name="sequence_name">luzern.link_id_seq</param>
 			</generator>
         </primary-key>
 	</table>
@@ -45,7 +45,7 @@
             <generator class="org.hibernate.id.enhanced.SequenceStyleGenerator">
 		    	<param name="optimizer">none</param>
 		    	<param name="increment_size">1</param>
-		    	<param name="sequence_name">centaur.polygon_id_seq</param>
+		    	<param name="sequence_name">luzern.polygon_id_seq</param>
 			</generator>
         </primary-key>
 	</table>
@@ -54,7 +54,7 @@
             <generator class="org.hibernate.id.enhanced.SequenceStyleGenerator">
 		    	<param name="optimizer">none</param>
 		    	<param name="increment_size">1</param>
-		    	<param name="sequence_name">centaur.subcatchment_id_seq</param>
+		    	<param name="sequence_name">luzern.subcatchment_id_seq</param>
 			</generator>
         </primary-key>
 	</table>
@@ -63,7 +63,7 @@
             <generator class="org.hibernate.id.enhanced.SequenceStyleGenerator">
 		    	<param name="optimizer">none</param>
 		    	<param name="increment_size">1</param>
-		    	<param name="sequence_name">centaur.flooded_id_flooded_seq</param>
+		    	<param name="sequence_name">luzern.flooded_id_flooded_seq</param>
 			</generator>
         </primary-key>
 	</table>
@@ -72,7 +72,7 @@
             <generator class="org.hibernate.id.enhanced.SequenceStyleGenerator">
 		    	<param name="optimizer">none</param>
 		    	<param name="increment_size">1</param>
-		    	<param name="sequence_name">centaur.contribution_id_seq</param>
+		    	<param name="sequence_name">luzern.contribution_id_seq</param>
 			</generator>
         </primary-key>
 	</table>
