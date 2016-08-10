@@ -14,7 +14,7 @@ public class Candidate implements java.io.Serializable {
 	private Node node;
 	private BigDecimal outflowElevation;
 	private BigDecimal servedArea;
-	private BigDecimal floodedVolume;
+	private BigDecimal volume;
 	private Set floodeds = new HashSet(0);
 	private Set contributions = new HashSet(0);
 
@@ -26,12 +26,12 @@ public class Candidate implements java.io.Serializable {
 		this.outflowElevation = outflowElevation;
 	}
 
-	public Candidate(Node node, BigDecimal outflowElevation, BigDecimal servedArea, BigDecimal floodedVolume,
+	public Candidate(Node node, BigDecimal outflowElevation, BigDecimal servedArea, BigDecimal volume,
 			Set floodeds, Set contributions) {
 		this.node = node;
 		this.outflowElevation = outflowElevation;
 		this.servedArea = servedArea;
-		this.floodedVolume = floodedVolume;
+		this.volume = volume;
 		this.floodeds = floodeds;
 		this.contributions = contributions;
 	}
@@ -68,12 +68,12 @@ public class Candidate implements java.io.Serializable {
 		this.servedArea = servedArea;
 	}
 
-	public BigDecimal getFloodedVolume() {
-		return this.floodedVolume;
+	public BigDecimal getVolume() {
+		return this.volume;
 	}
 
-	public void setFloodedVolume(BigDecimal floodedVolume) {
-		this.floodedVolume = floodedVolume;
+	public void setVolume(BigDecimal volume) {
+		this.volume = volume;
 	}
 
 	public Set getFloodeds() {

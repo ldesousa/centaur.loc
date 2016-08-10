@@ -17,8 +17,8 @@
         <property name="servedArea" type="big_decimal">
             <column name="served_area" precision="131089" scale="0" />
         </property>
-        <property name="floodedVolume" type="big_decimal">
-            <column name="flooded_volume" precision="131089" scale="0" />
+        <property name="volume" type="big_decimal">
+            <column name="volume" precision="131089" scale="0" />
         </property>
         <set name="floodeds" table="flooded" inverse="true" lazy="true" fetch="select">
             <key>
