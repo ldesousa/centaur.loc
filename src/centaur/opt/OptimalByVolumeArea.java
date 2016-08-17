@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
+import java.util.List;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -86,7 +87,7 @@ public class OptimalByVolumeArea {
 	 * @param intensity the rain event intensity to consider (mm/h == l/m2).
 	 * @param duration the time length of the rain event (minutes)
 	 */
-	protected static void computeBestCandidate(VCandidate cand, double intensity, double duration)
+	protected static void updateBestCandidate(VCandidate cand, double intensity, double duration)
 	{
 		updateContributions(cand, intensity, duration);
 		removeCandidates(cand);
@@ -96,28 +97,32 @@ public class OptimalByVolumeArea {
 
 	/**
 	 * Computes the locations of a number of flood control gates optimising by 
-	 * pipe volume times contributing area. Takes into account a rain event 
-	 * with a specific intensity during a determined time.
+	 * pipe volume times contributing area. A node of interest may be indicated 
+	 * to restrict search to a subset of the sewer network. Takes into account 
+	 * a rain event with a specific intensity during a determined time.
 	 *
 	 * @ param session the database session.
 	 * @ param numGates the number of gates to site.
+	 * @ param nio the node of interest (ignored if NULL)
 	 * @ param intensity the rain event intensity to consider (mm/h == l/m2).
 	 * @ param duration the time length of the rain event (minutes)
 	 */
-	public static void computeVolumeArea(Session sess, int numGates, double intensity, double duration) 
+	public static void computeVolumeArea(Session sess, int numGates, Integer noi, 
+			double intensity, double duration) 
 	{
 		init(sess);
 		
 		for (int i = 1; i <= numGates; i++)
 		{
-			VCandidate cand = getBestCandidateVolumeArea();
+			VCandidate cand = getBestCandidateVolumeArea(noi);
 			System.out.println(
 					"Candidate #" + i + ": " + cand.getId() + 
 					"\n\tvolume: " + df.format(cand.getFloodedVolume()) + " m3" + 
 					"\n\tcontributing area: " + df.format(cand.getContributions()) + " ha");
 			
-			computeBestCandidate(cand, intensity, duration);
+			updateBestCandidate(cand, intensity, duration);
 		}
+		
 		finalise(numGates);
 	}
 	
@@ -146,7 +151,7 @@ public class OptimalByVolumeArea {
 					"\n\tcontributing area: " + df.format(cand.getContributions()) + " ha" +
 					"\n\tnum subcatchments: " + cand.getNumSubcatchments());
 			
-			computeBestCandidate(cand, intensity, duration);
+			updateBestCandidate(cand, intensity, duration);
 		}
 		finalise(numGates);
 	}
@@ -267,7 +272,8 @@ public class OptimalByVolumeArea {
 				
 				if(n.getCandidate() == null)
 				{
-					System.out.println("\n!!!! Wierdo: " + n.getId());
+					System.out.println("\n!!!! Node without candidate: " + n.getId() 
+						+ " Link: " + l.getId());
 				}
 				
 				else
@@ -291,19 +297,33 @@ public class OptimalByVolumeArea {
 	 * Retrieves the best candidate according to a particular objective 
 	 * function, in this case storage volume times contributing area.
 	 * 
+	 * @param noi node of interest - search is to restricted to its upstream 
+	 * sub-network; ignored if null
+	 * 
 	 * @return the best candidate.
 	 */
-	static VCandidate getBestCandidateVolumeArea()
-	{		
-		String max = "Select max(c.floodedVolume * c.contributions) FROM VCandidate c";
-		Query maxQuery = session.createQuery(max);
+	static VCandidate getBestCandidateVolumeArea(Integer noi)
+	{	
+		// Set search_path
+		String query = "SET search_path TO luzern, public";
+		session.createSQLQuery(query).executeUpdate();
 		
-		System.out.println("\nMax: " + df.format(maxQuery.list().get(0)));
+		query = "SELECT * FROM f_max_volume_area("; 
+		if(noi != null)
+			query += noi.toString() + ")";
+		else 
+			query += "NULL)";
 		
-		String best = "From VCandidate as v where (v.floodedVolume * v.contributions) >= " + 
-				maxQuery.list().get(0);
+		List max = session.createSQLQuery(query).list();
+		
+		System.out.println("\nMax: " + df.format(max.get(0)));
+		
+		/*String best = "From VCandidate as v where (v.floodedVolume * v.contributions) >= " + 
+				max.get(0);
 		Query bestQuery = session.createQuery(best);
-		return (VCandidate) bestQuery.list().get(0);
+		return (VCandidate) bestQuery.list().get(0);*/
+		
+		return (VCandidate) session.get(VCandidate.class, new Integer(max.get(0).toString()));
 	}
 	
 	/**
@@ -328,8 +348,8 @@ public class OptimalByVolumeArea {
 	/**
 	 * 
 	 * @param candidate
-	 * @ param intensity the rain event intensity to consider (mm/h == l/m2).
-	 * @ param duration the time length of the rain event (minutes)
+	 * @param intensity the rain event intensity to consider (mm/h == l/m2).
+	 * @param duration the time length of the rain event (minutes)
 	 */
 	static void updateContributions(VCandidate candidate, double intensity, double duration)
 	{

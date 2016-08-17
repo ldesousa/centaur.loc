@@ -196,7 +196,7 @@ public class Main
 		/*FloodedSegments.compute(session);
 		commitData(session, tx); */
 		
-		OptimalByVolumeArea.computeVolumeArea(session, 5, 1, 60);
+		OptimalByVolumeArea.computeVolumeArea(session, 2, 101355, 1, 60);
 		//OptimalByVolumeArea.computeVolumeAreaNumSubcatchments(session, 5, 1, 60);
 		commitData(session, tx);
 		
