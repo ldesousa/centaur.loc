@@ -308,21 +308,14 @@ public class OptimalByVolumeArea {
 		String query = "SET search_path TO luzern, public";
 		session.createSQLQuery(query).executeUpdate();
 		
-		query = "SELECT * FROM f_max_volume_area("; 
+		query = "SELECT * FROM f_optimal("; 
 		if(noi != null)
-			query += noi.toString() + ")";
+			query += noi.toString() + ", FALSE)";
 		else 
-			query += "NULL)";
+			query += "NULL, FALSE)";
 		
 		List max = session.createSQLQuery(query).list();
-		
 		System.out.println("\nMax: " + df.format(max.get(0)));
-		
-		/*String best = "From VCandidate as v where (v.floodedVolume * v.contributions) >= " + 
-				max.get(0);
-		Query bestQuery = session.createQuery(best);
-		return (VCandidate) bestQuery.list().get(0);*/
-		
 		return (VCandidate) session.get(VCandidate.class, new Integer(max.get(0).toString()));
 	}
 	
@@ -332,17 +325,21 @@ public class OptimalByVolumeArea {
 	 * 
 	 * @return the best candidate.
 	 */
-	static VCandidate getBestCandidateVolumeAreaNumSubcatchments()
+	static VCandidate getBestCandidateVolumeAreaNumSubcatchments(Integer noi)
 	{		
-		String max = "Select max(c.floodedVolume * c.contributions / c.numSubcatchments) FROM VCandidate c";
-		Query maxQuery = session.createQuery(max);
+		// Set search_path
+		String query = "SET search_path TO luzern, public";
+		session.createSQLQuery(query).executeUpdate();
 		
-		System.out.println("\nMax: " + maxQuery.list().get(0));
+		query = "SELECT * FROM f_optimal("; 
+		if(noi != null)
+			query += noi.toString() + ", TRUE)";
+		else 
+			query += "NULL, TRUE)";
 		
-		String best = "From VCandidate as c where (c.floodedVolume * c.contributions / c.numSubcatchments) >= " + 
-				maxQuery.list().get(0);
-		Query bestQuery = session.createQuery(best);
-		return (VCandidate) bestQuery.list().get(0);
+		List max = session.createSQLQuery(query).list();
+		System.out.println("\nMax: " + df.format(max.get(0)));
+		return (VCandidate) session.get(VCandidate.class, new Integer(max.get(0).toString()));
 	}
 	
 	/**
