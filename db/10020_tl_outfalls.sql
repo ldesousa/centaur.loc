@@ -1,16 +1,16 @@
 ﻿DELETE FROM toulouse.outfall;
-DELETE FROM toulouse.node WHERE id < 1000;
+DELETE FROM toulouse.node WHERE id > 1000000;
 
 
 -- Make sure SRID is correct
-SELECT UpdateGeometrySRID('veolia', 'subcatchment','geom', 3035);
+SELECT UpdateGeometrySRID('veolia', 'outfall','geom', 3035);
 
 -- Insert nodes
 INSERT INTO toulouse.node (id, geom, elevation, name)
 SELECT gid + 1000000, 
        ST_Force2d(ST_SetSRID(geom, 3035)), 
        ST_Z(geom), 
-       gid 
+       gid + 1000000 
   FROM veolia.outfall;
 
 -- Insert outfalls

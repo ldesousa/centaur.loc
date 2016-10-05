@@ -36,15 +36,17 @@ UPDATE veolia.subcatchment
                LIMIT 1);
 
 
--- Make SRID is correct
-SELECT UpdateGeometrySRID('veolia.subcatchments','geom', 3035);
+-- Make sure SRID is correct
+SELECT UpdateGeometrySRID('veolia', 'subcatchment','geom', 3035);
 
 -- Insert the data
 INSERT INTO toulouse.subcatchment (id, name, geom)
 SELECT gid, id, (ST_DUMP(geom)).geom::geometry(Polygon, 3035)
   FROM veolia.subcatchment;
 
-
+-- Calculate areas
+UPDATE toulouse.subcatchment
+   SET area = ST_Area(geom);
 
 
 
