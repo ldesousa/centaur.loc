@@ -1,5 +1,5 @@
 ﻿-- Set search path to desired schema
-SET search_path TO luzern, public;
+SET search_path TO toulouse, public;
 
 DROP VIEW v_weir;
 DROP VIEW v_pump;
@@ -169,14 +169,6 @@ SELECT n.id,
    AND (n.taken = FALSE OR n.taken IS NULL)
    AND c.id_node = m.id_node;
 
-SELECT c.id, sum(l.volume)
-  FROM v_candidate c,
-       flooded f,
-       v_conduit l
- WHERE l.id = f.id_link
-   AND c.id = f.id_node
- GROUP BY(c.id);
-
 CREATE OR REPLACE VIEW v_flooded AS
 SELECT f.id_flooded,
        f.id_node as id_node_candidate,
@@ -188,3 +180,13 @@ SELECT f.id_flooded,
   FROM flooded f,
        link l	
  WHERE f.id_link = l.id;
+
+
+-- Check volumes
+SELECT c.id, sum(l.volume)
+  FROM v_candidate c,
+       flooded f,
+       v_conduit l
+ WHERE l.id = f.id_link
+   AND c.id = f.id_node
+ GROUP BY(c.id);
