@@ -86,6 +86,11 @@ public class FloodedSegments
 				System.out.println("Gate candidates: " + candidates.size());
 			}
 		}
+		System.out.println();
+		System.out.println("############################################");
+		System.out.println("# Successfully computed floodable segments #");
+		System.out.println("############################################");
+		System.out.println();
 	}
 	
 	/**
