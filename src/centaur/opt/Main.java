@@ -57,12 +57,12 @@ public class Main
 	 * Sets the up the connection to the database, creating a new session and 
 	 * initiating a transaction.
 	 */
-	protected static void setUpConnection()
+	protected static void setUpConnection(String schema)
 	{
 		try
 		{
 	         factory = new Configuration()
-	        		 .configure("centaur.cfg.xml").buildSessionFactory();
+	        		 .configure(schema + ".cfg.xml").buildSessionFactory();	         
 	         session = factory.openSession();
 	         tx = session.beginTransaction();
 	    }
@@ -191,13 +191,15 @@ public class Main
 	 */
 	public static void main(final String[] args) 
 	{
-		setUpConnection();
+		String schema = "toulouse";
+		setUpConnection(schema);
 		
 		/*FloodedSegments.compute(session);
 		commitData(session, tx); */
 		
-		OptimalByVolumeArea.computeVolumeArea(session, 2, 101355, 1, 60);
-		//OptimalByVolumeArea.computeVolumeAreaNumSubcatchments(session, 5, 1, 60);
+		OptimalByVolumeArea.computeVolumeArea(session, 2, null, 1, 60, schema);
+		//OptimalByVolumeArea.computeVolumeArea(session, 2, 101355, 1, 60, schema);
+		//OptimalByVolumeArea.computeVolumeAreaNumSubcatchments(session, 5, 101355, 1, 60, schema);
 		commitData(session, tx);
 		
 		//plotData(session);
