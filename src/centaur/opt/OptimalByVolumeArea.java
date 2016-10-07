@@ -101,20 +101,21 @@ public class OptimalByVolumeArea {
 	 * to restrict search to a subset of the sewer network. Takes into account 
 	 * a rain event with a specific intensity during a determined time.
 	 *
-	 * @ param session the database session.
-	 * @ param numGates the number of gates to site.
-	 * @ param nio the node of interest (ignored if NULL)
-	 * @ param intensity the rain event intensity to consider (mm/h == l/m2).
-	 * @ param duration the time length of the rain event (minutes)
+	 * @param session the database session.
+	 * @param numGates the number of gates to site.
+	 * @param nio the node of interest (ignored if NULL)
+	 * @param intensity the rain event intensity to consider (mm/h == l/m2).
+	 * @param duration the time length of the rain event (minutes)
+	 * @param database schema containing the CENTAUR tables
 	 */
 	public static void computeVolumeArea(Session sess, int numGates, Integer noi, 
-			double intensity, double duration) 
+			double intensity, double duration, String schema) 
 	{
 		init(sess);
 		
 		for (int i = 1; i <= numGates; i++)
 		{
-			VCandidate cand = getBestCandidateVolumeArea(noi);
+			VCandidate cand = getBestCandidateVolumeArea(noi, schema);
 			System.out.println(
 					"Candidate #" + i + ": " + cand.getId() + 
 					"\n\tvolume: " + df.format(cand.getFloodedVolume()) + " m3" + 
@@ -132,19 +133,21 @@ public class OptimalByVolumeArea {
 	 * contributing sub-catchments. Takes into account a rain event with a 
 	 * specific intensity during a determined time.
 	 *
-	 * @ param session the database session.
-	 * @ param numGates the number of gates to site.
-	 * @ param intensity the rain event intensity to consider (mm/h == l/m2).
-	 * @ param duration the time length of the rain event (minutes)
+	 * @param session the database session.
+	 * @param numGates the number of gates to site.
+	 * @param nio the node of interest (ignored if NULL)
+	 * @param intensity the rain event intensity to consider (mm/h == l/m2).
+	 * @param duration the time length of the rain event (minutes)
+	 * @param database schema containing the CENTAUR tables
 	 */
 	public static void computeVolumeAreaNumSubcatchments(Session sess, int numGates, 
-			double intensity, double duration) 
+			Integer noi, double intensity, double duration, String schema) 
 	{
 		init(sess);
 		
 		for (int i = 1; i <= numGates; i++)
 		{
-			VCandidate cand = getBestCandidateVolumeAreaNumSubcatchments();
+			VCandidate cand = getBestCandidateVolumeAreaNumSubcatchments(noi, schema);
 			System.out.println(
 					"Candidate #" + i + ": " + cand.getId() + 
 					"\n\tvolume: " + df.format(cand.getFloodedVolume()) + " m3" + 
@@ -171,7 +174,7 @@ public class OptimalByVolumeArea {
 	/**
 	 * Computes the contributing areas for each candidate.
 	 * 
-	 * @ param session the database session
+	 * @param session the database session
 	 */
 	static void computeContributions()
 	{
@@ -299,13 +302,14 @@ public class OptimalByVolumeArea {
 	 * 
 	 * @param noi node of interest - search is to restricted to its upstream 
 	 * sub-network; ignored if null
+	 * @param database schema containing the CENTAUR tables
 	 * 
 	 * @return the best candidate.
 	 */
-	static VCandidate getBestCandidateVolumeArea(Integer noi)
+	static VCandidate getBestCandidateVolumeArea(Integer noi, String schema)
 	{	
 		// Set search_path
-		String query = "SET search_path TO luzern, public";
+		String query = "SET search_path TO " + schema + " , public";
 		session.createSQLQuery(query).executeUpdate();
 		
 		query = "SELECT * FROM f_optimal("; 
@@ -323,12 +327,15 @@ public class OptimalByVolumeArea {
 	 * Retrieves the best candidate according to a particular objective 
 	 * function. Presently this is storage volume times contributing area.
 	 * 
+	 * @param nio the node of interest (ignored if NULL)
+	 * @param database schema containing the CENTAUR tables
+	 * 
 	 * @return the best candidate.
 	 */
-	static VCandidate getBestCandidateVolumeAreaNumSubcatchments(Integer noi)
+	static VCandidate getBestCandidateVolumeAreaNumSubcatchments(Integer noi, String schema)
 	{		
 		// Set search_path
-		String query = "SET search_path TO luzern, public";
+		String query = "SET search_path TO " + schema + ", public";
 		session.createSQLQuery(query).executeUpdate();
 		
 		query = "SELECT * FROM f_optimal("; 
