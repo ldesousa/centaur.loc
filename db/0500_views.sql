@@ -62,6 +62,7 @@ SELECT l.id,
  WHERE c.id_link = l.id
    AND x.id_link = l.id
    AND x.shape LIKE 'CIRC%'
+   AND x.geom1 IS NOT NULL
  UNION
 SELECT l.id,
        l.name,
@@ -82,7 +83,9 @@ SELECT l.id,
        xsection x	
  WHERE c.id_link = l.id
    AND x.id_link = l.id
-   AND x.shape LIKE 'RECT%';
+   AND x.shape LIKE 'RECT%'
+   AND x.geom1 IS NOT NULL
+   AND x.geom2 IS NOT NULL;
 
 CREATE OR REPLACE VIEW v_outfall AS
 SELECT n.id,
@@ -190,3 +193,9 @@ SELECT c.id, sum(l.volume)
  WHERE l.id = f.id_link
    AND c.id = f.id_node
  GROUP BY(c.id);
+
+
+SELECT v.id  FROM v_candidate v  ORDER BY v.flooded_volume * v.contributions DESC  LIMIT 1;
+
+SELECT * FROM v_conduit v;
+
