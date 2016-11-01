@@ -77,7 +77,7 @@ SELECT l.id,
        c.max_flow,
        (st_y(st_pointn(l.geom, 2)) - st_y(st_pointn(l.geom, 1))) / 
        (st_x(st_pointn(l.geom, 2)) - st_x(st_pointn(l.geom, 1))) AS slope,
-       x.geom1 * x.geom2 AS volume
+       x.geom1 * x.geom2 * c.length AS volume
   FROM conduit c,
        link l,
        xsection x	
@@ -195,7 +195,19 @@ SELECT c.id, sum(l.volume)
  GROUP BY(c.id);
 
 
-SELECT v.id  FROM v_candidate v  ORDER BY v.flooded_volume * v.contributions DESC  LIMIT 1;
+SELECT v.id FROM v_candidate v ORDER BY v.flooded_volume * v.contributions DESC  LIMIT 1;
 
 SELECT * FROM v_conduit v;
 
+SELECT * FROM v_candidate_contribution;
+
+SELECT * FROM v_candidate_volume;
+
+SELECT ST_Z(geom) FROM veolia.junction;
+
+SELECT MIN(max_depth) FROM luzern.junction;
+
+SELECT id_down 
+  FROM veolia.conduit 
+ WHERE id_down NOT IN (SELECT id FROM veolia.junction)
+   AND id_down NOT IN (SELECT id FROM veolia.outfall);
