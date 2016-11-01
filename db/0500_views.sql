@@ -1,5 +1,5 @@
 ﻿-- Set search path to desired schema
-SET search_path TO toulouse, public;
+SET search_path TO luzern, public;
 
 DROP VIEW v_weir;
 DROP VIEW v_pump;
@@ -41,6 +41,40 @@ SELECT l.id,
        link l	
  WHERE p.id_link = l.id;
 
+
+SELECT power(9.4, (2/3))
+
+SELECT l.id,
+       l.name,
+       l.id_node_from,
+       l.id_node_to,
+       l.geom,
+       c.length,
+       c.roughness,
+       c.in_offset,
+       c.out_offset,
+       c.init_flow,
+       c.max_flow,
+       slope,
+       area,
+       perimeter,
+       area * c.length AS volume,
+       1.0/0.015 * power(area / perimeter, 2.0/3.0) * power(abs(slope), 1.0/2.0) AS q_max
+  FROM conduit c,
+       link l,
+       xsection x,
+       LATERAL (SELECT (st_y(st_pointn(l.geom, 2)) - st_y(st_pointn(l.geom, 1))) / 
+                       (st_x(st_pointn(l.geom, 2)) - st_x(st_pointn(l.geom, 1))), 
+                       pi() * ((x.geom1/2) ^ 2),
+                       2 * pi() * (x.geom1/2) )
+		    AS s1(slope, area, perimeter)
+ WHERE c.id_link = l.id
+   AND x.id_link = l.id
+   AND x.shape LIKE 'CIRC%'
+   AND x.geom1 IS NOT NULL;
+
+
+
 CREATE OR REPLACE VIEW v_conduit AS
 SELECT l.id,
        l.name,
@@ -53,12 +87,19 @@ SELECT l.id,
        c.out_offset,
        c.init_flow,
        c.max_flow,
-       (st_y(st_pointn(l.geom, 2)) - st_y(st_pointn(l.geom, 1))) / 
-       (st_x(st_pointn(l.geom, 2)) - st_x(st_pointn(l.geom, 1))) AS slope,
-       pi() * ((x.geom1/2) ^ 2) * c.length AS volume
+       slope,
+       area,
+       perimeter,
+       area * c.length AS volume,
+       1.0/0.015 * power(area / perimeter, 2.0/3.0) * power(abs(slope), 1.0/2.0) AS q_max
   FROM conduit c,
        link l,
-       xsection x	
+       xsection x,
+       LATERAL (SELECT (st_y(st_pointn(l.geom, 2)) - st_y(st_pointn(l.geom, 1))) / 
+                       (st_x(st_pointn(l.geom, 2)) - st_x(st_pointn(l.geom, 1))), 
+                       pi() * ((x.geom1/2) ^ 2),
+                       2 * pi() * (x.geom1/2) )
+		    AS s1(slope, area, perimeter)
  WHERE c.id_link = l.id
    AND x.id_link = l.id
    AND x.shape LIKE 'CIRC%'
@@ -75,12 +116,19 @@ SELECT l.id,
        c.out_offset,
        c.init_flow,
        c.max_flow,
-       (st_y(st_pointn(l.geom, 2)) - st_y(st_pointn(l.geom, 1))) / 
-       (st_x(st_pointn(l.geom, 2)) - st_x(st_pointn(l.geom, 1))) AS slope,
-       x.geom1 * x.geom2 * c.length AS volume
+       slope,
+       area,
+       perimeter,
+       area * c.length AS volume,
+       1.0/0.015 * power(area / perimeter, 2.0/3.0) * power(abs(slope), 1.0/2.0) AS q_max
   FROM conduit c,
        link l,
-       xsection x	
+       xsection x,
+       LATERAL (SELECT (st_y(st_pointn(l.geom, 2)) - st_y(st_pointn(l.geom, 1))) / 
+                       (st_x(st_pointn(l.geom, 2)) - st_x(st_pointn(l.geom, 1))), 
+                       x.geom1 * x.geom2,
+                       2 * x.geom1 + 2 * x.geom2 )
+		    AS s1(slope, area, perimeter)
  WHERE c.id_link = l.id
    AND x.id_link = l.id
    AND x.shape LIKE 'RECT%'
