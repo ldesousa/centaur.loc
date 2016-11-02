@@ -1,14 +1,13 @@
 ﻿-- Set search path to desired schema
 SET search_path TO luzern, public;
 
-DROP VIEW v_weir;
-DROP VIEW v_pump;
-DROP VIEW v_conduit;
-DROP VIEW v_outfall;
-DROP VIEW v_storage;
-DROP VIEW v_junction;
-DROP VIEW v_candidate;
-DROP VIEW v_flooded;
+DROP VIEW v_weir CASCADE;
+DROP VIEW v_pump CASCADE;
+DROP VIEW v_conduit CASCADE;
+DROP VIEW v_outfall CASCADE;
+DROP VIEW v_storage CASCADE;
+DROP VIEW v_junction CASCADE;
+DROP VIEW v_flooded CASCADE;
 
 CREATE OR REPLACE VIEW v_weir AS
 SELECT l.id,
@@ -40,40 +39,6 @@ SELECT l.id,
   FROM pump p,
        link l	
  WHERE p.id_link = l.id;
-
-
-SELECT power(9.4, (2/3))
-
-SELECT l.id,
-       l.name,
-       l.id_node_from,
-       l.id_node_to,
-       l.geom,
-       c.length,
-       c.roughness,
-       c.in_offset,
-       c.out_offset,
-       c.init_flow,
-       c.max_flow,
-       slope,
-       area,
-       perimeter,
-       area * c.length AS volume,
-       1.0/0.015 * power(area / perimeter, 2.0/3.0) * power(abs(slope), 1.0/2.0) AS q_max
-  FROM conduit c,
-       link l,
-       xsection x,
-       LATERAL (SELECT (st_y(st_pointn(l.geom, 2)) - st_y(st_pointn(l.geom, 1))) / 
-                       (st_x(st_pointn(l.geom, 2)) - st_x(st_pointn(l.geom, 1))), 
-                       pi() * ((x.geom1/2) ^ 2),
-                       2 * pi() * (x.geom1/2) )
-		    AS s1(slope, area, perimeter)
- WHERE c.id_link = l.id
-   AND x.id_link = l.id
-   AND x.shape LIKE 'CIRC%'
-   AND x.geom1 IS NOT NULL;
-
-
 
 CREATE OR REPLACE VIEW v_conduit AS
 SELECT l.id,
@@ -174,10 +139,15 @@ SELECT n.id,
        j.max_depth,
        j.init_depth,
        j.sur_depth,
-       j.aponded
+       j.aponded,
+       (c.q_max * 0.015 / ((c.area / c.perimeter) ^ (2/3))) ^ 2 AS energy_slope
   FROM junction j,
-       node n	
- WHERE j.id_node = n.id;
+       node n,
+       v_conduit c,
+       link l	
+ WHERE j.id_node = n.id
+   AND n.id = l.id_node_from
+   AND c.id = l.id;
 
 CREATE OR REPLACE VIEW v_candidate_volume AS
 SELECT c.id_node, 
@@ -243,19 +213,4 @@ SELECT c.id, sum(l.volume)
  GROUP BY(c.id);
 
 
-SELECT v.id FROM v_candidate v ORDER BY v.flooded_volume * v.contributions DESC  LIMIT 1;
 
-SELECT * FROM v_conduit v;
-
-SELECT * FROM v_candidate_contribution;
-
-SELECT * FROM v_candidate_volume;
-
-SELECT ST_Z(geom) FROM veolia.junction;
-
-SELECT MIN(max_depth) FROM luzern.junction;
-
-SELECT id_down 
-  FROM veolia.conduit 
- WHERE id_down NOT IN (SELECT id FROM veolia.junction)
-   AND id_down NOT IN (SELECT id FROM veolia.outfall);
