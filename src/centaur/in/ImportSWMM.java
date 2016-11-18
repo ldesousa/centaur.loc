@@ -104,6 +104,9 @@ public class ImportSWMM
 	{
 		Session session;
 		Transaction tx;
+		String schema = "coimbra";
+		//filePath = "data/Zona_Central_1D_Coimbra.INP";
+		filePath = "data/Coimbra2.INP";
 		
 		initScanner();
 		
@@ -111,7 +114,7 @@ public class ImportSWMM
 		try
 		{
 	         factory = new Configuration()
-	        		 .configure("centaur.cfg.xml").buildSessionFactory();
+	        		 .configure(schema + ".cfg.xml").buildSessionFactory();
 	         session = factory.openSession();
 	         tx = session.beginTransaction();
 	    }
