@@ -250,7 +250,7 @@ public class ImportSWMM
 	{
 		initScanner();
 			
-		if(advanceToMatchingString(head) != null);
+		if(advanceToMatchingString(head) != null)
 		{
 			String line = scanner.nextLine();
 			while(line.replaceAll("\\s+","").length() > 0)
