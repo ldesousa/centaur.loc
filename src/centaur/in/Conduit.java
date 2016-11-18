@@ -21,6 +21,7 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
 import centaur.db.Link;
+import centaur.db.Node;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -98,8 +99,21 @@ public class Conduit /*extends centaur.db.Conduit*/ implements Importable
 			l.setName(values[0]);
 		}
 		if (values.length > 1) 
-			l.setNodeByIdNodeFrom((centaur.db.Node) session.load(
-					centaur.db.Node.class, new Integer(values[1])));
+		{
+			try // Node ids can be strings
+			{
+				l.setNodeByIdNodeTo((Node) session.load(
+						Node.class, new Integer(values[1])));
+			}
+			catch (NumberFormatException e) 
+			{
+				centaur.in.Node from = new centaur.in.Node();
+				if(from.loadFromName(session, values[1]))
+					l.setNodeByIdNodeTo(from.getPersistentObject());
+				else 
+					System.out.println("[Warning]: Could not find from node for Conduit " + values[0]);
+			}
+		}
 		if (values.length > 2) 
 		{
 			try // Node ids can be strings
@@ -109,7 +123,7 @@ public class Conduit /*extends centaur.db.Conduit*/ implements Importable
 			}
 			catch (NumberFormatException e) 
 			{
-				Node n = new Node();
+				centaur.in.Node n = new centaur.in.Node();
 				if(n.loadFromName(session, values[2])) 
 					l.setNodeByIdNodeTo(n.getPersistentObject());
 			}

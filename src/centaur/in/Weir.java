@@ -74,8 +74,21 @@ public class Weir /*extends centaur.db.Weir*/ implements Importable
 			l.setNodeByIdNodeFrom((Node) session.load(
 					Node.class, new Integer(values[1])));
 		if (values.length > 2) 
-			l.setNodeByIdNodeTo((Node) session.load(
-					Node.class, new Integer(values[2])));
+		{
+			try // Node ids can be strings
+			{
+				l.setNodeByIdNodeTo((Node) session.load(
+						Node.class, new Integer(values[2])));
+			}
+			catch (NumberFormatException e) 
+			{
+				centaur.in.Node to = new centaur.in.Node();
+				if(to.loadFromName(session, values[2]))
+					l.setNodeByIdNodeTo(to.getPersistentObject());
+				else 
+					System.out.println("[Warning]: Could not find to node for Weir " + values[0]);
+			}
+		}
 		weir = new centaur.db.Weir(l);
 		if (values.length > 3) weir.setType(values[3]);
 		if (values.length > 4) weir.setCrestHeight(new BigDecimal(values[4]));
