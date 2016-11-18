@@ -1,5 +1,5 @@
 ﻿-- Set search path to desired schema
-SET search_path TO luzern, public;
+SET search_path TO coimbra, public;
 
 DROP VIEW v_weir CASCADE;
 DROP VIEW v_pump CASCADE;

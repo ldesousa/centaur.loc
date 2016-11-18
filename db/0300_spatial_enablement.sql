@@ -1,7 +1,7 @@
 ﻿-- SELECT postgis_full_version();
 
 -- Set search path to desired schema
-SET search_path TO luzern, public;
+SET search_path TO coimbra, public;
 
 -- Enable PostGIS (includes raster)
 CREATE EXTENSION postgis;
