@@ -62,7 +62,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<role name="postgres"/>
 	<position x="362" y="260"/>
 	<column name="id" not-null="true">
-		<type name="integer"/>
+		<type name="serial"/>
 	</column>
 	<column name="elevation">
 		<type name="numeric"/>

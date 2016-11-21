@@ -31,12 +31,21 @@
 	<table-filter match-name="contribution" />
 	
 	<!-- Sequences -->
+		<table name="node">
+		<primary-key>
+            <generator class="org.hibernate.id.enhanced.SequenceStyleGenerator">
+		    	<param name="optimizer">none</param>
+		    	<param name="increment_size">1</param>
+		    	<param name="sequence_name">node_id_seq</param>
+			</generator>
+        </primary-key>
+	</table>
 	<table name="link">
 		<primary-key>
             <generator class="org.hibernate.id.enhanced.SequenceStyleGenerator">
 		    	<param name="optimizer">none</param>
 		    	<param name="increment_size">1</param>
-		    	<param name="sequence_name">luzern.link_id_seq</param>
+		    	<param name="sequence_name">link_id_seq</param>
 			</generator>
         </primary-key>
 	</table>
@@ -45,7 +54,7 @@
             <generator class="org.hibernate.id.enhanced.SequenceStyleGenerator">
 		    	<param name="optimizer">none</param>
 		    	<param name="increment_size">1</param>
-		    	<param name="sequence_name">luzern.polygon_id_seq</param>
+		    	<param name="sequence_name">polygon_id_seq</param>
 			</generator>
         </primary-key>
 	</table>
@@ -54,7 +63,7 @@
             <generator class="org.hibernate.id.enhanced.SequenceStyleGenerator">
 		    	<param name="optimizer">none</param>
 		    	<param name="increment_size">1</param>
-		    	<param name="sequence_name">luzern.subcatchment_id_seq</param>
+		    	<param name="sequence_name">subcatchment_id_seq</param>
 			</generator>
         </primary-key>
 	</table>
@@ -63,7 +72,7 @@
             <generator class="org.hibernate.id.enhanced.SequenceStyleGenerator">
 		    	<param name="optimizer">none</param>
 		    	<param name="increment_size">1</param>
-		    	<param name="sequence_name">luzern.flooded_id_flooded_seq</param>
+		    	<param name="sequence_name">flooded_id_flooded_seq</param>
 			</generator>
         </primary-key>
 	</table>
@@ -72,7 +81,7 @@
             <generator class="org.hibernate.id.enhanced.SequenceStyleGenerator">
 		    	<param name="optimizer">none</param>
 		    	<param name="increment_size">1</param>
-		    	<param name="sequence_name">luzern.contribution_id_seq</param>
+		    	<param name="sequence_name">contribution_id_seq</param>
 			</generator>
         </primary-key>
 	</table>
