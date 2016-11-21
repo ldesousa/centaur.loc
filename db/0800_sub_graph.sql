@@ -1,4 +1,4 @@
-﻿SET search_path TO luzern, public;
+﻿SET search_path TO coimbra, public;
 
 -- ######################################################3
 
@@ -49,7 +49,7 @@ BEGIN
 	-- Is there a node of interest?
 	IF $1 IS NOT NULL THEN
 		query := query ||
-		 '  JOIN node_subgraph(' || $1 || ') s ' ||
+		 '  JOIN f_node_subgraph(' || $1 || ') s ' ||
 		 '    ON (v.id = s.id)';
 	END IF;
 
