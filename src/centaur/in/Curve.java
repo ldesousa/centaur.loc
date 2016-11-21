@@ -58,7 +58,7 @@ public class Curve /*extends centaur.db.Curve*/ implements Importable
 	protected Boolean loadFromName(Session session, String name)
 	{		
 		List list = session.createCriteria(centaur.db.Curve.class)
-			    .add(Restrictions.like("name", name))
+			    .add(Restrictions.like("name", name.replace("_", "\\_")))
 			    .list();
 		
 		if(list.size() > 0)

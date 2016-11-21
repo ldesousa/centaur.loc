@@ -56,7 +56,7 @@ public class Subcatchment /*extends centaur.db.Subcatchment*/ implements Importa
 	protected Boolean loadFromName(Session session, String name)
 	{		
 		List list = session.createCriteria(centaur.db.Subcatchment.class)
-			    .add(Restrictions.like("name", name))
+			    .add(Restrictions.like("name", name.replace("_", "\\_")))
 			    .list();
 		
 		if(list.size() > 0)

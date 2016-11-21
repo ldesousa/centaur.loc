@@ -69,7 +69,7 @@ public class Conduit /*extends centaur.db.Conduit*/ implements Importable
 	protected Boolean loadFromName(Session session, String name)
 	{		
 		List list = session.createCriteria(centaur.db.Conduit.class)
-			    .add(Restrictions.like("name", name))
+			    .add(Restrictions.like("name", name.replace("_", "\\_")))
 			    .list();
 		
 		if(list.size() > 0)

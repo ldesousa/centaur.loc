@@ -55,7 +55,7 @@ public class Node
 	protected Boolean loadFromName(Session session, String name)
 	{		
 		List list = session.createCriteria(centaur.db.Node.class)
-			    .add(Restrictions.like("name", name))
+			    .add(Restrictions.like("name", name.replace("_", "\\_")))
 			    .list();
 		
 		if(list.size() > 0)

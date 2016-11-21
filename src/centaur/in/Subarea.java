@@ -56,7 +56,7 @@ public class Subarea /*extends centaur.db.Subarea*/ implements Importable
 	protected Boolean loadFromName(Session session, String name)
 	{		
 		List list = session.createCriteria(centaur.db.Subarea.class)
-			    .add(Restrictions.like("name", name))
+			    .add(Restrictions.like("name", name.replace("_", "\\_")))
 			    .list();
 		
 		if(list.size() > 0)

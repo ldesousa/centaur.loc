@@ -60,7 +60,7 @@ public class Storage /*extends centaur.db.Storage*/ implements Importable
 	protected void setCurveFromName(Session session, String curveName)
 	{		
 		List list = session.createCriteria(centaur.db.Curve.class)
-			    .add(Restrictions.like("name", curveName))
+			    .add(Restrictions.like("name", curveName.replace("_", "\\_")))
 			    .list();
 		
 		if(list.size() > 0) storage.setCurve((Curve) list.get(0));
