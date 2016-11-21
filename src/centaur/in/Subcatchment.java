@@ -85,17 +85,9 @@ public class Subcatchment /*extends centaur.db.Subcatchment*/ implements Importa
 		}
 		if (values.length > 2) 
 		{
-			try // Node ids can be strings
-			{
-				subcatchment.setNode((centaur.db.Node) session.load(
-						centaur.db.Node.class, new Integer(values[2])));
-			}
-			catch (NumberFormatException e) 
-			{
 				Node n = new Node();
 				if(n.loadFromName(session, values[2])) 
 					subcatchment.setNode(n.getPersistentObject());
-			}
 		}
 		if (values.length > 3) subcatchment.setArea(new BigDecimal(values[3]));
 		if (values.length > 4) subcatchment.setImperv(new BigDecimal(values[4]));

@@ -76,7 +76,8 @@ public class Storage /*extends centaur.db.Storage*/ implements Importable
 		String[] values = lineSWMM.split("\\s+");
 
 		Node n = new Node();
-		n.setId(new Integer(values[0]));
+		n.setId(generator.nextInt() + newIdFloor);
+		n.setName(values[0]);
 		n.setElevation(new BigDecimal(values[1]));
 		storage = new centaur.db.Storage(n);
 		if (values.length > 2) storage.setMaxDepth(new BigDecimal(values[2]));

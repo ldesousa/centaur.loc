@@ -58,15 +58,8 @@ public class Junction /*extends centaur.db.Junction*/ implements Importable
 		String[] values = lineSWMM.split("\\s+");
 
 		Node n = new Node();
-		try // Junction ids can be strings
-		{
-			n.setId(Integer.parseInt(values[0]));
-		}
-		catch (NumberFormatException e) 
-		{
-			n.setId(generator.nextInt() + newIdFloor);
-			n.setName(values[0]);
-		}
+		n.setId(generator.nextInt() + newIdFloor);
+		n.setName(values[0]);
 		n.setElevation(new BigDecimal(values[1]));
 		junction = new centaur.db.Junction(n);
 		junction.setMaxDepth(new BigDecimal(values[2]));

@@ -58,15 +58,8 @@ public class Outfall /*extends centaur.db.Outfall*/ implements Importable
 		String[] values = lineSWMM.split("\\s+");
 
 		Node n = new Node();
-		try // Node ids can be strings
-		{
-			n.setId(Integer.parseInt(values[0]));
-		}
-		catch (NumberFormatException e) 
-		{
-			n.setId(generator.nextInt() + newIdFloor);
-			n.setName(values[0]);
-		}
+		n.setId(generator.nextInt() + newIdFloor);
+		n.setName(values[0]);
 		n.setElevation(new BigDecimal(values[1]));
 		outfall.setNode(n);
 		outfall.setType(values[2]);
