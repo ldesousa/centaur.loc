@@ -18,8 +18,8 @@ import java.util.Random;
 
 import org.hibernate.Session;
 
-import centaur.db.Link;
-import centaur.db.Node;
+import centaur.in.Link;
+
 
 // TODO: Auto-generated Javadoc
 /**
@@ -46,7 +46,7 @@ public class Pump /*extends centaur.db.Pump*/ implements Importable
 	 */
 	public Pump(Link link) 
 	{
-		pump = new centaur.db.Pump(link);
+		pump = new centaur.db.Pump(link.getPersistentObject());
 	}
 	
 	/* (non-Javadoc)
@@ -57,23 +57,8 @@ public class Pump /*extends centaur.db.Pump*/ implements Importable
 	{
 		String[] values = lineSWMM.split("\\s+");
 
-		Link l = new Link();
-		try // Node ids can be strings
-		{
-			l.setId(Integer.parseInt(values[0]));
-		}
-		catch (NumberFormatException e) 
-		{
-			l.setId(generator.nextInt() + newIdFloor);
-			l.setName(values[0]);
-		}
-		if (values.length > 1) 
-			l.setNodeByIdNodeFrom((Node) session.load(
-					Node.class, new Integer(values[1])));
-		if (values.length > 2) 
-			l.setNodeByIdNodeTo((Node) session.load(
-					Node.class, new Integer(values[2])));
-		pump = new centaur.db.Pump(l);
+		Link l = new Link(values, generator.nextInt() + newIdFloor, session);
+		pump = new centaur.db.Pump(l.getPersistentObject());
 		if (values.length > 3)
 		{
 			Curve c = new Curve();
@@ -83,7 +68,7 @@ public class Pump /*extends centaur.db.Pump*/ implements Importable
 		if (values.length > 4) pump.setStatus(values[4]);
 		if (values.length > 5) pump.setStartup(new BigDecimal(values[5]));
 		if (values.length > 6) pump.setShutoff(new BigDecimal(values[6]));
-		session.save(l);
+		session.save(l.getPersistentObject());
 		session.save(pump);
 	}
 

@@ -20,7 +20,7 @@ import java.util.Random;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
-import centaur.db.Link;
+import centaur.in.Link;
 import centaur.db.Node;
 
 // TODO: Auto-generated Javadoc
@@ -48,7 +48,7 @@ public class Conduit /*extends centaur.db.Conduit*/ implements Importable
 	 */
 	public Conduit(Link link) 
 	{
-		conduit = new centaur.db.Conduit(link);
+		conduit = new centaur.db.Conduit(link.getPersistentObject());
 	}
 	
 	/**
@@ -88,54 +88,15 @@ public class Conduit /*extends centaur.db.Conduit*/ implements Importable
 	{
 		String[] values = lineSWMM.split("\\s+");
 
-		Link l = new Link();
-		try // Node ids can be strings
-		{
-			l.setId(Integer.parseInt(values[0]));
-		}
-		catch (NumberFormatException e) 
-		{
-			l.setId(generator.nextInt() + newIdFloor);
-			l.setName(values[0]);
-		}
-		if (values.length > 1) 
-		{
-			try // Node ids can be strings
-			{
-				l.setNodeByIdNodeTo((Node) session.load(
-						Node.class, new Integer(values[1])));
-			}
-			catch (NumberFormatException e) 
-			{
-				centaur.in.Node from = new centaur.in.Node();
-				if(from.loadFromName(session, values[1]))
-					l.setNodeByIdNodeTo(from.getPersistentObject());
-				else 
-					System.out.println("[Warning]: Could not find from node for Conduit " + values[0]);
-			}
-		}
-		if (values.length > 2) 
-		{
-			try // Node ids can be strings
-			{
-				l.setNodeByIdNodeTo((centaur.db.Node) session.load(
-						centaur.db.Node.class, new Integer(values[2])));
-			}
-			catch (NumberFormatException e) 
-			{
-				centaur.in.Node n = new centaur.in.Node();
-				if(n.loadFromName(session, values[2])) 
-					l.setNodeByIdNodeTo(n.getPersistentObject());
-			}
-		}
-		conduit = new centaur.db.Conduit(l);
+		Link l = new Link(values, generator.nextInt() + newIdFloor, session);
+		conduit = new centaur.db.Conduit(l.getPersistentObject());
 		if (values.length > 3) conduit.setLength(new BigDecimal(values[3]));
 		if (values.length > 4) conduit.setRoughness(new BigDecimal(values[4]));
 		if (values.length > 5) conduit.setInOffset(new BigDecimal(values[5]));
 		if (values.length > 6) conduit.setOutOffset(new BigDecimal(values[6]));
 		if (values.length > 7) conduit.setInitFlow(new BigDecimal(values[7]));
 		if (values.length > 8) conduit.setMaxFlow(new BigDecimal(values[8]));		
-		session.save(l);
+		session.save(l.getPersistentObject());
 		session.save(conduit);
 	}
 

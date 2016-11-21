@@ -18,7 +18,7 @@ import java.util.Random;
 
 import org.hibernate.Session;
 
-import centaur.db.Link;
+import centaur.in.Link;
 import centaur.db.Node;
 
 // TODO: Auto-generated Javadoc
@@ -49,7 +49,7 @@ public class Weir /*extends centaur.db.Weir*/ implements Importable
 	 */
 	public Weir(Link link) 
 	{
-		weir = new centaur.db.Weir(link);
+		weir = new centaur.db.Weir(link.getPersistentObject());
 	}
 	
 	/* (non-Javadoc)
@@ -60,36 +60,8 @@ public class Weir /*extends centaur.db.Weir*/ implements Importable
 	{
 		String[] values = lineSWMM.split("\\s+");
 
-		Link l = new Link();
-		try // Node ids can be strings
-		{
-			l.setId(Integer.parseInt(values[0]));
-		}
-		catch (NumberFormatException e) 
-		{
-			l.setId(generator.nextInt() + newIdFloor);
-			l.setName(values[0]);
-		}
-		if (values.length > 1) 
-			l.setNodeByIdNodeFrom((Node) session.load(
-					Node.class, new Integer(values[1])));
-		if (values.length > 2) 
-		{
-			try // Node ids can be strings
-			{
-				l.setNodeByIdNodeTo((Node) session.load(
-						Node.class, new Integer(values[2])));
-			}
-			catch (NumberFormatException e) 
-			{
-				centaur.in.Node to = new centaur.in.Node();
-				if(to.loadFromName(session, values[2]))
-					l.setNodeByIdNodeTo(to.getPersistentObject());
-				else 
-					System.out.println("[Warning]: Could not find to node for Weir " + values[0]);
-			}
-		}
-		weir = new centaur.db.Weir(l);
+		Link l = new Link(values, generator.nextInt() + newIdFloor, session);
+		weir = new centaur.db.Weir(l.getPersistentObject());
 		if (values.length > 3) weir.setType(values[3]);
 		if (values.length > 4) weir.setCrestHeight(new BigDecimal(values[4]));
 		if (values.length > 5) weir.setQCoeff(new BigDecimal(values[5]));
@@ -105,7 +77,7 @@ public class Weir /*extends centaur.db.Weir*/ implements Importable
 			if(values[6].equals(yes)) weir.setSurcharge(Boolean.TRUE);
 			else weir.setGated(Boolean.FALSE);
 		}
-		session.save(l);
+		session.save(l.getPersistentObject());
 		session.save(weir);
 	}
 

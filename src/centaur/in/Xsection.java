@@ -55,17 +55,9 @@ public class Xsection /*extends centaur.db.Xsection*/ implements Importable
 		String[] values = lineSWMM.split("\\s+");
 
 		xsection = new centaur.db.Xsection();
-		try // Link ids can be strings
-		{	
-			xsection.setLink(
-					session.load(centaur.db.Link.class, new Integer(values[0])));
-		}
-		catch (NumberFormatException e) 
-		{
-			Link l = new Link();
-			if(l.loadFromName(session, values[0])) 
+		Link l = new Link();
+		if(l.loadFromName(session, values[0])) 
 				xsection.setLink(l.getPersistentObject());
-		}
 		if (values.length > 1) xsection.setShape(values[1]);
 		if (values.length > 2) xsection.setGeom1(new BigDecimal(values[2]));
 		if (values.length > 3) xsection.setGeom2(new BigDecimal(values[3]));

@@ -37,6 +37,29 @@ public class Link
 		link = new centaur.db.Link();
 	}
 	
+	public Link(String[] values, Integer newId, Session session)
+	{
+		link = new centaur.db.Link();
+		link.setId(newId);
+		link.setName(values[0]);
+		if (values.length > 1) 
+		{
+			centaur.in.Node from = new centaur.in.Node();
+			if(from.loadFromName(session, values[1]))
+				link.setNodeByIdNodeFrom(from.getPersistentObject());
+			else 
+				System.out.println("[Warning]: Could not find FROM node for Conduit " + values[0]);
+		}
+		if (values.length > 2) 
+		{
+			centaur.in.Node n = new centaur.in.Node();
+			if(n.loadFromName(session, values[2])) 
+				link.setNodeByIdNodeTo(n.getPersistentObject());
+			else 
+				System.out.println("[Warning]: Could not find TO node for Conduit " + values[0]);
+		}
+	}
+	
 	/**
 	 * Gets the persistent object.
 	 *
