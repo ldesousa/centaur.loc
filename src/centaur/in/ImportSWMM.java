@@ -105,8 +105,7 @@ public class ImportSWMM
 		Session session;
 		Transaction tx;
 		String schema = "coimbra";
-		//filePath = "data/Zona_Central_1D_Coimbra.INP";
-		filePath = "data/Coimbra2.INP";
+		filePath = "data/Zona_Central_1D_Coimbra.INP";
 		
 		initScanner();
 		

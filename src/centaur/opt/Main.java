@@ -194,8 +194,8 @@ public class Main
 		String schema = "toulouse";
 		setUpConnection(schema);
 		
-		/*FloodedSegments.compute(session);
-		commitData(session, tx); */
+		FloodedSegments.compute(session);
+		commitData(session, tx);
 		
 		OptimalByVolumeArea.computeVolumeArea(session, 2, null, 1, 60, schema);
 		//OptimalByVolumeArea.computeVolumeArea(session, 2, 101355, 1, 60, schema);
