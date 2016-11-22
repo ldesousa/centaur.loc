@@ -40,6 +40,33 @@ SELECT l.id,
        link l	
  WHERE p.id_link = l.id;
 
+
+CREATE OR REPLACE VIEW v_conduit_common AS
+SELECT l.id,
+       l.name,
+       l.id_node_from,
+       l.id_node_to,
+       l.geom,
+       c.length,
+       c.roughness,
+       c.in_offset,
+       c.out_offset,
+       c.init_flow,
+       c.max_flow
+       sqrt( (st_y(st_pointn(l.geom, 2)) - st_y(st_pointn(l.geom, 1)))^2 - 
+            (st_x(st_pointn(l.geom, 2)) - st_x(st_pointn(l.geom, 1)))^2) AS distance,
+       (nf.elevation - nt.elevation) / distance AS slope
+  FROM conduit c,
+       link l,
+       xsection x,
+       node nf,
+       node nt
+ WHERE c.id_link = l.id
+   AND x.id_link = l.id
+   AND nf.id = l.id_node_from
+   AND nt.id = l.id_node_to;
+
+
 CREATE OR REPLACE VIEW v_conduit AS
 SELECT l.id,
        l.name,
@@ -214,3 +241,4 @@ SELECT c.id, sum(l.volume)
 
 
 
+SELECT * FROM coimbra.v_conduit;
