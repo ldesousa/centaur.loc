@@ -90,12 +90,28 @@ SELECT c.*,
        1.0/0.015 * power(area / perimeter, 2.0/3.0) * power(abs(slope), 1.0/2.0) AS q_max
   FROM v_conduit_common c,
        xsection x,
+       LATERAL (SELECT pi() * ((x.geom1/2) * (x.geom2/2)),
+                       2 * pi() * sqrt((x.geom1^2 + x.geom2^2)/2) )
+		    AS s1(area, perimeter)
+ WHERE x.id_link = c.id
+   AND x.shape LIKE 'EGG%'
+   AND x.geom1 IS NOT NULL
+   AND x.geom2 IS NOT NULL
+ UNION
+SELECT c.*,
+       area,
+       perimeter,
+       area * c.length AS volume,
+       1.0/0.015 * power(area / perimeter, 2.0/3.0) * power(abs(slope), 1.0/2.0) AS q_max
+  FROM v_conduit_common c,
+       xsection x,
        LATERAL (SELECT x.geom1 * x.geom2,
                        2 * x.geom1 + 2 * x.geom2 )
 		    AS s1(area, perimeter)
  WHERE x.id_link = c.id
    AND x.shape LIKE 'RECT%'
-   AND x.geom1 IS NOT NULL;
+   AND x.geom1 IS NOT NULL
+   AND x.geom2 IS NOT NULL;
 
 -- SELECT * FROM v_conduit;
 
