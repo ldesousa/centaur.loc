@@ -139,14 +139,17 @@ SELECT n.id,
        j.init_depth,
        j.sur_depth,
        j.aponded,
-       (c.q_max * 0.015 / ((c.area / c.perimeter) ^ (2/3))) ^ 2 AS energy_slope
+       c.energy_slope
   FROM junction j,
        node n,
-       v_conduit c,
-       link l	
+       (SELECT id_node_from, 
+               MAX((q_max * 0.015 / ((area / perimeter) ^ (2/3))) ^ 2) AS energy_slope
+          FROM v_conduit 
+         GROUP BY id_node_from) c	
  WHERE j.id_node = n.id
-   AND n.id = l.id_node_from
-   AND c.id = l.id;
+   AND j.id_node = c.id_node_from;
+
+SELECT * FROM coimbra.v_junction;
 
 CREATE OR REPLACE VIEW v_candidate_volume AS
 SELECT c.id_node, 
@@ -212,5 +215,10 @@ SELECT c.id, sum(l.volume)
  GROUP BY(c.id);
 
 
+SELECT id, COUNT(*) as count FROM "coimbra"."v_junction" GROUP BY id HAVING COUNT(*) > 1;
 
---SELECT * FROM coimbra.v_conduit;
+SELECT id_node, COUNT(*) as count FROM "coimbra"."junction" GROUP BY id_node HAVING COUNT(*) > 1;
+
+SELECT id, COUNT(*) as count FROM coimbra.node GROUP BY id HAVING COUNT(*) > 1;
+
+SELECT * FROM "coimbra"."v_junction" WHERE id = 60442269;
