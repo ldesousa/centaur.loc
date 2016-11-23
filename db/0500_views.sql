@@ -1,4 +1,4 @@
-﻿-- Set search path to desired schema
+-- Set search path to desired schema
 SET search_path TO coimbra, public;
 
 DROP VIEW v_weir CASCADE;
@@ -230,11 +230,3 @@ SELECT c.id, sum(l.volume)
    AND c.id = f.id_node
  GROUP BY(c.id);
 
-
-SELECT id, COUNT(*) as count FROM "coimbra"."v_junction" GROUP BY id HAVING COUNT(*) > 1;
-
-SELECT id_node, COUNT(*) as count FROM "coimbra"."junction" GROUP BY id_node HAVING COUNT(*) > 1;
-
-SELECT id, COUNT(*) as count FROM coimbra.node GROUP BY id HAVING COUNT(*) > 1;
-
-SELECT * FROM "coimbra"."v_junction" WHERE id = 60442269;
