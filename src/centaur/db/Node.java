@@ -153,5 +153,4 @@ public class Node implements java.io.Serializable {
 	public void setCoordinates(Coordinates coordinates) {
 		this.coordinates = coordinates;
 	}
-
 }

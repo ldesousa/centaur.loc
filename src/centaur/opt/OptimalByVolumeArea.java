@@ -58,7 +58,7 @@ public class OptimalByVolumeArea {
 	 * 
 	 * @param sess the database session.
 	 */
-	protected static void init(Session sess)
+	public static void init(Session sess)
 	{
 		System.out.println("Starting up");
 		session = sess;
