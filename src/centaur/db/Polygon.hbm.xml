@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Jun 17, 2016 8:52:13 AM by Hibernate Tools 4.3.1.Final -->
+<!-- Generated 19-Jan-2017 14:29:58 by Hibernate Tools 4.3.5.Final -->
 <hibernate-mapping>
     <class name="centaur.db.Polygon" table="polygon" optimistic-lock="version">
         <id name="id" type="java.lang.Integer">
             <column name="id" />
             <generator class="org.hibernate.id.enhanced.SequenceStyleGenerator">
                 <param name="optimizer">none</param>
-                <param name="sequence_name">centaur.polygon_id_seq</param>
+                <param name="sequence_name">polygon_id_seq</param>
                 <param name="increment_size">1</param>
             </generator>
         </id>

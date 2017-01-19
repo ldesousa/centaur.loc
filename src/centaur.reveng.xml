@@ -29,6 +29,7 @@
 	<table-filter match-name="candidate" />
 	<table-filter match-name="v_candidate" />
 	<table-filter match-name="contribution" />
+	<table-filter match-name="v_junction" />
 	
 	<!-- Sequences -->
 		<table name="node">
@@ -94,6 +95,11 @@
         <!-- <column name="outflow_elevation"/>
         <column name="served_area"/>
         <column name="flooded_volume"/> -->
+    </table>
+    	<table name="v_junction">
+        <primary-key>
+            <key-column name="id"/>
+        </primary-key>
     </table>
 	
 </hibernate-reverse-engineering>
