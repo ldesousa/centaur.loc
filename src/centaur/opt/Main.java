@@ -191,22 +191,23 @@ public class Main
 	 */
 	public static void main(final String[] args) 
 	{
-		String schema = "toulouse";
+		//String schema = "toulouse";
+		String schema = "coimbra";
 		setUpConnection(schema);
 		
-		FloodedSegments.compute(session);
-		commitData(session, tx);
+		//FloodedSegments.compute(session);
+		//commitData(session, tx);
 		
 		OptimalByVolumeArea.computeVolumeArea(session, 2, null, 1, 60, schema);
 		//OptimalByVolumeArea.computeVolumeArea(session, 2, 101355, 1, 60, schema);
 		//OptimalByVolumeArea.computeVolumeAreaNumSubcatchments(session, 5, 101355, 1, 60, schema);
-		commitData(session, tx);
+		//commitData(session, tx);
 		
 		//plotData(session);
 		//plotVolumeRank(session);
 		//plotAreaRank(session);
 		
-		//plotAllGraphs(session);
+		plotAllGraphs(session);
 		
 		session.close();
     }
