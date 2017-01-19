@@ -9,7 +9,7 @@ import java.math.BigDecimal;
  */
 public class VJunctionId implements java.io.Serializable {
 
-	private Integer id;
+	private Integer idNode;
 	private BigDecimal elevation;
 	private String name;
 	private Serializable geom;
@@ -22,9 +22,9 @@ public class VJunctionId implements java.io.Serializable {
 	public VJunctionId() {
 	}
 
-	public VJunctionId(Integer id, BigDecimal elevation, String name, Serializable geom, BigDecimal maxDepth,
+	public VJunctionId(Integer idNode, BigDecimal elevation, String name, Serializable geom, BigDecimal maxDepth,
 			BigDecimal initDepth, BigDecimal surDepth, BigDecimal aponded, Double energySlope) {
-		this.id = id;
+		this.idNode = idNode;
 		this.elevation = elevation;
 		this.name = name;
 		this.geom = geom;
@@ -35,12 +35,12 @@ public class VJunctionId implements java.io.Serializable {
 		this.energySlope = energySlope;
 	}
 
-	public Integer getId() {
-		return this.id;
+	public Integer getIdNode() {
+		return this.idNode;
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
+	public void setId(Integer idNode) {
+		this.idNode = idNode;
 	}
 
 	public BigDecimal getElevation() {
@@ -116,8 +116,8 @@ public class VJunctionId implements java.io.Serializable {
 			return false;
 		VJunctionId castOther = (VJunctionId) other;
 
-		return ((this.getId() == castOther.getId())
-				|| (this.getId() != null && castOther.getId() != null && this.getId().equals(castOther.getId())))
+		return ((this.getIdNode() == castOther.getIdNode())
+				|| (this.getIdNode() != null && castOther.getIdNode() != null && this.getIdNode().equals(castOther.getIdNode())))
 				&& ((this.getElevation() == castOther.getElevation()) || (this.getElevation() != null
 						&& castOther.getElevation() != null && this.getElevation().equals(castOther.getElevation())))
 				&& ((this.getName() == castOther.getName()) || (this.getName() != null && castOther.getName() != null
@@ -140,7 +140,7 @@ public class VJunctionId implements java.io.Serializable {
 	public int hashCode() {
 		int result = 17;
 
-		result = 37 * result + (getId() == null ? 0 : this.getId().hashCode());
+		result = 37 * result + (getIdNode() == null ? 0 : this.getIdNode().hashCode());
 		result = 37 * result + (getElevation() == null ? 0 : this.getElevation().hashCode());
 		result = 37 * result + (getName() == null ? 0 : this.getName().hashCode());
 		result = 37 * result + (getGeom() == null ? 0 : this.getGeom().hashCode());

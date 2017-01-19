@@ -147,7 +147,7 @@ SELECT n.id,
  WHERE s.id_node = n.id;
 
 CREATE OR REPLACE VIEW v_junction AS
-SELECT n.id,
+SELECT n.id AS id_node,
        n.elevation,
        n.name,
        n.geom,
@@ -163,7 +163,21 @@ SELECT n.id,
           FROM v_conduit 
          GROUP BY id_node_from) c	
  WHERE j.id_node = n.id
-   AND j.id_node = c.id_node_from;
+   AND j.id_node = c.id_node_from
+ UNION
+SELECT n.id AS id_node,
+       n.elevation,
+       n.name,
+       n.geom,
+       j.max_depth,
+       j.init_depth,
+       j.sur_depth,
+       j.aponded,
+       0 AS energy_slope
+  FROM junction j,
+       node n 	
+ WHERE j.id_node = n.id
+   AND j.id_node NOT IN (SELECT id_node_from FROM link);
 
 SELECT * FROM coimbra.v_junction;
 
@@ -231,10 +245,4 @@ SELECT c.id, sum(l.volume)
  GROUP BY(c.id);
 
 
-SELECT id_flooded, COUNT(*) as count FROM "coimbra"."v_flooded" GROUP BY id_flooded HAVING COUNT(*) > 1;
 
-SELECT id_node, COUNT(*) as count FROM "coimbra"."junction" GROUP BY id_node HAVING COUNT(*) > 1;
-
-SELECT id, COUNT(*) as count FROM coimbra.node GROUP BY id HAVING COUNT(*) > 1;
-
-SELECT * FROM "coimbra"."v_junction" WHERE id = 60442269;

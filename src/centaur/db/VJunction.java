@@ -1,5 +1,5 @@
 package centaur.db;
-// Generated 19-Jan-2017 14:29:58 by Hibernate Tools 4.3.5.Final
+// Generated 19-Jan-2017 16:40:11 by Hibernate Tools 5.2.0.CR1
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -9,7 +9,7 @@ import java.math.BigDecimal;
  */
 public class VJunction implements java.io.Serializable {
 
-	private Integer id;
+	private int idNode;
 	private BigDecimal elevation;
 	private String name;
 	//private Serializable geom;
@@ -22,13 +22,13 @@ public class VJunction implements java.io.Serializable {
 	public VJunction() {
 	}
 
-	public VJunction(Integer id) {
-		this.id = id;
+	public VJunction(int idNode) {
+		this.idNode = idNode;
 	}
 
-	public VJunction(Integer id, BigDecimal elevation, String name, /*Serializable geom,*/ BigDecimal maxDepth,
+	public VJunction(int idNode, BigDecimal elevation, String name, /*Serializable geom,*/ BigDecimal maxDepth,
 			BigDecimal initDepth, BigDecimal surDepth, BigDecimal aponded, Double energySlope) {
-		this.id = id;
+		this.idNode = idNode;
 		this.elevation = elevation;
 		this.name = name;
 		//this.geom = geom;
@@ -39,12 +39,12 @@ public class VJunction implements java.io.Serializable {
 		this.energySlope = energySlope;
 	}
 
-	public Integer getId() {
-		return this.id;
+	public int getIdNode() {
+		return this.idNode;
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
+	public void setIdNode(int idNode) {
+		this.idNode = idNode;
 	}
 
 	public BigDecimal getElevation() {
