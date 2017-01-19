@@ -92,7 +92,7 @@ public class ImportSWMM
 	/** The random generator. */
 	static Random generator = new Random();
 	
-	/** The new id floor, to distunguish from SWMM ids. */
+	/** The new id floor, to distinguish from SWMM ids. */
 	static int newIdFloor = 1000000;
 
 	/**

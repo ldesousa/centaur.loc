@@ -200,7 +200,6 @@ public class OptimalByVolumeArea {
 				// If there is no candidate this is a leaf node
 				if (c != null)
 				{					
-					// => This sum can be removed later on
 					if (c.getServedArea() == null) c.setServedArea(servedArea);
 					else c.setServedArea(c.getServedArea().add(servedArea));
 					
@@ -327,7 +326,7 @@ public class OptimalByVolumeArea {
 	 * Retrieves the best candidate according to a particular objective 
 	 * function. Presently this is storage volume times contributing area.
 	 * 
-	 * @param nio the node of interest (ignored if NULL)
+	 * @param noi the node of interest (ignored if NULL)
 	 * @param database schema containing the CENTAUR tables
 	 * 
 	 * @return the best candidate.
