@@ -24,9 +24,11 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 
 import centaur.db.Node;
+import centaur.db.VCandidate;
 import centaur.db.Candidate;
 import centaur.db.Flooded;
 import centaur.db.Link;
+import centaur.db.VJunction;
 
 
 // TODO: Auto-generated Javadoc
@@ -37,7 +39,7 @@ public class FloodedSegments
 {	
 	
 	/** The safety margin. */
-	static BigDecimal safetyMargin = new BigDecimal(0.9);
+	static double safetyMargin = 0.9;
 	
 	/** The prospects. */
 	static LinkedList<Node> prospects;
@@ -49,7 +51,14 @@ public class FloodedSegments
 	static ArrayList<Link> floodedLinks = new ArrayList<Link>();
 	
 	/** The current overflow. */
-	static BigDecimal currentOverflow = BigDecimal.valueOf(Double.MAX_VALUE);
+	static double currentOverflow = Double.MAX_VALUE;
+	
+	/** Determines if the energy line should be used or note in overflow computation. */
+	static Boolean useEnergySlope = Boolean.TRUE;
+	
+	/** The database session. */
+	static Session session;
+	
 
 	/**
 	 * Computes the floodable network links for each of the possible gate 
@@ -57,10 +66,11 @@ public class FloodedSegments
 	 *
 	 * @param session the session
 	 */
-	public static void compute(Session session) 
+	public static void compute(Session sess) 
 	{
+		session = sess;
 		System.out.println("Clearing database ...");
-		clearDB(session);
+		clearDB();
 		
 		Query query =  session.createQuery("from Node n");
 		prospects = new LinkedList<Node>(query.list());
@@ -69,7 +79,7 @@ public class FloodedSegments
 		{
 			System.out.println("Candidates: " + prospects.size());
 			Node n = prospects.pop();					
-			currentOverflow = BigDecimal.valueOf(Double.MAX_VALUE);
+			currentOverflow = Double.MAX_VALUE;
 			floodedLinks = new ArrayList<Link>();
 			
 			Set<Link> links = n.getLinksForIdNodeTo();
@@ -82,7 +92,7 @@ public class FloodedSegments
 				System.out.println("Number of links: " + floodedLinks.size());
 				prune();
 				System.out.println("Number of links after pruning: " + floodedLinks.size());
-				save(n, session);
+				save(n);
 				System.out.println("Gate candidates: " + candidates.size());
 			}
 		}
@@ -95,14 +105,33 @@ public class FloodedSegments
 	
 	/**
 	 * Clears the Candidate and Flooded database tables.
-	 *
-	 * @param session the database session.
 	 */
-	static void clearDB(Session session)
+	static void clearDB()
 	{
 		session.createQuery(String.format("delete from %s", Flooded.class.getName())).executeUpdate();
 		session.createQuery(String.format("delete from %s", Candidate.class.getName())).executeUpdate();
 		session.flush();
+	}
+	
+	/**
+	 * Computes the overflow height for a given node. It takes the energy line
+	 * slope into account if useEnergySlope is set to true.
+	 * @param n the node for which to compute the overflow height.
+	 * @return Node overflow height.
+	 */
+	
+	static double computeNodeOverflow(Node n)
+	{		
+		if(useEnergySlope)
+		{
+			VJunction j = (VJunction) session.get(VJunction.class, n.getId());
+			if(j == null) // Check if is not a manhole
+				return n.getElevation().doubleValue();
+			else
+				return j.getElevation().doubleValue() * (1 - j.getEnergySlope().doubleValue());
+		}
+		else
+			return n.getElevation().doubleValue();
 	}
 
 	/**
@@ -123,10 +152,10 @@ public class FloodedSegments
 		// 3. There is more than one link leading downstream (bifurcation). 
 		if( linksTo.size() <= 0    || linksFrom.size() > 1   ||
 		    n.getOutfall() != null || n.getStorage() != null )
-			updateCurrentOverflow(n.getElevation(), BigDecimal.ZERO);
+			updateCurrentOverflow(computeNodeOverflow(n), 0);
 		else
 		{
-			updateCurrentOverflow(n.getElevation(), n.getJunction().getMaxDepth());
+			updateCurrentOverflow(computeNodeOverflow(n), n.getJunction().getMaxDepth().doubleValue());
 			searchLinks(linksTo);
 		}
 	}
@@ -146,13 +175,14 @@ public class FloodedSegments
 		{
 			// Pump: search stops at downstream junction
 			if (l.getPump() != null) 
-				updateCurrentOverflow(l.getNodeByIdNodeTo().getElevation(), BigDecimal.ZERO);
+				updateCurrentOverflow(computeNodeOverflow(l.getNodeByIdNodeTo()), 0);
 
 			// Weir: search stops at crest height
 			else if (l.getWeir() != null) 
 			{
 				updateCurrentOverflow(
-						l.getNodeByIdNodeTo().getElevation(), l.getWeir().getCrestHeight());
+						computeNodeOverflow(l.getNodeByIdNodeTo()), 
+						l.getWeir().getCrestHeight().doubleValue());
 				if(!floodedLinks.contains(l)) floodedLinks.add(l);
 			}
 			
@@ -160,7 +190,7 @@ public class FloodedSegments
 			else
 			{ 						
 				if(!floodedLinks.contains(l)) floodedLinks.add(l);
-				if(l.getNodeByIdNodeFrom().getElevation().compareTo(currentOverflow) < 0)
+				if(computeNodeOverflow(l.getNodeByIdNodeFrom()) < currentOverflow)
 					analyseNode(l.getNodeByIdNodeFrom());
 			}
 		}
@@ -172,10 +202,10 @@ public class FloodedSegments
 	 * @param newLevel the node groundsill height.
 	 * @param depth the node depth (e.g. from groundsill to manhole lid).
 	 */
-	protected static void updateCurrentOverflow(BigDecimal newLevel, BigDecimal depth)
+	protected static void updateCurrentOverflow(double newLevel, double depth)
 	{
-		newLevel = newLevel.add(depth.multiply(safetyMargin));
-		if(newLevel.compareTo(currentOverflow) < 0) 
+		newLevel = newLevel + depth * safetyMargin;
+		if(newLevel < currentOverflow) 
 			currentOverflow = newLevel;
 	}
 	
@@ -189,7 +219,7 @@ public class FloodedSegments
 		{
 		    Link l = it.next();
 		    Node arrivalNode = l.getNodeByIdNodeTo();
-		    if (arrivalNode.getElevation().compareTo(currentOverflow) > 0)
+		    if (computeNodeOverflow(arrivalNode) >= currentOverflow)
 				it.remove();
 		}
 	}
@@ -200,20 +230,19 @@ public class FloodedSegments
 	 * in each conduit according to the Candidate overflow height.
 	 *
 	 * @param n the Node instance on which the Candidate is to be created.
-	 * @param session the Database session.
 	 */
-	protected static void save(Node n, Session session)
+	protected static void save(Node n)
 	{
-		Candidate c = new Candidate(n, currentOverflow);
+		Candidate c = new Candidate(n, new BigDecimal(currentOverflow));
 		session.save(c);
 		for(Link l : floodedLinks)
 		{
 			Flooded f = new Flooded(c, l);
-			double outletElev = l.getNodeByIdNodeTo().getElevation().doubleValue();
-		    double inletElev = l.getNodeByIdNodeFrom().getElevation().doubleValue();
-		    if (l.getNodeByIdNodeFrom().getElevation().compareTo(currentOverflow) > 0)
+			double outletElev = computeNodeOverflow(l.getNodeByIdNodeTo());
+		    double inletElev = computeNodeOverflow(l.getNodeByIdNodeFrom());
+		    if (computeNodeOverflow(l.getNodeByIdNodeFrom()) >= currentOverflow)
 		    	f.setVolumeFraction(new BigDecimal(
-		    			(currentOverflow.doubleValue() - outletElev) / (inletElev - outletElev)));
+		    			(currentOverflow - outletElev) / (inletElev - outletElev)));
 			session.save(f);
 		}
 	}
