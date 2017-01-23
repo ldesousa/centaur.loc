@@ -65,10 +65,12 @@ public class FloodedSegments
      * locations in the network.
 	 *
 	 * @param session the session
+	 * @param useEnergySlopeFlag if true the algorithm uses the energy slope.
 	 */
-	public static void compute(Session sess) 
+	public static void compute(Session sess, Boolean useEnergySlopeFlag) 
 	{
 		session = sess;
+		useEnergySlope = useEnergySlopeFlag;
 		System.out.println("Clearing database ...");
 		clearDB();
 		
