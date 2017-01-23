@@ -195,19 +195,27 @@ public class Main
 		String schema = "coimbra";
 		setUpConnection(schema);
 		
-		//FloodedSegments.compute(session);
-		//commitData(session, tx);
+		FloodedSegments.compute(session, false);
 		
-		OptimalByVolumeArea.computeVolumeArea(session, 2, null, 1, 60, schema);
-		//OptimalByVolumeArea.computeVolumeArea(session, 2, 101355, 1, 60, schema);
-		//OptimalByVolumeArea.computeVolumeAreaNumSubcatchments(session, 5, 101355, 1, 60, schema);
+		// Reset connection - to force the data to be saved.
+		// This does not make much, but apparently is a feature of Hibernate.
+		commitData(session, tx);
+		session.close();
+		setUpConnection(schema);
+		
+		// Volume only
+		OptimalByVolumeArea.compute(session, 5, null, false, false, 19.1, 60, schema);
+		// Volume * Area
+		//OptimalByVolumeArea.compute(session, 2, 101355, true, false, 1, 60, schema);
+		// Volume * Area / Num sub-catchments
+		//OptimalByVolumeArea.compute(session, 5, 101355, true, true, 1, 60, schema);
 		//commitData(session, tx);
 		
 		//plotData(session);
 		//plotVolumeRank(session);
 		//plotAreaRank(session);
 		
-		plotAllGraphs(session);
+		//plotAllGraphs(session);
 		
 		session.close();
     }
