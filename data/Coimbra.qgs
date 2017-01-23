@@ -35,10 +35,10 @@
   <mapcanvas>
     <units>meters</units>
     <extent>
-      <xmin>-24558.11700967638898874</xmin>
-      <ymin>59557.92598728629673133</ymin>
-      <xmax>-24065.95561383506719721</xmax>
-      <ymax>59877.6771662704195478</ymax>
+      <xmin>-25961.5954965832279413</xmin>
+      <ymin>60691.08300922875787364</ymin>
+      <xmax>-24977.27270490067166975</xmax>
+      <ymax>61330.58536719688709127</ymax>
     </extent>
     <rotation>0</rotation>
     <projections>0</projections>
@@ -134,21 +134,21 @@
           <prop k="style" v="solid"/>
         </layer>
       </symbol>
-      <ComposerPicture resizeMode="0" svgBorderWidth="0.2" pictureRotation="0" pictureWidth="6.67994" svgFillColor="255,255,255,255" svgBorderColor="0,0,0,255" file="../../../Desktop/Symbols/north_arrow.svg" pictureHeight="28.2193" mapId="-1" anchorPoint="0">
-        <ComposerItem pagey="177.857" page="1" id="" lastValidViewScaleFactor="-1" positionMode="0" positionLock="false" x="53.4656" y="177.857" visibility="1" zValue="5" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="10.0552" outlineWidth="0.3" excludeFromExports="0" uuid="{2a1a70ca-1817-4845-8b97-0d4be4598a3a}" height="28.2193" itemRotation="0" frame="false" pagex="53.4656">
+      <ComposerPicture resizeMode="0" svgBorderWidth="0.2" pictureRotation="0" pictureWidth="6.67993" svgFillColor="255,255,255,255" svgBorderColor="0,0,0,255" file="../../../Desktop/Symbols/north_arrow.svg" pictureHeight="28.2193" mapId="-1" anchorPoint="0">
+        <ComposerItem pagey="177.857" page="1" id="" lastValidViewScaleFactor="-1" positionMode="0" positionLock="false" x="53.4656" y="177.857" visibility="1" zValue="4" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="10.0552" outlineWidth="0.3" excludeFromExports="0" uuid="{2a1a70ca-1817-4845-8b97-0d4be4598a3a}" height="28.2193" itemRotation="0" frame="false" pagex="53.4656">
           <FrameColor alpha="255" red="0" blue="0" green="0"/>
           <BackgroundColor alpha="255" red="255" blue="255" green="255"/>
           <dataDefinedSource expr="" field="" active="false" useExpr="true"/>
           <customproperties/>
         </ComposerItem>
       </ComposerPicture>
-      <ComposerScaleBar lineCapStyle="square" style="Single Box" numMapUnitsPerScaleBarUnit="1" segmentSizeMode="1" alignment="0" numSegments="2" segmentMillimeters="20.8529" lineJoinStyle="miter" minBarWidth="30" numUnitsPerSegment="200" units="1" labelBarSpace="3" outlineWidth="0.3" numSegmentsLeft="2" maxBarWidth="150" height="2" boxContentSpace="1" mapId="0" unitLabel="m">
+      <ComposerScaleBar lineCapStyle="square" style="Single Box" numMapUnitsPerScaleBarUnit="1" segmentSizeMode="1" alignment="0" numSegments="2" segmentMillimeters="41.7057" lineJoinStyle="miter" minBarWidth="30" numUnitsPerSegment="400" units="1" labelBarSpace="3" outlineWidth="0.3" numSegmentsLeft="2" maxBarWidth="150" height="2" boxContentSpace="1" mapId="0" unitLabel="m">
         <scaleBarFont description="Ubuntu,12,-1,5,50,0,0,0,0,0" style=""/>
         <fillColor alpha="255" red="0" blue="0" green="0"/>
         <fillColor2 alpha="255" red="255" blue="255" green="255"/>
         <strokeColor alpha="255" red="0" blue="0" green="0"/>
         <textColor alpha="255" red="0" blue="0" green="0"/>
-        <ComposerItem pagey="195.888" page="1" id="" lastValidViewScaleFactor="-1" positionMode="0" positionLock="false" x="217.293" y="195.888" visibility="1" zValue="3" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="76.8492" outlineWidth="0.3" excludeFromExports="0" uuid="{51ea40b6-2cb7-4340-a7ba-5f9767f243a2}" height="11.2423" itemRotation="0" frame="false" pagex="217.293">
+        <ComposerItem pagey="195.888" page="1" id="" lastValidViewScaleFactor="-1" positionMode="0" positionLock="false" x="217.293" y="195.888" visibility="1" zValue="3" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="139.408" outlineWidth="0.3" excludeFromExports="0" uuid="{51ea40b6-2cb7-4340-a7ba-5f9767f243a2}" height="11.2423" itemRotation="0" frame="false" pagex="217.293">
           <FrameColor alpha="255" red="0" blue="0" green="0"/>
           <BackgroundColor alpha="255" red="255" blue="255" green="255"/>
           <customproperties/>
@@ -206,9 +206,56 @@
         </ComposerItem>
       </ComposerLegend>
       <ComposerMap mapRotation="0" keepLayerSet="false" id="0" previewMode="Cache" drawCanvasItems="true">
-        <Extent ymin="59387.53261552419280633" xmin="-26138.94172499999694992" ymax="61356.30914862496138085" xmax="-23335.74727500000153668"/>
+        <Extent ymin="59387.53261552419280633" xmin="-26138.94172499999694992" ymax="61356.30884300619800342" xmax="-23335.74727500000153668"/>
         <LayerSet/>
         <Grid/>
+        <ComposerMapGrid rightAnnotationDirection="0" gridFramePenColor="0,0,0,255" show="0" bottomAnnotationPosition="1" annotationPrecision="3" showAnnotation="0" topFrameDivisions="0" uuid="{4529b169-4830-4017-848b-3141ba5b8584}" leftAnnotationDirection="0" topAnnotationPosition="1" rightAnnotationDisplay="0" offsetX="0" offsetY="0" rightFrameDivisions="0" gridStyle="0" annotationFontColor="0,0,0,255" intervalX="0" gridFrameSideFlags="15" intervalY="0" bottomAnnotationDirection="0" leftAnnotationDisplay="0" leftFrameDivisions="0" frameFillColor1="255,255,255,255" annotationExpression="" frameFillColor2="0,0,0,255" crossLength="3" gridFramePenThickness="0.5" bottomAnnotationDisplay="0" unit="0" topAnnotationDisplay="0" leftAnnotationPosition="1" blendMode="0" gridFrameStyle="0" rightAnnotationPosition="1" gridFrameWidth="2" name="Grid 1" annotationFormat="0" bottomFrameDivisions="0" topAnnotationDirection="0" frameAnnotationDistance="1">
+          <lineStyle>
+            <symbol alpha="1" clip_to_extent="1" type="line" name="">
+              <layer pass="0" class="SimpleLine" locked="0">
+                <prop k="capstyle" v="square"/>
+                <prop k="customdash" v="5;2"/>
+                <prop k="customdash_map_unit_scale" v="0,0,0,0,0,0"/>
+                <prop k="customdash_unit" v="MM"/>
+                <prop k="draw_inside_polygon" v="0"/>
+                <prop k="joinstyle" v="bevel"/>
+                <prop k="line_color" v="0,0,0,255"/>
+                <prop k="line_style" v="solid"/>
+                <prop k="line_width" v="0"/>
+                <prop k="line_width_unit" v="MM"/>
+                <prop k="offset" v="0"/>
+                <prop k="offset_map_unit_scale" v="0,0,0,0,0,0"/>
+                <prop k="offset_unit" v="MM"/>
+                <prop k="use_custom_dash" v="0"/>
+                <prop k="width_map_unit_scale" v="0,0,0,0,0,0"/>
+              </layer>
+            </symbol>
+          </lineStyle>
+          <markerStyle>
+            <symbol alpha="1" clip_to_extent="1" type="marker" name="">
+              <layer pass="0" class="SimpleMarker" locked="0">
+                <prop k="angle" v="0"/>
+                <prop k="color" v="0,0,0,255"/>
+                <prop k="horizontal_anchor_point" v="1"/>
+                <prop k="name" v="circle"/>
+                <prop k="offset" v="0,0"/>
+                <prop k="offset_map_unit_scale" v="0,0,0,0,0,0"/>
+                <prop k="offset_unit" v="MM"/>
+                <prop k="outline_color" v="0,0,0,255"/>
+                <prop k="outline_style" v="solid"/>
+                <prop k="outline_width" v="0"/>
+                <prop k="outline_width_map_unit_scale" v="0,0,0,0,0,0"/>
+                <prop k="outline_width_unit" v="MM"/>
+                <prop k="scale_method" v="diameter"/>
+                <prop k="size" v="2"/>
+                <prop k="size_map_unit_scale" v="0,0,0,0,0,0"/>
+                <prop k="size_unit" v="MM"/>
+                <prop k="vertical_anchor_point" v="1"/>
+              </layer>
+            </symbol>
+          </markerStyle>
+          <annotationFontProperties description="Ubuntu,10,-1,5,50,0,0,0,0,0" style=""/>
+        </ComposerMapGrid>
         <AtlasMap scalingMode="2" atlasDriven="0" margin="0.10000000000000001"/>
         <ComposerItem pagey="2.5" page="1" id="" lastValidViewScaleFactor="3.39129" positionMode="0" positionLock="false" x="2" y="2.5" visibility="1" zValue="1" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="292.273" outlineWidth="0.3" excludeFromExports="0" uuid="{9d83b870-16b6-4ea6-a13f-8dbfa30a597e}" height="205.273" itemRotation="0" frame="true" pagex="2">
           <FrameColor alpha="255" red="0" blue="0" green="0"/>
@@ -490,6 +537,7 @@
       <SingleCategoryDiagramRenderer diagramType="Pie">
         <DiagramCategory penColor="#000000" labelPlacementMethod="XHeight" penWidth="0" diagramOrientation="Up" minimumSize="0" barWidth="5" penAlpha="255" maxScaleDenominator="1e+08" backgroundColor="#ffffff" transparency="0" width="15" scaleDependency="Area" backgroundAlpha="255" angleOffset="1440" scaleBasedVisibility="0" enabled="0" height="15" sizeType="MM" minScaleDenominator="0">
           <fontProperties description="Ubuntu,10,-1,5,50,0,0,0,0,0" style=""/>
+          <attribute field="" color="#000000" label=""/>
         </DiagramCategory>
       </SingleCategoryDiagramRenderer>
       <DiagramLayerSettings yPosColumn="-1" linePlacementFlags="10" placement="0" dist="0" xPosColumn="-1" priority="0" obstacle="0" zIndex="0" showAll="1"/>
@@ -18043,7 +18091,7 @@ def my_form_open(dialog, layer, feature):
     </maplayer>
     <maplayer minimumScale="-4.65661e-10" maximumScale="1e+08" simplifyDrawingHints="0" minLabelScale="0" maxLabelScale="1e+08" simplifyDrawingTol="1" geometry="Point" simplifyMaxScale="1" type="vector" hasScaleBasedVisibilityFlag="0" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
       <id>v_junction20161123153847848</id>
-      <datasource>dbname='centaur' host=localhost port=5433 sslmode=disable key='id' srid=3035 type=Point table="coimbra"."v_junction" (geom) sql=</datasource>
+      <datasource>dbname='centaur' host=localhost port=5433 sslmode=disable key='id_node' srid=3035 type=Point table="coimbra"."v_junction" (geom) sql=</datasource>
       <shortname>v_junction</shortname>
       <title></title>
       <abstract></abstract>
@@ -18072,7 +18120,7 @@ def my_form_open(dialog, layer, feature):
         <map-layer-style name=""/>
       </map-layer-style-manager>
       <edittypes>
-        <edittype widgetv2type="TextEdit" name="id">
+        <edittype widgetv2type="TextEdit" name="id_node">
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
         <edittype widgetv2type="TextEdit" name="elevation">
