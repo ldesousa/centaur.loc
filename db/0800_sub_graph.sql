@@ -1,10 +1,10 @@
 ﻿SET search_path TO coimbra, public;
 
--- ######################################################3
 
+-- ############################################################################
 -- Inspired on: http://stackoverflow.com/a/54362/2066215
 -- Related: http://stackoverflow.com/q/38975449/2066215
-
+-- Returns the sub-network upstream of a given node
 CREATE OR REPLACE FUNCTION f_node_subgraph (INTEGER)
 RETURNS SETOF node AS
 $BODY$
@@ -33,11 +33,18 @@ BEGIN
 END;
 $BODY$ LANGUAGE plpgsql STABLE;
 
-
+-- Testing
 SELECT * FROM f_node_subgraph(101355);
 
--- Get max volume * area id 
-CREATE OR REPLACE FUNCTION f_optimal (INTEGER, BOOLEAN)
+
+-- ############################################################################
+-- Returns the id of the node with the maximum value for the expression: 
+-- upstream storage volume * contributing area / number of sub-catchments
+-- Contributing area and number of sub-catchment are optional
+-- $1 : id of node of interest - if not null, only the upstream sub-network is considered
+-- $2 : if true use the contributing area
+-- $3 : if true use the number of sub-catchments
+CREATE OR REPLACE FUNCTION f_optimal (INTEGER, BOOLEAN, BOOLEAN)
 RETURNS INTEGER AS
 $BODY$
 DECLARE max NUMERIC;
@@ -53,13 +60,18 @@ BEGIN
 		 '    ON (v.id = s.id)';
 	END IF;
 
-	-- Should the number of areas be included?
-	IF $2 THEN
+	IF $2 AND $3 THEN
 		query := query ||	   
 		 ' ORDER BY v.flooded_volume * v.contributions / v.num_subcatchments DESC ';
-	ELSE
+	ELSIF $2 THEN
 		query := query ||	   
 		 ' ORDER BY v.flooded_volume * v.contributions DESC ';
+	ELSIF $3 THEN
+		query := query ||	   
+		 ' ORDER BY v.flooded_volume / v.num_subcatchments DESC ';
+	ELSE 
+		query := query ||	   
+		 ' ORDER BY v.flooded_volume DESC ';
 	END IF;
 
 	query := query || ' LIMIT 1';
@@ -73,6 +85,7 @@ $BODY$ LANGUAGE plpgsql STABLE;
 SELECT * FROM f_optimal(101355, FALSE);
 
 
+-- ############################################################################
 -- Help queries
 
 SELECT v.id, v.flooded_volume, v.contributions, v.flooded_volume * v.contributions AS rank
