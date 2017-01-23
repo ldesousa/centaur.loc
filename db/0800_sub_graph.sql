@@ -62,10 +62,10 @@ BEGIN
 
 	IF $2 AND $3 THEN
 		query := query ||	   
-		 ' ORDER BY v.flooded_volume * v.contributions / v.num_subcatchments DESC ';
+		 ' ORDER BY v.flooded_volume * v.served_area / v.num_subcatchments DESC ';
 	ELSIF $2 THEN
 		query := query ||	   
-		 ' ORDER BY v.flooded_volume * v.contributions DESC ';
+		 ' ORDER BY v.flooded_volume * v.served_area DESC ';
 	ELSIF $3 THEN
 		query := query ||	   
 		 ' ORDER BY v.flooded_volume / v.num_subcatchments DESC ';
@@ -81,8 +81,6 @@ BEGIN
 END;
 $BODY$ LANGUAGE plpgsql STABLE;
 
-
-SELECT * FROM f_optimal(101355, FALSE);
 
 
 -- ############################################################################
