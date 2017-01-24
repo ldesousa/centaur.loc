@@ -195,7 +195,7 @@ CREATE OR REPLACE VIEW v_candidate_contribution AS
 SELECT c.id_node,
        COALESCE(SUM(b.value), 0) AS contributions
   FROM candidate c
-  LEFT JOIN contribution b
+  LEFT JOIN contribution_temp b
     ON c.id_node = b.id_node
  GROUP BY(c.id_node);
 

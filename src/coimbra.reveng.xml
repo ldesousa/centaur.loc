@@ -29,6 +29,7 @@
 	<table-filter match-name="candidate" />
 	<table-filter match-name="v_candidate" />
 	<table-filter match-name="contribution" />
+	<table-filter match-name="contribution_temp" />
 	<table-filter match-name="v_junction" />
 	
 	<!-- Sequences -->
