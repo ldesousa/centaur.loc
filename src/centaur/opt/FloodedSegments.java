@@ -38,8 +38,8 @@ import centaur.db.VJunction;
 public class FloodedSegments 
 {	
 	
-	/** The safety margin. */
-	static double safetyMargin = 0.9;
+	/** The safety margin in meters; to be deducted from node depth. */
+	static double safetyMargin = 0.1;
 	
 	/** The prospects. */
 	static LinkedList<Node> prospects;
@@ -206,7 +206,7 @@ public class FloodedSegments
 	 */
 	protected static void updateCurrentOverflow(double newLevel, double depth)
 	{
-		newLevel = newLevel + depth * safetyMargin;
+		newLevel = newLevel + depth - safetyMargin;
 		if(newLevel < currentOverflow) 
 			currentOverflow = newLevel;
 	}
