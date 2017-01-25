@@ -40,13 +40,11 @@ SELECT * FROM f_node_subgraph(101355);
 -- ############################################################################
 -- Returns the id of the node with the maximum value for the expression: 
 -- upstream storage volume * served area / number of sub-catchments
--- Contributing area and number of sub-catchment are optional.
--- The actual value for served area is that present in the contributions field.
--- This allows its update every time a gate is sited, taking part of the total
--- served areas.
+-- Served area and number of sub-catchment are optional.
 -- $1 : id of node of interest - if not null, only the upstream sub-network is considered
 -- $2 : if true use the served area
 -- $3 : if true use the number of sub-catchments
+
 CREATE OR REPLACE FUNCTION f_optimal (INTEGER, BOOLEAN, BOOLEAN)
 RETURNS INTEGER AS
 $BODY$
@@ -65,10 +63,10 @@ BEGIN
 
 	IF $2 AND $3 THEN
 		query := query ||	   
-		 ' ORDER BY v.flooded_volume * v.contributions / v.num_subcatchments DESC ';
+		 ' ORDER BY v.flooded_volume * v.served_area / v.num_subcatchments DESC ';
 	ELSIF $2 THEN
 		query := query ||	   
-		 ' ORDER BY v.flooded_volume * v.contributions DESC ';
+		 ' ORDER BY v.flooded_volume * v.served_area DESC ';
 	ELSIF $3 THEN
 		query := query ||	   
 		 ' ORDER BY v.flooded_volume / v.num_subcatchments DESC ';
@@ -129,12 +127,12 @@ SELECT * FROM f_optimal(null, false, false);
 
 SELECT AVG(max_depth), STDDEV(max_depth) FROM coimbra.junction;
 
-select * from coimbra.v_candidate where name like '64';
+select * from coimbra.v_candidate where name like '75';
 
 select sum(contributions) from coimbra.v_candidate;
 
 select sum(served_area) from coimbra.v_candidate;
 
+select max(area), avg(area), stddev(area) from coimbra.subcatchment;
 
-
-
+select count(*) * 0.16465 from coimbra.subcatchment; 
