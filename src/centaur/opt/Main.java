@@ -196,19 +196,18 @@ public class Main
 		setUpConnection(schema);
 		
 		//FloodedSegments.compute(session, true);
+		//commitData(session, tx);
 		
 		// Reset connection - to force the data to be saved.
 		// This does not make much sense, but apparently is a feature of Hibernate.
-		//commitData(session, tx);
 		//session.close();
 		//setUpConnection(schema);
 		
-		// Compute served areas and contributions
-		//ServedAreas.compute(session);
-		//commitData(session, tx);
-		
 		// Volume only
-		OptimalByVolume.compute(session, 5, null, false, true, 19.1, 60, schema);
+		OptimalByVolume.compute(session, 5, null, false, true, schema);
+		// Coimbra
+		//OptimalByVolume.compute(session, 5, -545475706, false, false, schema);
+		//OptimalByVolume.compute(session, 5, 643983129, false, false, schema);
 		// Volume * Area
 		//OptimalByVolume.compute(session, 2, 101355, true, false, 1, 60, schema);
 		// Volume * Area / Num sub-catchments

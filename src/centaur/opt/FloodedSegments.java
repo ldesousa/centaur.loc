@@ -24,7 +24,6 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 
 import centaur.db.Node;
-import centaur.db.VCandidate;
 import centaur.db.Candidate;
 import centaur.db.Flooded;
 import centaur.db.Link;
