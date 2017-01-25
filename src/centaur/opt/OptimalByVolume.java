@@ -20,19 +20,15 @@ import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.Set;
 import java.util.List;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
 
 import centaur.db.Node;
-import centaur.db.Candidate;
-import centaur.db.ContributionTemp;
 import centaur.db.Flooded;
 import centaur.db.Subcatchment;
 import centaur.db.VCandidate;
-import centaur.db.Link;
 
 
 // TODO: Auto-generated Javadoc
@@ -71,13 +67,13 @@ public class OptimalByVolume {
 	 * @param database schema containing the CENTAUR tables
 	 */
 	public static void compute(Session sess, int numGates, Integer noi,  
-			boolean useArea, boolean useCatchments, double intensity, 
-			double duration, String schema) 
+			boolean useArea, boolean useCatchments, /*double intensity, 
+			double duration,*/ String schema) 
 	{	
 		System.out.println("\nStarting gate siting computation...");
 		
 		session = sess;
-		resetContributions(schema);
+		//resetContributions(schema);
 		
 		for (int i = 1; i <= numGates; i++)
 		{
@@ -86,10 +82,11 @@ public class OptimalByVolume {
 					"Candidate #" + i + ": " + cand.getName() + " id: "+ cand.getId() + 
 					"\n\tvolume: " + df.format(cand.getFloodedVolume()) + " m3" + 
 					"\n\tserved area: " + df.format(cand.getServedArea()) + " ha" + 
+					//"\n\tserved area: " + cand.getServedArea() + " ha" + 
 					"\n\tnum catchemnts: " + df.format(cand.getNumSubcatchments())); // +
 					//"\n\nUpdating contributions data...\n");
 			
-			updateBestCandidate(cand, intensity, duration);
+			updateBestCandidate(cand);//, intensity, duration);
 		}
 		
 		finalise(numGates);
@@ -103,30 +100,14 @@ public class OptimalByVolume {
 	 * @param intensity the rain event intensity to consider (mm/h == l/m2).
 	 * @param duration the time length of the rain event (minutes)
 	 */
-	protected static void updateBestCandidate(VCandidate cand, double intensity, double duration)
+	protected static void updateBestCandidate(VCandidate cand/*, double intensity, double duration*/)
 	{
-		updateContributions(cand, intensity, duration);
+		//updateContributions(cand, intensity, duration*/);
 		removeCandidates(cand);
 		session.getTransaction().commit();
         session.beginTransaction();
 	}
 	
-	/**
-	 * Retrieves the temporary contributions table to restart the computation.
-	 * This table contains the data used by the f_optimal function.
-	 */
-	static void resetContributions(String schema)
-	{	
-		// Set search_path
-		String query = "SET search_path TO " + schema + " , public";
-		session.createSQLQuery(query).executeUpdate();
-		
-		query = "SELECT FROM p_reset_contributions();"; 
-		session.createSQLQuery(query).list();
-		//session.createSQLQuery(query).executeUpdate();
-	}
-	
-
 	/**
 	 * Retrieves the best candidate according to a particular objective 
 	 * function, in this case strictly storage volume.
@@ -159,57 +140,6 @@ public class OptimalByVolume {
 		List max = session.createSQLQuery(query).list();
 		System.out.println("\nMax: " + df.format(max.get(0)));
 		return (VCandidate) session.get(VCandidate.class, new Integer(max.get(0).toString()));
-	}
-	
-	/**
-	 * 
-	 * @param candidate
-	 * @param intensity the rain event intensity to consider (mm/h == l/m2).
-	 * @param duration the time length of the rain event (minutes)
-	 */
-	static void updateContributions(VCandidate candidate, double intensity, double duration)
-	{
-		// Calculate water volume per hectare 
-		// intensity / litres per cubic meter * square meters per hectare * hours
-		Double volumeH = intensity / 1000 * 10000 * duration / 60;
-		
-		// Compute maximum volume stored by this candidate for this event.
-		Double volumeStored = volumeH * candidate.getContributions().doubleValue();
-		if(volumeStored > candidate.getFloodedVolume().doubleValue())
-			volumeStored = candidate.getFloodedVolume().doubleValue();
-		
-		// Get all the subcatchments served by this candidate
-		String select = "SELECT c FROM ContributionTemp c WHERE c.candidate.idNode = :idNode";
-		Query selectQuery = session.createQuery(select);
-		selectQuery.setParameter("idNode", candidate.getId());
-		LinkedList<ContributionTemp> contribs = new LinkedList<ContributionTemp>(selectQuery.list());
-		
-		for (ContributionTemp contrib : contribs) 
-		{
-			// weight of this subcatchment
-			double weight = 
-					contrib.getValue().doubleValue() / 
-					candidate.getContributions().doubleValue();
-			
-			// total contribution from this subcatchment
-			double subValue = contrib.getSubcatchment().getArea().doubleValue() * volumeH;
-			
-			// fraction of the subcatchment contribution stored by the gate
-			double fraction = subValue / (volumeStored * weight);
-			
-			select = "SELECT c FROM ContributionTemp c WHERE c.subcatchment.id = :id";
-			selectQuery = session.createQuery(select);
-			selectQuery.setParameter("id", contrib.getSubcatchment().getId());
-			LinkedList<ContributionTemp> subContribs = 
-					new LinkedList<ContributionTemp>(selectQuery.list());
-			
-			for (ContributionTemp subContrib : subContribs)
-			{
-				subContrib.setValue(new BigDecimal(
-						subContrib.getValue().doubleValue() * (1 - fraction)));
-				session.save(subContrib);
-			}
-		}
 	}
 	
 	/**
