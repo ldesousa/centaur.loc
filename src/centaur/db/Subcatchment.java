@@ -1,5 +1,5 @@
 package centaur.db;
-// Generated Mar 16, 2016 11:11:21 AM by Hibernate Tools 4.3.1.Final
+// Generated 25-Jan-2017 14:43:53 by Hibernate Tools 5.2.0.CR1
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -21,7 +21,7 @@ public class Subcatchment implements java.io.Serializable {
 	private BigDecimal slope;
 	private BigDecimal curbLen;
 	private String snowPack;
-	//private Serializable geom;
+	private Serializable geom;
 	private Subarea subarea;
 	private Set polygons = new HashSet(0);
 
@@ -29,7 +29,7 @@ public class Subcatchment implements java.io.Serializable {
 	}
 
 	public Subcatchment(Node node, Raingage raingage, String name, BigDecimal area, BigDecimal imperv, BigDecimal width,
-			BigDecimal slope, BigDecimal curbLen, String snowPack, /*Serializable geom,*/ Subarea subarea, Set polygons) {
+			BigDecimal slope, BigDecimal curbLen, String snowPack, Serializable geom, Subarea subarea, Set polygons) {
 		this.node = node;
 		this.raingage = raingage;
 		this.name = name;
@@ -39,7 +39,7 @@ public class Subcatchment implements java.io.Serializable {
 		this.slope = slope;
 		this.curbLen = curbLen;
 		this.snowPack = snowPack;
-		//this.geom = geom;
+		this.geom = geom;
 		this.subarea = subarea;
 		this.polygons = polygons;
 	}
@@ -124,13 +124,13 @@ public class Subcatchment implements java.io.Serializable {
 		this.snowPack = snowPack;
 	}
 
-	/*public Serializable getGeom() {
+	public Serializable getGeom() {
 		return this.geom;
 	}
 
 	public void setGeom(Serializable geom) {
 		this.geom = geom;
-	}*/
+	}
 
 	public Subarea getSubarea() {
 		return this.subarea;

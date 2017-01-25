@@ -1,5 +1,5 @@
 package centaur.db;
-// Generated 25-Jan-2017 11:43:53 by Hibernate Tools 5.2.0.CR1
+// Generated 25-Jan-2017 14:43:53 by Hibernate Tools 5.2.0.CR1
 
 import java.math.BigDecimal;
 import java.util.HashSet;
@@ -15,7 +15,6 @@ public class Candidate implements java.io.Serializable {
 	private BigDecimal outflowElevation;
 	private BigDecimal servedArea;
 	private BigDecimal volume;
-	private BigDecimal numSubcatchments;
 	private Set floodeds = new HashSet(0);
 
 	public Candidate() {
@@ -26,13 +25,11 @@ public class Candidate implements java.io.Serializable {
 		this.outflowElevation = outflowElevation;
 	}
 
-	public Candidate(Node node, BigDecimal outflowElevation, BigDecimal servedArea, BigDecimal volume,
-			BigDecimal numSubcatchments, Set floodeds) {
+	public Candidate(Node node, BigDecimal outflowElevation, BigDecimal servedArea, BigDecimal volume, Set floodeds) {
 		this.node = node;
 		this.outflowElevation = outflowElevation;
 		this.servedArea = servedArea;
 		this.volume = volume;
-		this.numSubcatchments = numSubcatchments;
 		this.floodeds = floodeds;
 	}
 
@@ -74,14 +71,6 @@ public class Candidate implements java.io.Serializable {
 
 	public void setVolume(BigDecimal volume) {
 		this.volume = volume;
-	}
-
-	public BigDecimal getNumSubcatchments() {
-		return this.numSubcatchments;
-	}
-
-	public void setNumSubcatchments(BigDecimal numSubcatchments) {
-		this.numSubcatchments = numSubcatchments;
 	}
 
 	public Set getFloodeds() {

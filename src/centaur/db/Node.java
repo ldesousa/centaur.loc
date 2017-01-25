@@ -1,5 +1,5 @@
 package centaur.db;
-// Generated Feb 23, 2016 9:47:25 AM by Hibernate Tools 4.3.1.Final
+// Generated 25-Jan-2017 14:43:53 by Hibernate Tools 5.2.0.CR1
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -11,11 +11,11 @@ import java.util.Set;
  */
 public class Node implements java.io.Serializable {
 
-	private int id;
+	private Integer id;
 	private BigDecimal elevation;
 	private String name;
 	private Boolean taken;
-	//private Serializable geom;
+	private Serializable geom;
 	private Junction junction;
 	private Outfall outfall;
 	private Set linksForIdNodeTo = new HashSet(0);
@@ -28,18 +28,13 @@ public class Node implements java.io.Serializable {
 	public Node() {
 	}
 
-	public Node(int id) {
-		this.id = id;
-	}
-
-	public Node(int id, BigDecimal elevation, String name, Boolean taken, /*Serializable geom,*/ Junction junction, Outfall outfall,
+	public Node(BigDecimal elevation, String name, Boolean taken, Serializable geom, Junction junction, Outfall outfall,
 			Set linksForIdNodeTo, Candidate candidate, Set linksForIdNodeFrom, Storage storage, Set subcatchments,
 			Coordinates coordinates) {
-		this.id = id;
 		this.elevation = elevation;
 		this.name = name;
 		this.taken = taken;
-		//this.geom = geom;
+		this.geom = geom;
 		this.junction = junction;
 		this.outfall = outfall;
 		this.linksForIdNodeTo = linksForIdNodeTo;
@@ -50,11 +45,11 @@ public class Node implements java.io.Serializable {
 		this.coordinates = coordinates;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return this.id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -73,7 +68,7 @@ public class Node implements java.io.Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	public Boolean getTaken() {
 		return this.taken;
 	}
@@ -82,13 +77,13 @@ public class Node implements java.io.Serializable {
 		this.taken = taken;
 	}
 
-	/*public Serializable getGeom() {
+	public Serializable getGeom() {
 		return this.geom;
 	}
 
 	public void setGeom(Serializable geom) {
 		this.geom = geom;
-	}*/
+	}
 
 	public Junction getJunction() {
 		return this.junction;
@@ -153,4 +148,5 @@ public class Node implements java.io.Serializable {
 	public void setCoordinates(Coordinates coordinates) {
 		this.coordinates = coordinates;
 	}
+
 }

@@ -9,6 +9,7 @@ DROP VIEW v_storage CASCADE;
 DROP VIEW v_junction CASCADE;
 DROP VIEW v_flooded CASCADE;
 
+
 CREATE OR REPLACE VIEW v_weir AS
 SELECT l.id,
        l.name,
@@ -191,20 +192,31 @@ SELECT c.id_node,
    AND c.id_node = f.id_node
  GROUP BY(c.id_node);
 
-CREATE OR REPLACE VIEW v_candidate AS
+-- This view needs to materialised, otherwise it takes took long to run.
+-- DROP MATERIALIZED VIEW v_candidate;
+CREATE MATERIALIZED VIEW v_candidate AS
 SELECT n.id, 
        c.outflow_elevation,
        n.name,
        n.geom,
        v.flooded_volume,
        c.served_area,
-       c.num_subcatchments
+       (SELECT COUNT(*)
+          FROM subcatchment c,
+               (SELECT DISTINCT s.id 
+                  FROM coimbra.f_node_subgraph(n.id) s) u
+         WHERE c.id_node_outlet = u.id) 
+         AS num_subcatchments
   FROM candidate c,
        node n,
        v_candidate_volume v
  WHERE c.id_node = n.id
    AND c.id_node = v.id_node
    AND (n.taken = FALSE OR n.taken IS NULL);
+
+-- Refresh if needed
+-- REFRESH MATERIALIZED VIEW v_candidate;
+
 
 CREATE OR REPLACE VIEW v_flooded AS
 SELECT f.id_flooded,

@@ -459,7 +459,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="candidate">
 	<schema name="centaur"/>
 	<role name="postgres"/>
-	<position x="441" y="405"/>
+	<position x="435" y="377"/>
 	<column name="id_node" not-null="true">
 		<type name="integer"/>
 	</column>
@@ -472,9 +472,6 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="volume">
 		<type name="numeric"/>
 	</column>
-	<column name="num_subcatchments">
-		<type name="numeric"/>
-	</column>
 	<constraint name="pk_candidate" type="pk-constr" table="centaur.candidate">
 		<columns names="id_node" ref-type="src-columns"/>
 	</constraint>
@@ -483,7 +480,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="flooded">
 	<schema name="centaur"/>
 	<role name="postgres"/>
-	<position x="425" y="512"/>
+	<position x="435" y="513"/>
 	<column name="id_flooded" not-null="true">
 		<type name="serial"/>
 	</column>

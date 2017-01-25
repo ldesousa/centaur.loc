@@ -1,5 +1,5 @@
 package centaur.db;
-// Generated Feb 23, 2016 9:47:25 AM by Hibernate Tools 4.3.1.Final
+// Generated 25-Jan-2017 14:43:53 by Hibernate Tools 5.2.0.CR1
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -10,11 +10,11 @@ import java.util.Set;
  */
 public class Link implements java.io.Serializable {
 
-	private int id;
+	private Integer id;
 	private Node nodeByIdNodeTo;
 	private Node nodeByIdNodeFrom;
 	private String name;
-	//private Serializable geom;
+	private Serializable geom;
 	private Weir weir;
 	private Set floodeds = new HashSet(0);
 	private Conduit conduit;
@@ -24,17 +24,12 @@ public class Link implements java.io.Serializable {
 	public Link() {
 	}
 
-	public Link(int id) {
-		this.id = id;
-	}
-
-	public Link(int id, Node nodeByIdNodeTo, Node nodeByIdNodeFrom, String name, /*Serializable geom,*/ Weir weir,
-			Set floodeds, Conduit conduit, Pump pump, Xsection xsection) {
-		this.id = id;
+	public Link(Node nodeByIdNodeTo, Node nodeByIdNodeFrom, String name, Serializable geom, Weir weir, Set floodeds,
+			Conduit conduit, Pump pump, Xsection xsection) {
 		this.nodeByIdNodeTo = nodeByIdNodeTo;
 		this.nodeByIdNodeFrom = nodeByIdNodeFrom;
 		this.name = name;
-		//this.geom = geom;
+		this.geom = geom;
 		this.weir = weir;
 		this.floodeds = floodeds;
 		this.conduit = conduit;
@@ -42,11 +37,11 @@ public class Link implements java.io.Serializable {
 		this.xsection = xsection;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return this.id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -74,13 +69,13 @@ public class Link implements java.io.Serializable {
 		this.name = name;
 	}
 
-	/*public Serializable getGeom() {
+	public Serializable getGeom() {
 		return this.geom;
 	}
 
 	public void setGeom(Serializable geom) {
 		this.geom = geom;
-	}*/
+	}
 
 	public Weir getWeir() {
 		return this.weir;

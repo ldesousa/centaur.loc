@@ -5,6 +5,7 @@
 -- Inspired on: http://stackoverflow.com/a/54362/2066215
 -- Related: http://stackoverflow.com/q/38975449/2066215
 -- Returns the sub-network upstream of a given node
+
 CREATE OR REPLACE FUNCTION f_node_subgraph (INTEGER)
 RETURNS SETOF node AS
 $BODY$
@@ -35,7 +36,6 @@ $BODY$ LANGUAGE plpgsql STABLE;
 
 -- Testing
 SELECT * FROM f_node_subgraph(101355);
-
 
 -- ############################################################################
 -- Returns the id of the node with the maximum value for the expression: 
@@ -123,16 +123,6 @@ with recursive path(id_from, id_to, path, cycle) as (
 select * from path where id_to = 101355;
 
 
-SELECT * FROM f_optimal(null, false, false);
 
-SELECT AVG(max_depth), STDDEV(max_depth) FROM coimbra.junction;
 
-select * from coimbra.v_candidate where name like '75';
 
-select sum(contributions) from coimbra.v_candidate;
-
-select sum(served_area) from coimbra.v_candidate;
-
-select max(area), avg(area), stddev(area) from coimbra.subcatchment;
-
-select count(*) * 0.16465 from coimbra.subcatchment; 

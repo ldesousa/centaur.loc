@@ -1,12 +1,16 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Feb 23, 2016 9:47:26 AM by Hibernate Tools 4.3.1.Final -->
+<!-- Generated 25-Jan-2017 14:43:53 by Hibernate Tools 5.2.0.CR1 -->
 <hibernate-mapping>
     <class name="centaur.db.Node" table="node" optimistic-lock="version">
-        <id name="id" type="int">
+        <id name="id" type="java.lang.Integer">
             <column name="id" />
-            <generator class="assigned" />
+            <generator class="org.hibernate.id.enhanced.SequenceStyleGenerator">
+                <param name="optimizer">none</param>
+                <param name="sequence_name">node_id_seq</param>
+                <param name="increment_size">1</param>
+            </generator>
         </id>
         <property name="elevation" type="big_decimal">
             <column name="elevation" precision="131089" scale="0" />
@@ -15,11 +19,13 @@
             <column name="name" unique="true" />
         </property>
         <property name="taken" type="java.lang.Boolean">
-            <column name="taken" />
+            <column name="taken">
+                <comment>True if this node is already being used by a gate or flooded by one.</comment>
+            </column>
         </property>
-        <!-- <property name="geom" type="serializable">
+        <property name="geom" type="serializable">
             <column name="geom" />
-        </property> -->
+        </property>
         <one-to-one name="junction" class="centaur.db.Junction"></one-to-one>
         <one-to-one name="outfall" class="centaur.db.Outfall"></one-to-one>
         <set name="linksForIdNodeTo" table="link" inverse="true" lazy="true" fetch="select">
