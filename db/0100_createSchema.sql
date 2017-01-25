@@ -16,17 +16,17 @@
 
 -- object: centaur | type: SCHEMA --
 -- DROP SCHEMA IF EXISTS centaur CASCADE;
-CREATE SCHEMA coimbra;
+CREATE SCHEMA centaur;
 -- ddl-end --
-ALTER SCHEMA coimbra OWNER TO desouslu;
--- ddl-end --
-
-SET search_path TO coimbra,public,pg_catalog;
+ALTER SCHEMA centaur OWNER TO postgres;
 -- ddl-end --
 
--- object: curve | type: TABLE --
--- DROP TABLE IF EXISTS curve CASCADE;
-CREATE TABLE curve(
+SET search_path TO pg_catalog,public,centaur;
+-- ddl-end --
+
+-- object: coimbra.curve | type: TABLE --
+-- DROP TABLE IF EXISTS coimbra.curve CASCADE;
+CREATE TABLE coimbra.curve(
 	id integer NOT NULL,
 	name varchar,
 	type varchar,
@@ -35,12 +35,12 @@ CREATE TABLE curve(
 
 );
 -- ddl-end --
-ALTER TABLE curve OWNER TO postgres;
+ALTER TABLE coimbra.curve OWNER TO postgres;
 -- ddl-end --
 
--- object: curve_parameter | type: TABLE --
--- DROP TABLE IF EXISTS curve_parameter CASCADE;
-CREATE TABLE curve_parameter(
+-- object: coimbra.curve_parameter | type: TABLE --
+-- DROP TABLE IF EXISTS coimbra.curve_parameter CASCADE;
+CREATE TABLE coimbra.curve_parameter(
 	id serial NOT NULL,
 	x numeric,
 	y numeric,
@@ -49,12 +49,12 @@ CREATE TABLE curve_parameter(
 
 );
 -- ddl-end --
-ALTER TABLE curve_parameter OWNER TO postgres;
+ALTER TABLE coimbra.curve_parameter OWNER TO postgres;
 -- ddl-end --
 
--- object: node | type: TABLE --
--- DROP TABLE IF EXISTS node CASCADE;
-CREATE TABLE node(
+-- object: coimbra.node | type: TABLE --
+-- DROP TABLE IF EXISTS coimbra.node CASCADE;
+CREATE TABLE coimbra.node(
 	id serial NOT NULL,
 	elevation numeric,
 	name varchar,
@@ -64,14 +64,14 @@ CREATE TABLE node(
 
 );
 -- ddl-end --
-COMMENT ON COLUMN node.taken IS 'True if this node is already being used by a gate or flooded by one.';
+COMMENT ON COLUMN coimbra.node.taken IS 'True if this node is already being used by a gate or flooded by one.';
 -- ddl-end --
-ALTER TABLE node OWNER TO postgres;
+ALTER TABLE coimbra.node OWNER TO postgres;
 -- ddl-end --
 
--- object: link | type: TABLE --
--- DROP TABLE IF EXISTS link CASCADE;
-CREATE TABLE link(
+-- object: coimbra.link | type: TABLE --
+-- DROP TABLE IF EXISTS coimbra.link CASCADE;
+CREATE TABLE coimbra.link(
 	id serial NOT NULL,
 	name varchar,
 	id_node_from integer,
@@ -81,12 +81,12 @@ CREATE TABLE link(
 
 );
 -- ddl-end --
-ALTER TABLE link OWNER TO postgres;
+ALTER TABLE coimbra.link OWNER TO postgres;
 -- ddl-end --
 
--- object: conduit | type: TABLE --
--- DROP TABLE IF EXISTS conduit CASCADE;
-CREATE TABLE conduit(
+-- object: coimbra.conduit | type: TABLE --
+-- DROP TABLE IF EXISTS coimbra.conduit CASCADE;
+CREATE TABLE coimbra.conduit(
 	id_link integer NOT NULL,
 	length numeric,
 	roughness numeric,
@@ -98,14 +98,14 @@ CREATE TABLE conduit(
 
 );
 -- ddl-end --
-COMMENT ON COLUMN conduit.length IS 'This can be calculated from the junctions coordinates';
+COMMENT ON COLUMN coimbra.conduit.length IS 'This can be calculated from the junctions coordinates';
 -- ddl-end --
-ALTER TABLE conduit OWNER TO postgres;
+ALTER TABLE coimbra.conduit OWNER TO postgres;
 -- ddl-end --
 
--- object: pump | type: TABLE --
--- DROP TABLE IF EXISTS pump CASCADE;
-CREATE TABLE pump(
+-- object: coimbra.pump | type: TABLE --
+-- DROP TABLE IF EXISTS coimbra.pump CASCADE;
+CREATE TABLE coimbra.pump(
 	id_link integer NOT NULL,
 	id_curve integer,
 	status varchar,
@@ -115,12 +115,12 @@ CREATE TABLE pump(
 
 );
 -- ddl-end --
-ALTER TABLE pump OWNER TO postgres;
+ALTER TABLE coimbra.pump OWNER TO postgres;
 -- ddl-end --
 
--- object: junction | type: TABLE --
--- DROP TABLE IF EXISTS junction CASCADE;
-CREATE TABLE junction(
+-- object: coimbra.junction | type: TABLE --
+-- DROP TABLE IF EXISTS coimbra.junction CASCADE;
+CREATE TABLE coimbra.junction(
 	id_node integer NOT NULL,
 	max_depth numeric,
 	init_depth numeric,
@@ -130,12 +130,12 @@ CREATE TABLE junction(
 
 );
 -- ddl-end --
-ALTER TABLE junction OWNER TO postgres;
+ALTER TABLE coimbra.junction OWNER TO postgres;
 -- ddl-end --
 
--- object: weir | type: TABLE --
--- DROP TABLE IF EXISTS weir CASCADE;
-CREATE TABLE weir(
+-- object: coimbra.weir | type: TABLE --
+-- DROP TABLE IF EXISTS coimbra.weir CASCADE;
+CREATE TABLE coimbra.weir(
 	id_link integer NOT NULL,
 	type varchar,
 	crest_height numeric,
@@ -148,12 +148,12 @@ CREATE TABLE weir(
 
 );
 -- ddl-end --
-ALTER TABLE weir OWNER TO postgres;
+ALTER TABLE coimbra.weir OWNER TO postgres;
 -- ddl-end --
 
--- object: outfall | type: TABLE --
--- DROP TABLE IF EXISTS outfall CASCADE;
-CREATE TABLE outfall(
+-- object: coimbra.outfall | type: TABLE --
+-- DROP TABLE IF EXISTS coimbra.outfall CASCADE;
+CREATE TABLE coimbra.outfall(
 	id_node integer NOT NULL,
 	type varchar,
 	stage_date varchar,
@@ -163,14 +163,14 @@ CREATE TABLE outfall(
 
 );
 -- ddl-end --
-COMMENT ON TABLE outfall IS 'This is a special kind of junction';
+COMMENT ON TABLE coimbra.outfall IS 'This is a special kind of junction';
 -- ddl-end --
-ALTER TABLE outfall OWNER TO postgres;
+ALTER TABLE coimbra.outfall OWNER TO postgres;
 -- ddl-end --
 
--- object: storage | type: TABLE --
--- DROP TABLE IF EXISTS storage CASCADE;
-CREATE TABLE storage(
+-- object: coimbra.storage | type: TABLE --
+-- DROP TABLE IF EXISTS coimbra.storage CASCADE;
+CREATE TABLE coimbra.storage(
 	id_node integer NOT NULL,
 	max_depth numeric,
 	init_depth numeric,
@@ -185,12 +185,12 @@ CREATE TABLE storage(
 
 );
 -- ddl-end --
-ALTER TABLE storage OWNER TO postgres;
+ALTER TABLE coimbra.storage OWNER TO postgres;
 -- ddl-end --
 
--- object: xsection | type: TABLE --
--- DROP TABLE IF EXISTS xsection CASCADE;
-CREATE TABLE xsection(
+-- object: coimbra.xsection | type: TABLE --
+-- DROP TABLE IF EXISTS coimbra.xsection CASCADE;
+CREATE TABLE coimbra.xsection(
 	id_link integer NOT NULL,
 	shape varchar,
 	geom1 numeric,
@@ -203,12 +203,12 @@ CREATE TABLE xsection(
 
 );
 -- ddl-end --
-ALTER TABLE xsection OWNER TO postgres;
+ALTER TABLE coimbra.xsection OWNER TO postgres;
 -- ddl-end --
 
--- object: raingage | type: TABLE --
--- DROP TABLE IF EXISTS raingage CASCADE;
-CREATE TABLE raingage(
+-- object: coimbra.raingage | type: TABLE --
+-- DROP TABLE IF EXISTS coimbra.raingage CASCADE;
+CREATE TABLE coimbra.raingage(
 	id integer NOT NULL,
 	format varchar,
 	"interval" varchar,
@@ -218,12 +218,12 @@ CREATE TABLE raingage(
 
 );
 -- ddl-end --
-ALTER TABLE raingage OWNER TO postgres;
+ALTER TABLE coimbra.raingage OWNER TO postgres;
 -- ddl-end --
 
--- object: subcatchment | type: TABLE --
--- DROP TABLE IF EXISTS subcatchment CASCADE;
-CREATE TABLE subcatchment(
+-- object: coimbra.subcatchment | type: TABLE --
+-- DROP TABLE IF EXISTS coimbra.subcatchment CASCADE;
+CREATE TABLE coimbra.subcatchment(
 	id serial NOT NULL,
 	name varchar,
 	id_node_outlet integer,
@@ -239,16 +239,16 @@ CREATE TABLE subcatchment(
 
 );
 -- ddl-end --
-COMMENT ON COLUMN subcatchment.imperv IS 'This field is a percentage (<= 100)';
+COMMENT ON COLUMN coimbra.subcatchment.imperv IS 'This field is a percentage (<= 100)';
 -- ddl-end --
-COMMENT ON COLUMN subcatchment.slope IS 'This field is a percentage';
+COMMENT ON COLUMN coimbra.subcatchment.slope IS 'This field is a percentage';
 -- ddl-end --
-ALTER TABLE subcatchment OWNER TO postgres;
+ALTER TABLE coimbra.subcatchment OWNER TO postgres;
 -- ddl-end --
 
--- object: subarea | type: TABLE --
--- DROP TABLE IF EXISTS subarea CASCADE;
-CREATE TABLE subarea(
+-- object: coimbra.subarea | type: TABLE --
+-- DROP TABLE IF EXISTS coimbra.subarea CASCADE;
+CREATE TABLE coimbra.subarea(
 	id_subcatchment serial NOT NULL,
 	n_imperv numeric,
 	n_perv numeric,
@@ -261,14 +261,14 @@ CREATE TABLE subarea(
 
 );
 -- ddl-end --
-COMMENT ON COLUMN subarea.pct_zero IS 'This field is a percentage';
+COMMENT ON COLUMN coimbra.subarea.pct_zero IS 'This field is a percentage';
 -- ddl-end --
-ALTER TABLE subarea OWNER TO postgres;
+ALTER TABLE coimbra.subarea OWNER TO postgres;
 -- ddl-end --
 
--- object: coordinates | type: TABLE --
--- DROP TABLE IF EXISTS coordinates CASCADE;
-CREATE TABLE coordinates(
+-- object: coimbra.coordinates | type: TABLE --
+-- DROP TABLE IF EXISTS coimbra.coordinates CASCADE;
+CREATE TABLE coimbra.coordinates(
 	id_node integer NOT NULL,
 	x numeric,
 	y numeric,
@@ -276,12 +276,12 @@ CREATE TABLE coordinates(
 
 );
 -- ddl-end --
-ALTER TABLE coordinates OWNER TO postgres;
+ALTER TABLE coimbra.coordinates OWNER TO postgres;
 -- ddl-end --
 
--- object: polygon | type: TABLE --
--- DROP TABLE IF EXISTS polygon CASCADE;
-CREATE TABLE polygon(
+-- object: coimbra.polygon | type: TABLE --
+-- DROP TABLE IF EXISTS coimbra.polygon CASCADE;
+CREATE TABLE coimbra.polygon(
 	id serial NOT NULL,
 	id_subcatchment integer,
 	x numeric,
@@ -290,26 +290,27 @@ CREATE TABLE polygon(
 
 );
 -- ddl-end --
-ALTER TABLE polygon OWNER TO postgres;
+ALTER TABLE coimbra.polygon OWNER TO postgres;
 -- ddl-end --
 
--- object: candidate | type: TABLE --
--- DROP TABLE IF EXISTS candidate CASCADE;
-CREATE TABLE candidate(
+-- object: coimbra.candidate | type: TABLE --
+-- DROP TABLE IF EXISTS coimbra.candidate CASCADE;
+CREATE TABLE coimbra.candidate(
 	id_node integer NOT NULL,
 	outflow_elevation numeric NOT NULL,
 	served_area numeric,
 	volume numeric,
+	num_subcatchments numeric,
 	CONSTRAINT pk_candidate PRIMARY KEY (id_node)
 
 );
 -- ddl-end --
-ALTER TABLE candidate OWNER TO postgres;
+ALTER TABLE coimbra.candidate OWNER TO postgres;
 -- ddl-end --
 
--- object: flooded | type: TABLE --
--- DROP TABLE IF EXISTS flooded CASCADE;
-CREATE TABLE flooded(
+-- object: coimbra.flooded | type: TABLE --
+-- DROP TABLE IF EXISTS coimbra.flooded CASCADE;
+CREATE TABLE coimbra.flooded(
 	id_flooded serial NOT NULL,
 	id_node integer NOT NULL,
 	id_link integer NOT NULL,
@@ -319,176 +320,147 @@ CREATE TABLE flooded(
 
 );
 -- ddl-end --
-ALTER TABLE flooded OWNER TO postgres;
--- ddl-end --
-
--- object: contribution | type: TABLE --
--- DROP TABLE IF EXISTS contribution CASCADE;
-CREATE TABLE contribution(
-	id serial NOT NULL,
-	id_node integer NOT NULL,
-	id_subcatchment integer NOT NULL,
-	value numeric NOT NULL,
-	CONSTRAINT pk_contribution PRIMARY KEY (id),
-	CONSTRAINT unq_contribution UNIQUE (id_node,id_subcatchment)
-
-);
--- ddl-end --
-ALTER TABLE contribution OWNER TO postgres;
+ALTER TABLE coimbra.flooded OWNER TO postgres;
 -- ddl-end --
 
 -- object: fk_curve_parameter_curve | type: CONSTRAINT --
--- ALTER TABLE curve_parameter DROP CONSTRAINT IF EXISTS fk_curve_parameter_curve CASCADE;
-ALTER TABLE curve_parameter ADD CONSTRAINT fk_curve_parameter_curve FOREIGN KEY (id_curve)
-REFERENCES curve (id) MATCH FULL
+-- ALTER TABLE coimbra.curve_parameter DROP CONSTRAINT IF EXISTS fk_curve_parameter_curve CASCADE;
+ALTER TABLE coimbra.curve_parameter ADD CONSTRAINT fk_curve_parameter_curve FOREIGN KEY (id_curve)
+REFERENCES coimbra.curve (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
 -- object: fk_link_node_from | type: CONSTRAINT --
--- ALTER TABLE link DROP CONSTRAINT IF EXISTS fk_link_node_from CASCADE;
-ALTER TABLE link ADD CONSTRAINT fk_link_node_from FOREIGN KEY (id_node_from)
-REFERENCES node (id) MATCH FULL
+-- ALTER TABLE coimbra.link DROP CONSTRAINT IF EXISTS fk_link_node_from CASCADE;
+ALTER TABLE coimbra.link ADD CONSTRAINT fk_link_node_from FOREIGN KEY (id_node_from)
+REFERENCES coimbra.node (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
 -- object: fk_link_node_to | type: CONSTRAINT --
--- ALTER TABLE link DROP CONSTRAINT IF EXISTS fk_link_node_to CASCADE;
-ALTER TABLE link ADD CONSTRAINT fk_link_node_to FOREIGN KEY (id_node_to)
-REFERENCES node (id) MATCH FULL
+-- ALTER TABLE coimbra.link DROP CONSTRAINT IF EXISTS fk_link_node_to CASCADE;
+ALTER TABLE coimbra.link ADD CONSTRAINT fk_link_node_to FOREIGN KEY (id_node_to)
+REFERENCES coimbra.node (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
 -- object: fk_conduit_link | type: CONSTRAINT --
--- ALTER TABLE conduit DROP CONSTRAINT IF EXISTS fk_conduit_link CASCADE;
-ALTER TABLE conduit ADD CONSTRAINT fk_conduit_link FOREIGN KEY (id_link)
-REFERENCES link (id) MATCH FULL
+-- ALTER TABLE coimbra.conduit DROP CONSTRAINT IF EXISTS fk_conduit_link CASCADE;
+ALTER TABLE coimbra.conduit ADD CONSTRAINT fk_conduit_link FOREIGN KEY (id_link)
+REFERENCES coimbra.link (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
 -- object: fk_pump_link | type: CONSTRAINT --
--- ALTER TABLE pump DROP CONSTRAINT IF EXISTS fk_pump_link CASCADE;
-ALTER TABLE pump ADD CONSTRAINT fk_pump_link FOREIGN KEY (id_link)
-REFERENCES link (id) MATCH FULL
+-- ALTER TABLE coimbra.pump DROP CONSTRAINT IF EXISTS fk_pump_link CASCADE;
+ALTER TABLE coimbra.pump ADD CONSTRAINT fk_pump_link FOREIGN KEY (id_link)
+REFERENCES coimbra.link (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
 -- object: fk_pump_curve | type: CONSTRAINT --
--- ALTER TABLE pump DROP CONSTRAINT IF EXISTS fk_pump_curve CASCADE;
-ALTER TABLE pump ADD CONSTRAINT fk_pump_curve FOREIGN KEY (id_curve)
-REFERENCES curve (id) MATCH FULL
+-- ALTER TABLE coimbra.pump DROP CONSTRAINT IF EXISTS fk_pump_curve CASCADE;
+ALTER TABLE coimbra.pump ADD CONSTRAINT fk_pump_curve FOREIGN KEY (id_curve)
+REFERENCES coimbra.curve (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
 -- object: fk_junction_node | type: CONSTRAINT --
--- ALTER TABLE junction DROP CONSTRAINT IF EXISTS fk_junction_node CASCADE;
-ALTER TABLE junction ADD CONSTRAINT fk_junction_node FOREIGN KEY (id_node)
-REFERENCES node (id) MATCH FULL
+-- ALTER TABLE coimbra.junction DROP CONSTRAINT IF EXISTS fk_junction_node CASCADE;
+ALTER TABLE coimbra.junction ADD CONSTRAINT fk_junction_node FOREIGN KEY (id_node)
+REFERENCES coimbra.node (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
 -- object: fk_weir_link | type: CONSTRAINT --
--- ALTER TABLE weir DROP CONSTRAINT IF EXISTS fk_weir_link CASCADE;
-ALTER TABLE weir ADD CONSTRAINT fk_weir_link FOREIGN KEY (id_link)
-REFERENCES link (id) MATCH FULL
+-- ALTER TABLE coimbra.weir DROP CONSTRAINT IF EXISTS fk_weir_link CASCADE;
+ALTER TABLE coimbra.weir ADD CONSTRAINT fk_weir_link FOREIGN KEY (id_link)
+REFERENCES coimbra.link (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
 -- object: fk_outfall_node | type: CONSTRAINT --
--- ALTER TABLE outfall DROP CONSTRAINT IF EXISTS fk_outfall_node CASCADE;
-ALTER TABLE outfall ADD CONSTRAINT fk_outfall_node FOREIGN KEY (id_node)
-REFERENCES node (id) MATCH FULL
+-- ALTER TABLE coimbra.outfall DROP CONSTRAINT IF EXISTS fk_outfall_node CASCADE;
+ALTER TABLE coimbra.outfall ADD CONSTRAINT fk_outfall_node FOREIGN KEY (id_node)
+REFERENCES coimbra.node (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
 -- object: fk_storage_node | type: CONSTRAINT --
--- ALTER TABLE storage DROP CONSTRAINT IF EXISTS fk_storage_node CASCADE;
-ALTER TABLE storage ADD CONSTRAINT fk_storage_node FOREIGN KEY (id_node)
-REFERENCES node (id) MATCH FULL
+-- ALTER TABLE coimbra.storage DROP CONSTRAINT IF EXISTS fk_storage_node CASCADE;
+ALTER TABLE coimbra.storage ADD CONSTRAINT fk_storage_node FOREIGN KEY (id_node)
+REFERENCES coimbra.node (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
 -- object: fk_storage_curve | type: CONSTRAINT --
--- ALTER TABLE storage DROP CONSTRAINT IF EXISTS fk_storage_curve CASCADE;
-ALTER TABLE storage ADD CONSTRAINT fk_storage_curve FOREIGN KEY (id_curve)
-REFERENCES curve (id) MATCH FULL
+-- ALTER TABLE coimbra.storage DROP CONSTRAINT IF EXISTS fk_storage_curve CASCADE;
+ALTER TABLE coimbra.storage ADD CONSTRAINT fk_storage_curve FOREIGN KEY (id_curve)
+REFERENCES coimbra.curve (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
 -- object: fk_xsection_link | type: CONSTRAINT --
--- ALTER TABLE xsection DROP CONSTRAINT IF EXISTS fk_xsection_link CASCADE;
-ALTER TABLE xsection ADD CONSTRAINT fk_xsection_link FOREIGN KEY (id_link)
-REFERENCES link (id) MATCH FULL
+-- ALTER TABLE coimbra.xsection DROP CONSTRAINT IF EXISTS fk_xsection_link CASCADE;
+ALTER TABLE coimbra.xsection ADD CONSTRAINT fk_xsection_link FOREIGN KEY (id_link)
+REFERENCES coimbra.link (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
 -- object: fk_subcatchment_raingage | type: CONSTRAINT --
--- ALTER TABLE subcatchment DROP CONSTRAINT IF EXISTS fk_subcatchment_raingage CASCADE;
-ALTER TABLE subcatchment ADD CONSTRAINT fk_subcatchment_raingage FOREIGN KEY (id_raingage)
-REFERENCES raingage (id) MATCH FULL
+-- ALTER TABLE coimbra.subcatchment DROP CONSTRAINT IF EXISTS fk_subcatchment_raingage CASCADE;
+ALTER TABLE coimbra.subcatchment ADD CONSTRAINT fk_subcatchment_raingage FOREIGN KEY (id_raingage)
+REFERENCES coimbra.raingage (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
 -- object: fk_subcatchment_node | type: CONSTRAINT --
--- ALTER TABLE subcatchment DROP CONSTRAINT IF EXISTS fk_subcatchment_node CASCADE;
-ALTER TABLE subcatchment ADD CONSTRAINT fk_subcatchment_node FOREIGN KEY (id_node_outlet)
-REFERENCES node (id) MATCH FULL
+-- ALTER TABLE coimbra.subcatchment DROP CONSTRAINT IF EXISTS fk_subcatchment_node CASCADE;
+ALTER TABLE coimbra.subcatchment ADD CONSTRAINT fk_subcatchment_node FOREIGN KEY (id_node_outlet)
+REFERENCES coimbra.node (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
 -- object: fk_subarea_subcatchment | type: CONSTRAINT --
--- ALTER TABLE subarea DROP CONSTRAINT IF EXISTS fk_subarea_subcatchment CASCADE;
-ALTER TABLE subarea ADD CONSTRAINT fk_subarea_subcatchment FOREIGN KEY (id_subcatchment)
-REFERENCES subcatchment (id) MATCH FULL
+-- ALTER TABLE coimbra.subarea DROP CONSTRAINT IF EXISTS fk_subarea_subcatchment CASCADE;
+ALTER TABLE coimbra.subarea ADD CONSTRAINT fk_subarea_subcatchment FOREIGN KEY (id_subcatchment)
+REFERENCES coimbra.subcatchment (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
 -- object: fk_coordinates_node | type: CONSTRAINT --
--- ALTER TABLE coordinates DROP CONSTRAINT IF EXISTS fk_coordinates_node CASCADE;
-ALTER TABLE coordinates ADD CONSTRAINT fk_coordinates_node FOREIGN KEY (id_node)
-REFERENCES node (id) MATCH FULL
+-- ALTER TABLE coimbra.coordinates DROP CONSTRAINT IF EXISTS fk_coordinates_node CASCADE;
+ALTER TABLE coimbra.coordinates ADD CONSTRAINT fk_coordinates_node FOREIGN KEY (id_node)
+REFERENCES coimbra.node (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
 -- object: fk_polygon_subcatchment | type: CONSTRAINT --
--- ALTER TABLE polygon DROP CONSTRAINT IF EXISTS fk_polygon_subcatchment CASCADE;
-ALTER TABLE polygon ADD CONSTRAINT fk_polygon_subcatchment FOREIGN KEY (id_subcatchment)
-REFERENCES subcatchment (id) MATCH FULL
+-- ALTER TABLE coimbra.polygon DROP CONSTRAINT IF EXISTS fk_polygon_subcatchment CASCADE;
+ALTER TABLE coimbra.polygon ADD CONSTRAINT fk_polygon_subcatchment FOREIGN KEY (id_subcatchment)
+REFERENCES coimbra.subcatchment (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
 -- object: fk_candidate_node | type: CONSTRAINT --
--- ALTER TABLE candidate DROP CONSTRAINT IF EXISTS fk_candidate_node CASCADE;
-ALTER TABLE candidate ADD CONSTRAINT fk_candidate_node FOREIGN KEY (id_node)
-REFERENCES node (id) MATCH FULL
+-- ALTER TABLE coimbra.candidate DROP CONSTRAINT IF EXISTS fk_candidate_node CASCADE;
+ALTER TABLE coimbra.candidate ADD CONSTRAINT fk_candidate_node FOREIGN KEY (id_node)
+REFERENCES coimbra.node (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
 -- object: fk_flooded_link | type: CONSTRAINT --
--- ALTER TABLE flooded DROP CONSTRAINT IF EXISTS fk_flooded_link CASCADE;
-ALTER TABLE flooded ADD CONSTRAINT fk_flooded_link FOREIGN KEY (id_link)
-REFERENCES link (id) MATCH FULL
+-- ALTER TABLE coimbra.flooded DROP CONSTRAINT IF EXISTS fk_flooded_link CASCADE;
+ALTER TABLE coimbra.flooded ADD CONSTRAINT fk_flooded_link FOREIGN KEY (id_link)
+REFERENCES coimbra.link (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
 -- object: fk_flooded_candidate | type: CONSTRAINT --
--- ALTER TABLE flooded DROP CONSTRAINT IF EXISTS fk_flooded_candidate CASCADE;
-ALTER TABLE flooded ADD CONSTRAINT fk_flooded_candidate FOREIGN KEY (id_node)
-REFERENCES candidate (id_node) MATCH FULL
+-- ALTER TABLE coimbra.flooded DROP CONSTRAINT IF EXISTS fk_flooded_candidate CASCADE;
+ALTER TABLE coimbra.flooded ADD CONSTRAINT fk_flooded_candidate FOREIGN KEY (id_node)
+REFERENCES coimbra.candidate (id_node) MATCH FULL
 ON DELETE CASCADE ON UPDATE NO ACTION;
--- ddl-end --
-
--- object: fk_contribution_candidate | type: CONSTRAINT --
--- ALTER TABLE contribution DROP CONSTRAINT IF EXISTS fk_contribution_candidate CASCADE;
-ALTER TABLE contribution ADD CONSTRAINT fk_contribution_candidate FOREIGN KEY (id_node)
-REFERENCES candidate (id_node) MATCH FULL
-ON DELETE CASCADE ON UPDATE NO ACTION;
--- ddl-end --
-
--- object: fk_contribution_subcatchment | type: CONSTRAINT --
--- ALTER TABLE contribution DROP CONSTRAINT IF EXISTS fk_contribution_subcatchment CASCADE;
-ALTER TABLE contribution ADD CONSTRAINT fk_contribution_subcatchment FOREIGN KEY (id_subcatchment)
-REFERENCES subcatchment (id) MATCH FULL
-ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
 

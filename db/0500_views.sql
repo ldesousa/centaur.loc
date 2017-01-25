@@ -191,14 +191,6 @@ SELECT c.id_node,
    AND c.id_node = f.id_node
  GROUP BY(c.id_node);
 
-CREATE OR REPLACE VIEW v_candidate_contribution AS
-SELECT c.id_node,
-       COALESCE(SUM(b.value), 0) AS contributions
-  FROM candidate c
-  LEFT JOIN contribution_temp b
-    ON c.id_node = b.id_node
- GROUP BY(c.id_node);
-
 CREATE OR REPLACE VIEW v_candidate AS
 SELECT n.id, 
        c.outflow_elevation,
@@ -206,21 +198,13 @@ SELECT n.id,
        n.geom,
        v.flooded_volume,
        c.served_area,
-       b.contributions,
-       m.count AS num_subcatchments
+       c.num_subcatchments
   FROM candidate c,
        node n,
-       v_candidate_volume v,
-       v_candidate_contribution b,
-       (SELECT t.id_node, 
-               COUNT(*) AS count 
-          FROM contribution t 
-         GROUP BY t.id_node) m
+       v_candidate_volume v
  WHERE c.id_node = n.id
    AND c.id_node = v.id_node
-   AND c.id_node = b.id_node
-   AND (n.taken = FALSE OR n.taken IS NULL)
-   AND c.id_node = m.id_node;
+   AND (n.taken = FALSE OR n.taken IS NULL);
 
 CREATE OR REPLACE VIEW v_flooded AS
 SELECT f.id_flooded,
@@ -243,6 +227,7 @@ SELECT c.id, sum(l.volume)
  WHERE l.id = f.id_link
    AND c.id = f.id_node
  GROUP BY(c.id);
+
 
 
 

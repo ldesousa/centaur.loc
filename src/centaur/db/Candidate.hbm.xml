@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 24-Jan-2017 16:06:01 by Hibernate Tools 5.2.0.CR1 -->
+<!-- Generated 25-Jan-2017 11:43:53 by Hibernate Tools 5.2.0.CR1 -->
 <hibernate-mapping>
     <class name="centaur.db.Candidate" table="candidate" optimistic-lock="version">
         <id name="idNode" type="int">
@@ -20,23 +20,14 @@
         <property name="volume" type="big_decimal">
             <column name="volume" precision="131089" scale="0" />
         </property>
+        <property name="numSubcatchments" type="big_decimal">
+            <column name="num_subcatchments" precision="131089" scale="0" />
+        </property>
         <set name="floodeds" table="flooded" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="id_node" not-null="true" />
             </key>
             <one-to-many class="centaur.db.Flooded" />
-        </set>
-        <set name="contributionTemps" table="contribution_temp" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="id_node" not-null="true" />
-            </key>
-            <one-to-many class="centaur.db.ContributionTemp" />
-        </set>
-        <set name="contributions" table="contribution" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="id_node" not-null="true" />
-            </key>
-            <one-to-many class="centaur.db.Contribution" />
         </set>
     </class>
 </hibernate-mapping>
