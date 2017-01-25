@@ -23,9 +23,9 @@
                 <comment>True if this node is already being used by a gate or flooded by one.</comment>
             </column>
         </property>
-        <property name="geom" type="serializable">
+        <!-- <property name="geom" type="serializable">
             <column name="geom" />
-        </property>
+        </property> -->
         <one-to-one name="junction" class="centaur.db.Junction"></one-to-one>
         <one-to-one name="outfall" class="centaur.db.Outfall"></one-to-one>
         <set name="linksForIdNodeTo" table="link" inverse="true" lazy="true" fetch="select">

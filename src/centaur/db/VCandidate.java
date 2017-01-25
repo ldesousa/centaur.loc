@@ -1,5 +1,5 @@
 package centaur.db;
-// Generated Jun 17, 2016 8:52:13 AM by Hibernate Tools 4.3.1.Final
+// Generated 25-Jan-2017 15:30:11 by Hibernate Tools 5.2.0.CR1
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -9,39 +9,37 @@ import java.math.BigDecimal;
  */
 public class VCandidate implements java.io.Serializable {
 
-	private Integer id;
+	private int id;
 	private BigDecimal outflowElevation;
 	private String name;
 	//private Serializable geom;
 	private Double floodedVolume;
 	private BigDecimal servedArea;
-	private BigDecimal contributions;
 	private Long numSubcatchments;
 
 	public VCandidate() {
 	}
 
-	public VCandidate(Integer id) {
+	public VCandidate(int id) {
 		this.id = id;
 	}
 
-	public VCandidate(Integer id, BigDecimal outflowElevation, String name, /*Serializable geom,*/ Double floodedVolume,
-			BigDecimal servedArea, BigDecimal contributions, Long numSubcatchments) {
+	public VCandidate(int id, BigDecimal outflowElevation, String name, /*Serializable geom,*/ Double floodedVolume,
+			BigDecimal servedArea, Long numSubcatchments) {
 		this.id = id;
 		this.outflowElevation = outflowElevation;
 		this.name = name;
 		//this.geom = geom;
 		this.floodedVolume = floodedVolume;
 		this.servedArea = servedArea;
-		this.contributions = contributions;
 		this.numSubcatchments = numSubcatchments;
 	}
 
-	public Integer getId() {
+	public int getId() {
 		return this.id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -83,14 +81,6 @@ public class VCandidate implements java.io.Serializable {
 
 	public void setServedArea(BigDecimal servedArea) {
 		this.servedArea = servedArea;
-	}
-
-	public BigDecimal getContributions() {
-		return this.contributions;
-	}
-
-	public void setContributions(BigDecimal contributions) {
-		this.contributions = contributions;
 	}
 
 	public Long getNumSubcatchments() {

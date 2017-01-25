@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Jun 17, 2016 8:52:13 AM by Hibernate Tools 4.3.1.Final -->
+<!-- Generated 25-Jan-2017 15:30:11 by Hibernate Tools 5.2.0.CR1 -->
 <hibernate-mapping>
     <class name="centaur.db.VCandidate" table="v_candidate" optimistic-lock="version">
-        <id name="id" type="java.lang.Integer">
+        <id name="id" type="int">
             <column name="id" />
             <generator class="assigned" />
         </id>
@@ -14,17 +14,14 @@
         <property name="name" type="string">
             <column name="name" />
         </property>
-        <!--<property name="geom" type="serializable">
+        <!--  <property name="geom" type="serializable">
             <column name="geom" />
-        </property>-->
+        </property> -->
         <property name="floodedVolume" type="java.lang.Double">
             <column name="flooded_volume" precision="17" scale="17" />
         </property>
         <property name="servedArea" type="big_decimal">
             <column name="served_area" precision="131089" scale="0" />
-        </property>
-        <property name="contributions" type="big_decimal">
-            <column name="contributions" precision="131089" scale="0" />
         </property>
         <property name="numSubcatchments" type="java.lang.Long">
             <column name="num_subcatchments" />

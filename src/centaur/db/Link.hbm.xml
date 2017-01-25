@@ -21,9 +21,9 @@
         <property name="name" type="string">
             <column name="name" unique="true" />
         </property>
-        <property name="geom" type="serializable">
+       <!-- <property name="geom" type="serializable">
             <column name="geom" />
-        </property>
+        </property>-->
         <one-to-one name="weir" class="centaur.db.Weir"></one-to-one>
         <set name="floodeds" table="flooded" inverse="true" lazy="true" fetch="select">
             <key>

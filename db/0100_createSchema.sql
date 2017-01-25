@@ -298,7 +298,6 @@ ALTER TABLE centaur.polygon OWNER TO postgres;
 CREATE TABLE centaur.candidate(
 	id_node integer NOT NULL,
 	outflow_elevation numeric NOT NULL,
-	served_area numeric,
 	volume numeric,
 	CONSTRAINT pk_candidate PRIMARY KEY (id_node)
 

@@ -43,9 +43,9 @@
         <property name="snowPack" type="string">
             <column name="snow_pack" />
         </property>
-        <property name="geom" type="serializable">
+        <!-- <property name="geom" type="serializable">
             <column name="geom" />
-        </property>
+        </property>-->
         <one-to-one name="subarea" class="centaur.db.Subarea"></one-to-one>
         <set name="polygons" table="polygon" inverse="true" lazy="true" fetch="select">
             <key>

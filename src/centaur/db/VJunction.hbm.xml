@@ -14,9 +14,9 @@
         <property name="name" type="string">
             <column name="name" />
         </property>
-        <property name="geom" type="serializable">
+        <!-- <property name="geom" type="serializable">
             <column name="geom" />
-        </property>
+        </property>-->
         <property name="maxDepth" type="big_decimal">
             <column name="max_depth" precision="131089" scale="0" />
         </property>

@@ -12,7 +12,7 @@ public class VJunction implements java.io.Serializable {
 	private int idNode;
 	private BigDecimal elevation;
 	private String name;
-	private Serializable geom;
+	//private Serializable geom;
 	private BigDecimal maxDepth;
 	private BigDecimal initDepth;
 	private BigDecimal surDepth;
@@ -26,12 +26,12 @@ public class VJunction implements java.io.Serializable {
 		this.idNode = idNode;
 	}
 
-	public VJunction(int idNode, BigDecimal elevation, String name, Serializable geom, BigDecimal maxDepth,
+	public VJunction(int idNode, BigDecimal elevation, String name, /*Serializable geom,*/ BigDecimal maxDepth,
 			BigDecimal initDepth, BigDecimal surDepth, BigDecimal aponded, Double energySlope) {
 		this.idNode = idNode;
 		this.elevation = elevation;
 		this.name = name;
-		this.geom = geom;
+		//this.geom = geom;
 		this.maxDepth = maxDepth;
 		this.initDepth = initDepth;
 		this.surDepth = surDepth;
@@ -63,13 +63,13 @@ public class VJunction implements java.io.Serializable {
 		this.name = name;
 	}
 
-	public Serializable getGeom() {
+	/*public Serializable getGeom() {
 		return this.geom;
 	}
 
 	public void setGeom(Serializable geom) {
 		this.geom = geom;
-	}
+	}*/
 
 	public BigDecimal getMaxDepth() {
 		return this.maxDepth;

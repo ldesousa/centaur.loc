@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 25-Jan-2017 14:43:53 by Hibernate Tools 5.2.0.CR1 -->
+<!-- Generated 25-Jan-2017 15:30:11 by Hibernate Tools 5.2.0.CR1 -->
 <hibernate-mapping>
     <class name="centaur.db.Candidate" table="candidate" optimistic-lock="version">
         <id name="idNode" type="int">
@@ -13,9 +13,6 @@
         <one-to-one name="node" class="centaur.db.Node" constrained="true"></one-to-one>
         <property name="outflowElevation" type="big_decimal">
             <column name="outflow_elevation" precision="131089" scale="0" not-null="true" />
-        </property>
-        <property name="servedArea" type="big_decimal">
-            <column name="served_area" precision="131089" scale="0" />
         </property>
         <property name="volume" type="big_decimal">
             <column name="volume" precision="131089" scale="0" />

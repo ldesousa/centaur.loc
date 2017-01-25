@@ -14,7 +14,7 @@ public class Link implements java.io.Serializable {
 	private Node nodeByIdNodeTo;
 	private Node nodeByIdNodeFrom;
 	private String name;
-	private Serializable geom;
+	//private Serializable geom;
 	private Weir weir;
 	private Set floodeds = new HashSet(0);
 	private Conduit conduit;
@@ -24,12 +24,12 @@ public class Link implements java.io.Serializable {
 	public Link() {
 	}
 
-	public Link(Node nodeByIdNodeTo, Node nodeByIdNodeFrom, String name, Serializable geom, Weir weir, Set floodeds,
+	public Link(Node nodeByIdNodeTo, Node nodeByIdNodeFrom, String name, /*Serializable geom,*/ Weir weir, Set floodeds,
 			Conduit conduit, Pump pump, Xsection xsection) {
 		this.nodeByIdNodeTo = nodeByIdNodeTo;
 		this.nodeByIdNodeFrom = nodeByIdNodeFrom;
 		this.name = name;
-		this.geom = geom;
+		//this.geom = geom;
 		this.weir = weir;
 		this.floodeds = floodeds;
 		this.conduit = conduit;
@@ -69,13 +69,13 @@ public class Link implements java.io.Serializable {
 		this.name = name;
 	}
 
-	public Serializable getGeom() {
+	/*public Serializable getGeom() {
 		return this.geom;
 	}
 
 	public void setGeom(Serializable geom) {
 		this.geom = geom;
-	}
+	}*/
 
 	public Weir getWeir() {
 		return this.weir;

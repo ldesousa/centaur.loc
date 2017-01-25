@@ -15,7 +15,7 @@ public class Node implements java.io.Serializable {
 	private BigDecimal elevation;
 	private String name;
 	private Boolean taken;
-	private Serializable geom;
+	//private Serializable geom;
 	private Junction junction;
 	private Outfall outfall;
 	private Set linksForIdNodeTo = new HashSet(0);
@@ -28,13 +28,13 @@ public class Node implements java.io.Serializable {
 	public Node() {
 	}
 
-	public Node(BigDecimal elevation, String name, Boolean taken, Serializable geom, Junction junction, Outfall outfall,
+	public Node(BigDecimal elevation, String name, Boolean taken, /*Serializable geom,*/ Junction junction, Outfall outfall,
 			Set linksForIdNodeTo, Candidate candidate, Set linksForIdNodeFrom, Storage storage, Set subcatchments,
 			Coordinates coordinates) {
 		this.elevation = elevation;
 		this.name = name;
 		this.taken = taken;
-		this.geom = geom;
+		//this.geom = geom;
 		this.junction = junction;
 		this.outfall = outfall;
 		this.linksForIdNodeTo = linksForIdNodeTo;
@@ -77,13 +77,13 @@ public class Node implements java.io.Serializable {
 		this.taken = taken;
 	}
 
-	public Serializable getGeom() {
+	/*public Serializable getGeom() {
 		return this.geom;
 	}
 
 	public void setGeom(Serializable geom) {
 		this.geom = geom;
-	}
+	}*/
 
 	public Junction getJunction() {
 		return this.junction;

@@ -466,9 +466,6 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="outflow_elevation" not-null="true">
 		<type name="numeric"/>
 	</column>
-	<column name="served_area">
-		<type name="numeric"/>
-	</column>
 	<column name="volume">
 		<type name="numeric"/>
 	</column>
