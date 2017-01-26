@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_XmxhYOOsEea4-rg0uJP3DQ" name="CENTAUR">
+  <packagedElement xmi:type="uml:Class" xmi:id="_fbrBEOOsEea4-rg0uJP3DQ" name="Node"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_goJbQOOsEea4-rg0uJP3DQ" name="Link">
+    <nestedClassifier xmi:type="uml:Class" xmi:id="_Vcb7UOOtEea4-rg0uJP3DQ" name="Link"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_jZBncOOsEea4-rg0uJP3DQ" memberEnd="_jZI8MOOsEea4-rg0uJP3DQ _jZNNoOOsEea4-rg0uJP3DQ">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_jZC1kOOsEea4-rg0uJP3DQ" source="org.eclipse.papyrus">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_jZDcoOOsEea4-rg0uJP3DQ" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_jZNNoOOsEea4-rg0uJP3DQ" type="_goJbQOOsEea4-rg0uJP3DQ" association="_jZBncOOsEea4-rg0uJP3DQ">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_meFT4OOsEea4-rg0uJP3DQ" value="2"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_meKzcOOsEea4-rg0uJP3DQ" value="2"/>
+    </ownedEnd>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_jZI8MOOsEea4-rg0uJP3DQ" type="_fbrBEOOsEea4-rg0uJP3DQ" association="_jZBncOOsEea4-rg0uJP3DQ">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_mslC4OOsEea4-rg0uJP3DQ"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_msp7YOOsEea4-rg0uJP3DQ" value="*"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_XOOCAOOtEea4-rg0uJP3DQ" name="Conduit">
+    <generalization xmi:type="uml:Generalization" xmi:id="_I73EwOOvEea4-rg0uJP3DQ" general="_goJbQOOsEea4-rg0uJP3DQ"/>
+    <nestedClassifier xmi:type="uml:Class" xmi:id="_XOOCAeOtEea4-rg0uJP3DQ" name="Link"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_CaWfkOOvEea4-rg0uJP3DQ" name="Pump">
+    <generalization xmi:type="uml:Generalization" xmi:id="_Jyi1IOOvEea4-rg0uJP3DQ" general="_goJbQOOsEea4-rg0uJP3DQ"/>
+    <nestedClassifier xmi:type="uml:Class" xmi:id="_CaWfkeOvEea4-rg0uJP3DQ" name="Link"/>
+    <nestedClassifier xmi:type="uml:Class" xmi:id="_D4_AwOOvEea4-rg0uJP3DQ" name="Pump">
+      <nestedClassifier xmi:type="uml:Class" xmi:id="_D4_AweOvEea4-rg0uJP3DQ" name="Link"/>
+    </nestedClassifier>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_EadWIOOvEea4-rg0uJP3DQ" name="Weir">
+    <generalization xmi:type="uml:Generalization" xmi:id="_KbIfIOOvEea4-rg0uJP3DQ" general="_goJbQOOsEea4-rg0uJP3DQ"/>
+    <nestedClassifier xmi:type="uml:Class" xmi:id="_EadWIeOvEea4-rg0uJP3DQ" name="Link"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_MI1XEOOvEea4-rg0uJP3DQ" name="Juntion">
+    <generalization xmi:type="uml:Generalization" xmi:id="_MI1XEeOvEea4-rg0uJP3DQ" general="_goJbQOOsEea4-rg0uJP3DQ"/>
+    <generalization xmi:type="uml:Generalization" xmi:id="_T3dPoOOvEea4-rg0uJP3DQ" general="_fbrBEOOsEea4-rg0uJP3DQ"/>
+    <nestedClassifier xmi:type="uml:Class" xmi:id="_MI1XEuOvEea4-rg0uJP3DQ" name="Link"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_OBSGcOOvEea4-rg0uJP3DQ" name="Outfall">
+    <generalization xmi:type="uml:Generalization" xmi:id="_OBSGceOvEea4-rg0uJP3DQ" general="_goJbQOOsEea4-rg0uJP3DQ"/>
+    <generalization xmi:type="uml:Generalization" xmi:id="_Ul1_oOOvEea4-rg0uJP3DQ" general="_fbrBEOOsEea4-rg0uJP3DQ"/>
+    <nestedClassifier xmi:type="uml:Class" xmi:id="_OBSGcuOvEea4-rg0uJP3DQ" name="Link"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_RPjZQOOvEea4-rg0uJP3DQ" name="Storage">
+    <generalization xmi:type="uml:Generalization" xmi:id="_RPjZQeOvEea4-rg0uJP3DQ" general="_goJbQOOsEea4-rg0uJP3DQ"/>
+    <generalization xmi:type="uml:Generalization" xmi:id="_VGCioOOvEea4-rg0uJP3DQ" general="_fbrBEOOsEea4-rg0uJP3DQ"/>
+    <nestedClassifier xmi:type="uml:Class" xmi:id="_RPjZQuOvEea4-rg0uJP3DQ" name="Link"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_tvZokOOwEea4-rg0uJP3DQ" name="XSection">
+    <nestedClassifier xmi:type="uml:Class" xmi:id="_tvZokeOwEea4-rg0uJP3DQ" name="Link"/>
+    <nestedClassifier xmi:type="uml:Class" xmi:id="_BWZn4OOyEea4-rg0uJP3DQ" name="XSection">
+      <nestedClassifier xmi:type="uml:Class" xmi:id="_BWZn4eOyEea4-rg0uJP3DQ" name="Link"/>
+    </nestedClassifier>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="__iyxsOOwEea4-rg0uJP3DQ" memberEnd="__izYwuOwEea4-rg0uJP3DQ __i0m4OOwEea4-rg0uJP3DQ">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="__izYwOOwEea4-rg0uJP3DQ" source="org.eclipse.papyrus">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="__izYweOwEea4-rg0uJP3DQ" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:type="uml:Property" xmi:id="__i0m4OOwEea4-rg0uJP3DQ" type="_tvZokOOwEea4-rg0uJP3DQ" aggregation="composite" association="__iyxsOOwEea4-rg0uJP3DQ"/>
+    <ownedEnd xmi:type="uml:Property" xmi:id="__izYwuOwEea4-rg0uJP3DQ" type="_goJbQOOsEea4-rg0uJP3DQ" association="__iyxsOOwEea4-rg0uJP3DQ"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_BuR8YOOyEea4-rg0uJP3DQ" name="Subcatchment">
+    <nestedClassifier xmi:type="uml:Class" xmi:id="_BuR8YeOyEea4-rg0uJP3DQ" name="Link"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_GHG90OOyEea4-rg0uJP3DQ" name="Raingage">
+    <nestedClassifier xmi:type="uml:Class" xmi:id="_GHG90eOyEea4-rg0uJP3DQ" name="Link"/>
+    <nestedClassifier xmi:type="uml:Class" xmi:id="_GHG90uOyEea4-rg0uJP3DQ" name="XSection">
+      <nestedClassifier xmi:type="uml:Class" xmi:id="_GHG90-OyEea4-rg0uJP3DQ" name="Link"/>
+    </nestedClassifier>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_M6n5AOOyEea4-rg0uJP3DQ" name="Subarea">
+    <nestedClassifier xmi:type="uml:Class" xmi:id="_M6n5AeOyEea4-rg0uJP3DQ" name="Link"/>
+    <nestedClassifier xmi:type="uml:Class" xmi:id="_M6n5AuOyEea4-rg0uJP3DQ" name="XSection">
+      <nestedClassifier xmi:type="uml:Class" xmi:id="_M6n5A-OyEea4-rg0uJP3DQ" name="Link"/>
+    </nestedClassifier>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_QuwR8OOyEea4-rg0uJP3DQ" memberEnd="_Quw5AeOyEea4-rg0uJP3DQ _QuxgEOOyEea4-rg0uJP3DQ">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_QuwR8eOyEea4-rg0uJP3DQ" source="org.eclipse.papyrus">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_Quw5AOOyEea4-rg0uJP3DQ" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_QuxgEOOyEea4-rg0uJP3DQ" type="_M6n5AOOyEea4-rg0uJP3DQ" aggregation="composite" association="_QuwR8OOyEea4-rg0uJP3DQ">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_V63KcOOyEea4-rg0uJP3DQ"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_V6600OOyEea4-rg0uJP3DQ" value="*"/>
+    </ownedEnd>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_Quw5AeOyEea4-rg0uJP3DQ" type="_BuR8YOOyEea4-rg0uJP3DQ" association="_QuwR8OOyEea4-rg0uJP3DQ"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_X2P5EOOyEea4-rg0uJP3DQ" memberEnd="_X2QgIuOyEea4-rg0uJP3DQ _X2RHMOOyEea4-rg0uJP3DQ">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_X2QgIOOyEea4-rg0uJP3DQ" source="org.eclipse.papyrus">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_X2QgIeOyEea4-rg0uJP3DQ" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_X2RHMOOyEea4-rg0uJP3DQ" type="_GHG90OOyEea4-rg0uJP3DQ" association="_X2P5EOOyEea4-rg0uJP3DQ">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_aVeUkOOyEea4-rg0uJP3DQ"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_aVgw0OOyEea4-rg0uJP3DQ" value="*"/>
+    </ownedEnd>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_X2QgIuOyEea4-rg0uJP3DQ" type="_BuR8YOOyEea4-rg0uJP3DQ" association="_X2P5EOOyEea4-rg0uJP3DQ"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_oqmAAOOyEea4-rg0uJP3DQ" memberEnd="_oqmnEeOyEea4-rg0uJP3DQ _oqmnEuOyEea4-rg0uJP3DQ">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_oqmAAeOyEea4-rg0uJP3DQ" source="org.eclipse.papyrus">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_oqmnEOOyEea4-rg0uJP3DQ" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_oqmnEuOyEea4-rg0uJP3DQ" type="_BuR8YOOyEea4-rg0uJP3DQ" association="_oqmAAOOyEea4-rg0uJP3DQ">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_s7z9kOOyEea4-rg0uJP3DQ"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_s742EOOyEea4-rg0uJP3DQ" value="*"/>
+    </ownedEnd>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_oqmnEeOyEea4-rg0uJP3DQ" type="_fbrBEOOsEea4-rg0uJP3DQ" association="_oqmAAOOyEea4-rg0uJP3DQ"/>
+  </packagedElement>
+</uml:Model>
