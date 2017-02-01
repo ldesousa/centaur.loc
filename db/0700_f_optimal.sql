@@ -26,16 +26,17 @@ BEGIN
 
 	IF $2 AND $3 THEN
 		query := query ||	   
-		 ' ORDER BY v.flooded_volume * v.served_area / v.num_subcatchments DESC ';
+		 ' ORDER BY v.norm_flooded_volume * v.norm_served_area / ' ||
+		 ' v.norm_num_subcatchments DESC ';
 	ELSIF $2 THEN
 		query := query ||	   
-		 ' ORDER BY v.flooded_volume * v.served_area DESC ';
+		 ' ORDER BY v.norm_flooded_volume * v.norm_served_area DESC ';
 	ELSIF $3 THEN
 		query := query ||	   
-		 ' ORDER BY v.flooded_volume / v.num_subcatchments DESC ';
+		 ' ORDER BY v.norm_flooded_volume / v.norm_num_subcatchments DESC ';
 	ELSE 
 		query := query ||	   
-		 ' ORDER BY v.flooded_volume DESC ';
+		 ' ORDER BY v.norm_flooded_volume DESC ';
 	END IF;
 
 	query := query || ' LIMIT 1';
