@@ -10,6 +10,14 @@ SELECT c.id_node,
    AND c.id_node = f.id_node
  GROUP BY(c.id_node);
 
+--DROP VIEW v_candidate_volume_normalised;
+CREATE OR REPLACE VIEW v_candidate_volume_normalised AS
+SELECT v.id_node,
+       v.flooded_volume,
+       v.flooded_volume / (SELECT MAX(flooded_volume) 
+                             FROM v_candidate_volume) AS norm_flooded_volume
+  FROM v_candidate_volume v;
+
 -- This view needs to materialised, otherwise it takes took long to run.
 -- DROP MATERIALIZED VIEW v_candidate_upstream;
 CREATE MATERIALIZED VIEW v_candidate_upstream AS
@@ -35,25 +43,47 @@ SELECT n.id,
 -- Refresh if needed
 -- REFRESH MATERIALIZED VIEW v_candidate_upstream;
 
+
+--DROP VIEW v_candidate_volume_normalised;
+CREATE OR REPLACE VIEW v_candidate_area_normalised AS
+SELECT v.id as id_node,
+       v.served_area,
+       v.served_area / (SELECT MAX(served_area) 
+                          FROM v_candidate_upstream) AS norm_served_area
+  FROM v_candidate_upstream v;
+
+--DROP VIEW v_candidate_subcatchments_normalised;
+CREATE OR REPLACE VIEW v_candidate_subcatchments_normalised AS
+SELECT v.id as id_node,
+       v.num_subcatchments,
+       v.num_subcatchments / (SELECT MAX(num_subcatchments) 
+                                FROM v_candidate_upstream) AS norm_num_subcatchments
+  FROM v_candidate_upstream v;
+
+
 -- v_candidate: a wrapper around v_candidate_upstream because of the taken flag
 -- DROP VIEW v_candidate;
 CREATE OR REPLACE VIEW v_candidate AS
-SELECT n.id, 
+SELECT c.id_node, 
        c.outflow_elevation,
        n.name,
        n.geom,
        v.flooded_volume,
-       u.served_area,
-       u.num_subcatchments
+       a.served_area,
+       s.num_subcatchments,
+       v.norm_flooded_volume,
+       a.norm_served_area,
+       s.norm_num_subcatchments
   FROM candidate c,
        node n,
-       v_candidate_volume v,
-       v_candidate_upstream u
+       v_candidate_volume_normalised v,
+       v_candidate_area_normalised a,
+       v_candidate_subcatchments_normalised s
  WHERE c.id_node = n.id
    AND c.id_node = v.id_node
-   AND c.id_node = u.id
-   AND u.served_area IS NOT NULL
-   AND u.num_subcatchments > 0
+   AND c.id_node = a.id_node
+   AND c.id_node = s.id_node
+   AND a.served_area IS NOT NULL
+   AND s.num_subcatchments > 0
    AND (n.taken = FALSE OR n.taken IS NULL);
-   
   
