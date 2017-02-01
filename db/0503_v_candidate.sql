@@ -44,7 +44,7 @@ SELECT n.id,
 -- REFRESH MATERIALIZED VIEW v_candidate_upstream;
 
 
---DROP VIEW v_candidate_volume_normalised;
+-- DROP VIEW v_candidate_volume_normalised;
 CREATE OR REPLACE VIEW v_candidate_area_normalised AS
 SELECT v.id as id_node,
        v.served_area,
@@ -52,11 +52,11 @@ SELECT v.id as id_node,
                           FROM v_candidate_upstream) AS norm_served_area
   FROM v_candidate_upstream v;
 
---DROP VIEW v_candidate_subcatchments_normalised;
+-- DROP VIEW v_candidate_subcatchments_normalised;
 CREATE OR REPLACE VIEW v_candidate_subcatchments_normalised AS
 SELECT v.id as id_node,
        v.num_subcatchments,
-       v.num_subcatchments / (SELECT MAX(num_subcatchments) 
+       v.num_subcatchments::FLOAT / (SELECT MAX(num_subcatchments) 
                                 FROM v_candidate_upstream) AS norm_num_subcatchments
   FROM v_candidate_upstream v;
 
@@ -86,4 +86,3 @@ SELECT c.id_node,
    AND a.served_area IS NOT NULL
    AND s.num_subcatchments > 0
    AND (n.taken = FALSE OR n.taken IS NULL);
-  
