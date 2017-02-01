@@ -80,7 +80,7 @@
 	<!-- Views -->
 	<table name="v_candidate">
         <primary-key>
-            <key-column name="id"/>
+            <key-column name="id_node"/>
         </primary-key>
         <!-- <column name="outflow_elevation"/>
         <column name="served_area"/>

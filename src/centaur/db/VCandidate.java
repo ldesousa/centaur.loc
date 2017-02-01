@@ -1,5 +1,5 @@
 package centaur.db;
-// Generated 25-Jan-2017 15:30:11 by Hibernate Tools 5.2.0.CR1
+// Generated 01-Feb-2017 16:59:01 by Hibernate Tools 5.2.0.CR1
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -9,38 +9,45 @@ import java.math.BigDecimal;
  */
 public class VCandidate implements java.io.Serializable {
 
-	private int id;
+	private int idNode;
 	private BigDecimal outflowElevation;
 	private String name;
 	//private Serializable geom;
 	private Double floodedVolume;
 	private BigDecimal servedArea;
 	private Long numSubcatchments;
+	private Double normFloodedVolume;
+	private BigDecimal normServedArea;
+	private Double normNumSubcatchments;
 
 	public VCandidate() {
 	}
 
-	public VCandidate(int id) {
-		this.id = id;
+	public VCandidate(int idNode) {
+		this.idNode = idNode;
 	}
 
-	public VCandidate(int id, BigDecimal outflowElevation, String name, /*Serializable geom,*/ Double floodedVolume,
-			BigDecimal servedArea, Long numSubcatchments) {
-		this.id = id;
+	public VCandidate(int idNode, BigDecimal outflowElevation, String name, /*Serializable geom,*/ Double floodedVolume,
+			BigDecimal servedArea, Long numSubcatchments, Double normFloodedVolume, BigDecimal normServedArea,
+			Double normNumSubcatchments) {
+		this.idNode = idNode;
 		this.outflowElevation = outflowElevation;
 		this.name = name;
 		//this.geom = geom;
 		this.floodedVolume = floodedVolume;
 		this.servedArea = servedArea;
 		this.numSubcatchments = numSubcatchments;
+		this.normFloodedVolume = normFloodedVolume;
+		this.normServedArea = normServedArea;
+		this.normNumSubcatchments = normNumSubcatchments;
 	}
 
-	public int getId() {
-		return this.id;
+	public int getIdNode() {
+		return this.idNode;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setIdNode(int idNode) {
+		this.idNode = idNode;
 	}
 
 	public BigDecimal getOutflowElevation() {
@@ -89,6 +96,30 @@ public class VCandidate implements java.io.Serializable {
 
 	public void setNumSubcatchments(Long numSubcatchments) {
 		this.numSubcatchments = numSubcatchments;
+	}
+
+	public Double getNormFloodedVolume() {
+		return this.normFloodedVolume;
+	}
+
+	public void setNormFloodedVolume(Double normFloodedVolume) {
+		this.normFloodedVolume = normFloodedVolume;
+	}
+
+	public BigDecimal getNormServedArea() {
+		return this.normServedArea;
+	}
+
+	public void setNormServedArea(BigDecimal normServedArea) {
+		this.normServedArea = normServedArea;
+	}
+
+	public Double getNormNumSubcatchments() {
+		return this.normNumSubcatchments;
+	}
+
+	public void setNormNumSubcatchments(Double normNumSubcatchments) {
+		this.normNumSubcatchments = normNumSubcatchments;
 	}
 
 }

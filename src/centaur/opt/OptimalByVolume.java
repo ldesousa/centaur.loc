@@ -79,7 +79,7 @@ public class OptimalByVolume {
 		{
 			VCandidate cand = getBestCandidate(noi, useArea, useCatchments, schema);
 			System.out.println(
-					"Candidate #" + i + ": " + cand.getName() + " id: "+ cand.getId() + 
+					"Candidate #" + i + ": " + cand.getName() + " id: "+ cand.getIdNode() + 
 					"\n\tvolume: " + df.format(cand.getFloodedVolume()) + " m3" + 
 					"\n\tserved area: " + df.format(cand.getServedArea()) + " ha" + 
 					//"\n\tserved area: " + cand.getServedArea() + " ha" + 
@@ -152,7 +152,7 @@ public class OptimalByVolume {
 	{
 		String select = "SELECT f FROM Flooded f WHERE f.candidate.id = :id";
 		Query selectQuery = session.createQuery(select);
-		selectQuery.setParameter("id", candidate.getId());
+		selectQuery.setParameter("id", candidate.getIdNode());
 		LinkedList<Flooded> flooded = 
 				new LinkedList<Flooded>(selectQuery.list());
 		
