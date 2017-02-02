@@ -14,14 +14,14 @@ $BODY$
 DECLARE max NUMERIC;
 	query VARCHAR;
 BEGIN
-	query := 'SELECT v.id'       ||
+	query := 'SELECT v.id_node'       ||
 		 '  FROM v_candidate v ';
 
 	-- Is there a node of interest?
 	IF $1 IS NOT NULL THEN
 		query := query ||
 		 '  JOIN f_node_subgraph(' || $1 || ') s ' ||
-		 '    ON (v.id = s.id)';
+		 '    ON (v.id_node = s.id)';
 	END IF;
 
 	IF $2 AND $3 THEN
@@ -46,6 +46,37 @@ BEGIN
 END;
 $BODY$ LANGUAGE plpgsql STABLE;
 
+
+-- ############################################################################
+-- Returns the id of the node with the maximum value for the expression: 
+-- upstream storage volume / served area 
+-- $1 : id of node of interest - if not null, only the upstream sub-network is considered
+
+CREATE OR REPLACE FUNCTION f_optimal_over_area (INTEGER)
+RETURNS INTEGER AS
+$BODY$
+DECLARE max NUMERIC;
+	query VARCHAR;
+BEGIN
+	query := 'SELECT v.id_node'       ||
+		 '  FROM v_candidate v ';
+
+	-- Is there a node of interest?
+	IF $1 IS NOT NULL THEN
+		query := query ||
+		 '  JOIN f_node_subgraph(' || $1 || ') s ' ||
+		 '    ON (v.id_node = s.id)';
+	END IF;
+
+	query := query ||	   
+		 ' ORDER BY v.norm_flooded_volume / v.norm_served_area DESC ';
+
+	query := query || ' LIMIT 1';
+	EXECUTE query INTO max;
+	RAISE NOTICE 'The query: % ', query ;
+	RETURN max;	
+END;
+$BODY$ LANGUAGE plpgsql STABLE;
 
 
 -- ############################################################################
