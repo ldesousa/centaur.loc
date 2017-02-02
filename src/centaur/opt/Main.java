@@ -203,16 +203,12 @@ public class Main
 		//session.close();
 		//setUpConnection(schema);
 		
-		// Volume only
-		OptimalByVolume.compute(session, 5, null, false, true, schema);
-		// Coimbra
-		//OptimalByVolume.compute(session, 5, -545475706, false, false, schema);
-		//OptimalByVolume.compute(session, 5, 643983129, false, false, schema);
-		// Volume * Area
-		//OptimalByVolume.compute(session, 2, 101355, true, false, 1, 60, schema);
-		// Volume * Area / Num sub-catchments
-		//OptimalByVolume.compute(session, 5, 101355, true, true, 1, 60, schema);
-		//commitData(session, tx);
+		// By Volume
+		//OptimalLocation.computeByVolume(session, 5, null, false, true, schema);
+		// Over Area
+		OptimalLocation.computeOverArea(session, 5, null, schema);
+		
+
 		
 		//plotData(session);
 		//plotVolumeRank(session);

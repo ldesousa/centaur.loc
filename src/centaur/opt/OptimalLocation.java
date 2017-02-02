@@ -33,9 +33,9 @@ import centaur.db.VCandidate;
 
 // TODO: Auto-generated Javadoc
 /**
- * The Class OptimalByVolume.
+ * The Class OptimalLocation.
  */
-public class OptimalByVolume {
+public class OptimalLocation {
 	
 	/** The subcatchments. */
 	static LinkedList<Subcatchment> subcatchments;
@@ -51,9 +51,9 @@ public class OptimalByVolume {
 	
 	/**
 	 * Computes the locations of a number of flood control gates optimising by 
-	 * pipe volume times contributing area. A node of interest may be indicated 
-	 * to restrict search to a subset of the sewer network. Takes into account 
-	 * a rain event with a specific intensity during a determined time.
+	 * pipe volume. Served area and number of subcatchments can used optionally
+	 * in the expression: volume * area / subcatchments.  A node of interest 
+	 * may be indicated to restrict search to a subset of the sewer network. 
 	 *
 	 * @param session the database session.
 	 * @param numGates the number of gates to site.
@@ -62,22 +62,53 @@ public class OptimalByVolume {
 	 * their ranking.
 	 * @param useCatchments if true, the number of subcatchments upstream of 
 	 * each node is used in their ranking.
-	 * @param intensity the rain event intensity to consider (mm/h == l/m2).
-	 * @param duration the time length of the rain event (minutes)
 	 * @param database schema containing the CENTAUR tables
 	 */
-	public static void compute(Session sess, int numGates, Integer noi,  
-			boolean useArea, boolean useCatchments, /*double intensity, 
-			double duration,*/ String schema) 
+	public static void computeByVolume(Session sess, int numGates, Integer noi,  
+			boolean useArea, boolean useCatchments, String schema) 
 	{	
-		System.out.println("\nStarting gate siting computation...");
+		System.out.println("\nStarting gate location computation...");
 		
 		session = sess;
 		//resetContributions(schema);
 		
 		for (int i = 1; i <= numGates; i++)
 		{
-			VCandidate cand = getBestCandidate(noi, useArea, useCatchments, schema);
+			VCandidate cand = getBestCandidateByVolume(noi, useArea, useCatchments, schema);
+			System.out.println(
+					"Candidate #" + i + ": " + cand.getName() + " id: "+ cand.getIdNode() + 
+					"\n\tvolume: " + df.format(cand.getFloodedVolume()) + " m3" + 
+					"\n\tserved area: " + df.format(cand.getServedArea()) + " ha" + 
+					//"\n\tserved area: " + cand.getServedArea() + " ha" + 
+					"\n\tnum catchemnts: " + df.format(cand.getNumSubcatchments())); // +
+					//"\n\nUpdating contributions data...\n");
+			
+			updateBestCandidate(cand);//, intensity, duration);
+		}
+		
+		finalise(numGates);
+	}
+	
+	/**
+	 * Computes the locations of a number of flood control gates optimising by 
+	 * pipe volume over contributing area. A node of interest may be indicated 
+	 * to restrict search to a subset of the sewer network. 
+	 *
+	 * @param session the database session.
+	 * @param numGates the number of gates to site.
+	 * @param nio the node of interest (ignored if NULL)
+	 * @param database schema containing the CENTAUR tables
+	 */
+	public static void computeOverArea(Session sess, int numGates, Integer noi, String schema) 
+	{	
+		System.out.println("\nStarting gate location computation...");
+		
+		session = sess;
+		//resetContributions(schema);
+		
+		for (int i = 1; i <= numGates; i++)
+		{
+			VCandidate cand = getBestCandidateOverArea(noi, schema);
 			System.out.println(
 					"Candidate #" + i + ": " + cand.getName() + " id: "+ cand.getIdNode() + 
 					"\n\tvolume: " + df.format(cand.getFloodedVolume()) + " m3" + 
@@ -97,12 +128,9 @@ public class OptimalByVolume {
 	 * Updates contributing areas after a best candidate is selected.
 	 * 
 	 * @param cand the best candidate in the present iteration
-	 * @param intensity the rain event intensity to consider (mm/h == l/m2).
-	 * @param duration the time length of the rain event (minutes)
 	 */
-	protected static void updateBestCandidate(VCandidate cand/*, double intensity, double duration*/)
+	protected static void updateBestCandidate(VCandidate cand)
 	{
-		//updateContributions(cand, intensity, duration*/);
 		removeCandidates(cand);
 		session.getTransaction().commit();
         session.beginTransaction();
@@ -122,7 +150,7 @@ public class OptimalByVolume {
 	 * 
 	 * @return the best candidate.
 	 */
-	static VCandidate getBestCandidate(Integer noi, boolean useArea, 
+	static VCandidate getBestCandidateByVolume(Integer noi, boolean useArea, 
 			boolean useCatchments,  String schema)
 	{	
 		// Set search_path
@@ -136,6 +164,33 @@ public class OptimalByVolume {
 			query += "NULL, ";
 		
 		query += useArea + ", " + useCatchments + ")";
+		
+		List max = session.createSQLQuery(query).list();
+		System.out.println("\nMax: " + df.format(max.get(0)));
+		return (VCandidate) session.get(VCandidate.class, new Integer(max.get(0).toString()));
+	}
+	
+	/**
+	 * Retrieves the best candidate according to a particular objective 
+	 * function, in this case strictly storage volume.
+	 * 
+	 * @param noi node of interest - search is to restricted to its upstream 
+	 * sub-network; ignored if null
+	 * @param schema database schema containing the CENTAUR tables
+	 * 
+	 * @return the best candidate.
+	 */
+	static VCandidate getBestCandidateOverArea(Integer noi, String schema)
+	{	
+		// Set search_path
+		String query = "SET search_path TO " + schema + " , public";
+		session.createSQLQuery(query).executeUpdate();
+		
+		query = "SELECT * FROM f_optimal_over_area("; 
+		if(noi != null)
+			query += noi.toString() + ")";
+		else 
+			query += "NULL)";
 		
 		List max = session.createSQLQuery(query).list();
 		System.out.println("\nMax: " + df.format(max.get(0)));
