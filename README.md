@@ -5,7 +5,7 @@ Network analysis for the CENTAUR project
 Copyright
 --------------------------------------------------------------------------------------
 
-Copyright 2016 EAWAG. All rights reserved. 
+Copyright 2016-2017 EAWAG. All rights reserved. 
 Any use of this document constitutes full acceptance of all terms of the 
 document licence.
 
