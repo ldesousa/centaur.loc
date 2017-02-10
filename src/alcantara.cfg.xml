@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+		"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+		"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+        <property name="hibernate.connection.password">desouslu#</property>
+        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5433/centaur</property>
+        <property name="hibernate.connection.username">desouslu</property>
+        <property name="hibernate.default_schema">alcantara</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+        <!-- <property name="hibernate.dialect">org.hibernate.spatial.dialect.postgis.PostgisDialect</property> -->
+        <!-- "Import" the mapping resources here -->		
+		<mapping resource="centaur/db/Node.hbm.xml"/>
+		<mapping resource="centaur/db/Outfall.hbm.xml"/>
+		<mapping resource="centaur/db/Junction.hbm.xml"/>
+		<mapping resource="centaur/db/Storage.hbm.xml"/>
+		<mapping resource="centaur/db/Curve.hbm.xml"/>
+		<mapping resource="centaur/db/CurveParameter.hbm.xml"/>
+		<mapping resource="centaur/db/Raingage.hbm.xml"/>
+		<mapping resource="centaur/db/Subcatchment.hbm.xml"/>
+		<mapping resource="centaur/db/Subarea.hbm.xml"/>
+		<mapping resource="centaur/db/Link.hbm.xml"/>
+		<mapping resource="centaur/db/Pump.hbm.xml"/>
+		<mapping resource="centaur/db/Weir.hbm.xml"/>
+		<mapping resource="centaur/db/Conduit.hbm.xml"/>
+		<mapping resource="centaur/db/Xsection.hbm.xml"/>
+		<mapping resource="centaur/db/Coordinates.hbm.xml"/>
+		<mapping resource="centaur/db/Polygon.hbm.xml"/>
+		<mapping resource="centaur/db/Candidate.hbm.xml"/>
+		<mapping resource="centaur/db/Flooded.hbm.xml"/>
+		<mapping resource="centaur/db/VCandidate.hbm.xml"/>
+		<mapping resource="centaur/db/VJunction.hbm.xml"/>
+    </session-factory>
+</hibernate-configuration>

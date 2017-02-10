@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd" >
+
+<hibernate-reverse-engineering>
+
+	<!-- Spatial Types -->
+	<!-- <type-mapping>
+	 	<sql-type jdbc-type="java.sql.Types.OTHER" hibernate-type="JTSGeometryType"/>
+	</type-mapping> --> 
+
+	<!-- Tables -->
+	<table-filter match-name="conduit" />
+	<table-filter match-name="curve" />
+	<table-filter match-name="curve_parameter" />
+	<table-filter match-name="junction" />
+	<table-filter match-name="link" />
+	<table-filter match-name="node" />
+	<table-filter match-name="outfall" />
+	<table-filter match-name="pump" />
+	<table-filter match-name="raingage" />
+	<table-filter match-name="storage" />
+	<table-filter match-name="subarea" />
+	<table-filter match-name="subcatchment" />
+	<table-filter match-name="weir" />
+	<table-filter match-name="xsection" />
+	<table-filter match-name="coordinates"></table-filter>
+	<table-filter match-name="polygon"></table-filter>
+	<table-filter match-name="flooded" />
+	<table-filter match-name="candidate" />
+	<table-filter match-name="v_candidate" />
+	<table-filter match-name="v_junction" />
+	
+	<!-- Sequences -->
+		<table name="node">
+		<primary-key>
+            <generator class="org.hibernate.id.enhanced.SequenceStyleGenerator">
+		    	<param name="optimizer">none</param>
+		    	<param name="increment_size">1</param>
+		    	<param name="sequence_name">node_id_seq</param>
+			</generator>
+        </primary-key>
+	</table>
+	<table name="link">
+		<primary-key>
+            <generator class="org.hibernate.id.enhanced.SequenceStyleGenerator">
+		    	<param name="optimizer">none</param>
+		    	<param name="increment_size">1</param>
+		    	<param name="sequence_name">link_id_seq</param>
+			</generator>
+        </primary-key>
+	</table>
+	<table name="polygon">
+		<primary-key>
+            <generator class="org.hibernate.id.enhanced.SequenceStyleGenerator">
+		    	<param name="optimizer">none</param>
+		    	<param name="increment_size">1</param>
+		    	<param name="sequence_name">polygon_id_seq</param>
+			</generator>
+        </primary-key>
+	</table>
+	<table name="subcatchment">
+		<primary-key>
+            <generator class="org.hibernate.id.enhanced.SequenceStyleGenerator">
+		    	<param name="optimizer">none</param>
+		    	<param name="increment_size">1</param>
+		    	<param name="sequence_name">subcatchment_id_seq</param>
+			</generator>
+        </primary-key>
+	</table>
+	<table name="flooded">
+		<primary-key>
+            <generator class="org.hibernate.id.enhanced.SequenceStyleGenerator">
+		    	<param name="optimizer">none</param>
+		    	<param name="increment_size">1</param>
+		    	<param name="sequence_name">flooded_id_flooded_seq</param>
+			</generator>
+        </primary-key>
+	</table>
+	
+	<!-- Views -->
+	<table name="v_candidate">
+        <primary-key>
+            <key-column name="id_node"/>
+        </primary-key>
+        <!-- <column name="outflow_elevation"/>
+        <column name="served_area"/>
+        <column name="flooded_volume"/> -->
+    </table>
+    	<table name="v_junction">
+        <primary-key>
+            <key-column name="id_node"/>
+        </primary-key>
+    </table>
+	
+</hibernate-reverse-engineering>
