@@ -59,7 +59,7 @@ DECLARE max NUMERIC;
 	query VARCHAR;
 BEGIN
 	query := 'SELECT v.id_node'       ||
-		 '  FROM v_candidate v ';
+		     '  FROM v_candidate v ';
 
 	-- Is there a node of interest?
 	IF $1 IS NOT NULL THEN
@@ -68,7 +68,8 @@ BEGIN
 		 '    ON (v.id_node = s.id)';
 	END IF;
 
-	query := query ||	   
+	query := query ||
+	     ' WHERE v.norm_served_area > 0 '
 		 ' ORDER BY v.norm_flooded_volume / v.norm_served_area DESC ';
 
 	query := query || ' LIMIT 1';
