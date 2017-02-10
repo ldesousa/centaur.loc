@@ -7,26 +7,26 @@
 
 -- Database creation must be done outside an multicommand file.
 -- These commands were put in this file only for convenience.
--- -- object: centaur | type: DATABASE --
--- -- DROP DATABASE IF EXISTS centaur;
--- CREATE DATABASE centaur
+-- -- object: alcantara | type: DATABASE --
+-- -- DROP DATABASE IF EXISTS alcantara;
+-- CREATE DATABASE alcantara
 -- ;
 -- -- ddl-end --
 -- 
 
--- object: centaur | type: SCHEMA --
--- DROP SCHEMA IF EXISTS centaur CASCADE;
-CREATE SCHEMA centaur;
+-- object: alcantara | type: SCHEMA --
+-- DROP SCHEMA IF EXISTS alcantara CASCADE;
+CREATE SCHEMA alcantara;
 -- ddl-end --
-ALTER SCHEMA centaur OWNER TO postgres;
--- ddl-end --
-
-SET search_path TO pg_catalog,public,centaur;
+ALTER SCHEMA alcantara OWNER TO postgres;
 -- ddl-end --
 
--- object: centaur.curve | type: TABLE --
--- DROP TABLE IF EXISTS centaur.curve CASCADE;
-CREATE TABLE centaur.curve(
+SET search_path TO pg_catalog,public,alcantara;
+-- ddl-end --
+
+-- object: alcantara.curve | type: TABLE --
+-- DROP TABLE IF EXISTS alcantara.curve CASCADE;
+CREATE TABLE alcantara.curve(
 	id integer NOT NULL,
 	name varchar,
 	type varchar,
@@ -35,12 +35,12 @@ CREATE TABLE centaur.curve(
 
 );
 -- ddl-end --
-ALTER TABLE centaur.curve OWNER TO postgres;
+ALTER TABLE alcantara.curve OWNER TO postgres;
 -- ddl-end --
 
--- object: centaur.curve_parameter | type: TABLE --
--- DROP TABLE IF EXISTS centaur.curve_parameter CASCADE;
-CREATE TABLE centaur.curve_parameter(
+-- object: alcantara.curve_parameter | type: TABLE --
+-- DROP TABLE IF EXISTS alcantara.curve_parameter CASCADE;
+CREATE TABLE alcantara.curve_parameter(
 	id serial NOT NULL,
 	x numeric,
 	y numeric,
@@ -49,12 +49,12 @@ CREATE TABLE centaur.curve_parameter(
 
 );
 -- ddl-end --
-ALTER TABLE centaur.curve_parameter OWNER TO postgres;
+ALTER TABLE alcantara.curve_parameter OWNER TO postgres;
 -- ddl-end --
 
--- object: centaur.node | type: TABLE --
--- DROP TABLE IF EXISTS centaur.node CASCADE;
-CREATE TABLE centaur.node(
+-- object: alcantara.node | type: TABLE --
+-- DROP TABLE IF EXISTS alcantara.node CASCADE;
+CREATE TABLE alcantara.node(
 	id serial NOT NULL,
 	elevation numeric,
 	name varchar,
@@ -64,14 +64,14 @@ CREATE TABLE centaur.node(
 
 );
 -- ddl-end --
-COMMENT ON COLUMN centaur.node.taken IS 'True if this node is already being used by a gate or flooded by one.';
+COMMENT ON COLUMN alcantara.node.taken IS 'True if this node is already being used by a gate or flooded by one.';
 -- ddl-end --
-ALTER TABLE centaur.node OWNER TO postgres;
+ALTER TABLE alcantara.node OWNER TO postgres;
 -- ddl-end --
 
--- object: centaur.link | type: TABLE --
--- DROP TABLE IF EXISTS centaur.link CASCADE;
-CREATE TABLE centaur.link(
+-- object: alcantara.link | type: TABLE --
+-- DROP TABLE IF EXISTS alcantara.link CASCADE;
+CREATE TABLE alcantara.link(
 	id serial NOT NULL,
 	name varchar,
 	id_node_from integer,
@@ -81,12 +81,12 @@ CREATE TABLE centaur.link(
 
 );
 -- ddl-end --
-ALTER TABLE centaur.link OWNER TO postgres;
+ALTER TABLE alcantara.link OWNER TO postgres;
 -- ddl-end --
 
--- object: centaur.conduit | type: TABLE --
--- DROP TABLE IF EXISTS centaur.conduit CASCADE;
-CREATE TABLE centaur.conduit(
+-- object: alcantara.conduit | type: TABLE --
+-- DROP TABLE IF EXISTS alcantara.conduit CASCADE;
+CREATE TABLE alcantara.conduit(
 	id_link integer NOT NULL,
 	length numeric,
 	roughness numeric,
@@ -98,14 +98,14 @@ CREATE TABLE centaur.conduit(
 
 );
 -- ddl-end --
-COMMENT ON COLUMN centaur.conduit.length IS 'This can be calculated from the junctions coordinates';
+COMMENT ON COLUMN alcantara.conduit.length IS 'This can be calculated from the junctions coordinates';
 -- ddl-end --
-ALTER TABLE centaur.conduit OWNER TO postgres;
+ALTER TABLE alcantara.conduit OWNER TO postgres;
 -- ddl-end --
 
--- object: centaur.pump | type: TABLE --
--- DROP TABLE IF EXISTS centaur.pump CASCADE;
-CREATE TABLE centaur.pump(
+-- object: alcantara.pump | type: TABLE --
+-- DROP TABLE IF EXISTS alcantara.pump CASCADE;
+CREATE TABLE alcantara.pump(
 	id_link integer NOT NULL,
 	id_curve integer,
 	status varchar,
@@ -115,12 +115,12 @@ CREATE TABLE centaur.pump(
 
 );
 -- ddl-end --
-ALTER TABLE centaur.pump OWNER TO postgres;
+ALTER TABLE alcantara.pump OWNER TO postgres;
 -- ddl-end --
 
--- object: centaur.junction | type: TABLE --
--- DROP TABLE IF EXISTS centaur.junction CASCADE;
-CREATE TABLE centaur.junction(
+-- object: alcantara.junction | type: TABLE --
+-- DROP TABLE IF EXISTS alcantara.junction CASCADE;
+CREATE TABLE alcantara.junction(
 	id_node integer NOT NULL,
 	max_depth numeric,
 	init_depth numeric,
@@ -130,12 +130,12 @@ CREATE TABLE centaur.junction(
 
 );
 -- ddl-end --
-ALTER TABLE centaur.junction OWNER TO postgres;
+ALTER TABLE alcantara.junction OWNER TO postgres;
 -- ddl-end --
 
--- object: centaur.weir | type: TABLE --
--- DROP TABLE IF EXISTS centaur.weir CASCADE;
-CREATE TABLE centaur.weir(
+-- object: alcantara.weir | type: TABLE --
+-- DROP TABLE IF EXISTS alcantara.weir CASCADE;
+CREATE TABLE alcantara.weir(
 	id_link integer NOT NULL,
 	type varchar,
 	crest_height numeric,
@@ -148,12 +148,12 @@ CREATE TABLE centaur.weir(
 
 );
 -- ddl-end --
-ALTER TABLE centaur.weir OWNER TO postgres;
+ALTER TABLE alcantara.weir OWNER TO postgres;
 -- ddl-end --
 
--- object: centaur.outfall | type: TABLE --
--- DROP TABLE IF EXISTS centaur.outfall CASCADE;
-CREATE TABLE centaur.outfall(
+-- object: alcantara.outfall | type: TABLE --
+-- DROP TABLE IF EXISTS alcantara.outfall CASCADE;
+CREATE TABLE alcantara.outfall(
 	id_node integer NOT NULL,
 	type varchar,
 	stage_date varchar,
@@ -163,14 +163,14 @@ CREATE TABLE centaur.outfall(
 
 );
 -- ddl-end --
-COMMENT ON TABLE centaur.outfall IS 'This is a special kind of junction';
+COMMENT ON TABLE alcantara.outfall IS 'This is a special kind of junction';
 -- ddl-end --
-ALTER TABLE centaur.outfall OWNER TO postgres;
+ALTER TABLE alcantara.outfall OWNER TO postgres;
 -- ddl-end --
 
--- object: centaur.storage | type: TABLE --
--- DROP TABLE IF EXISTS centaur.storage CASCADE;
-CREATE TABLE centaur.storage(
+-- object: alcantara.storage | type: TABLE --
+-- DROP TABLE IF EXISTS alcantara.storage CASCADE;
+CREATE TABLE alcantara.storage(
 	id_node integer NOT NULL,
 	max_depth numeric,
 	init_depth numeric,
@@ -185,12 +185,12 @@ CREATE TABLE centaur.storage(
 
 );
 -- ddl-end --
-ALTER TABLE centaur.storage OWNER TO postgres;
+ALTER TABLE alcantara.storage OWNER TO postgres;
 -- ddl-end --
 
--- object: centaur.xsection | type: TABLE --
--- DROP TABLE IF EXISTS centaur.xsection CASCADE;
-CREATE TABLE centaur.xsection(
+-- object: alcantara.xsection | type: TABLE --
+-- DROP TABLE IF EXISTS alcantara.xsection CASCADE;
+CREATE TABLE alcantara.xsection(
 	id_link integer NOT NULL,
 	shape varchar,
 	geom1 numeric,
@@ -203,12 +203,12 @@ CREATE TABLE centaur.xsection(
 
 );
 -- ddl-end --
-ALTER TABLE centaur.xsection OWNER TO postgres;
+ALTER TABLE alcantara.xsection OWNER TO postgres;
 -- ddl-end --
 
--- object: centaur.raingage | type: TABLE --
--- DROP TABLE IF EXISTS centaur.raingage CASCADE;
-CREATE TABLE centaur.raingage(
+-- object: alcantara.raingage | type: TABLE --
+-- DROP TABLE IF EXISTS alcantara.raingage CASCADE;
+CREATE TABLE alcantara.raingage(
 	id integer NOT NULL,
 	format varchar,
 	"interval" varchar,
@@ -218,12 +218,12 @@ CREATE TABLE centaur.raingage(
 
 );
 -- ddl-end --
-ALTER TABLE centaur.raingage OWNER TO postgres;
+ALTER TABLE alcantara.raingage OWNER TO postgres;
 -- ddl-end --
 
--- object: centaur.subcatchment | type: TABLE --
--- DROP TABLE IF EXISTS centaur.subcatchment CASCADE;
-CREATE TABLE centaur.subcatchment(
+-- object: alcantara.subcatchment | type: TABLE --
+-- DROP TABLE IF EXISTS alcantara.subcatchment CASCADE;
+CREATE TABLE alcantara.subcatchment(
 	id serial NOT NULL,
 	name varchar,
 	id_node_outlet integer,
@@ -239,16 +239,16 @@ CREATE TABLE centaur.subcatchment(
 
 );
 -- ddl-end --
-COMMENT ON COLUMN centaur.subcatchment.imperv IS 'This field is a percentage (<= 100)';
+COMMENT ON COLUMN alcantara.subcatchment.imperv IS 'This field is a percentage (<= 100)';
 -- ddl-end --
-COMMENT ON COLUMN centaur.subcatchment.slope IS 'This field is a percentage';
+COMMENT ON COLUMN alcantara.subcatchment.slope IS 'This field is a percentage';
 -- ddl-end --
-ALTER TABLE centaur.subcatchment OWNER TO postgres;
+ALTER TABLE alcantara.subcatchment OWNER TO postgres;
 -- ddl-end --
 
--- object: centaur.subarea | type: TABLE --
--- DROP TABLE IF EXISTS centaur.subarea CASCADE;
-CREATE TABLE centaur.subarea(
+-- object: alcantara.subarea | type: TABLE --
+-- DROP TABLE IF EXISTS alcantara.subarea CASCADE;
+CREATE TABLE alcantara.subarea(
 	id_subcatchment serial NOT NULL,
 	n_imperv numeric,
 	n_perv numeric,
@@ -261,14 +261,14 @@ CREATE TABLE centaur.subarea(
 
 );
 -- ddl-end --
-COMMENT ON COLUMN centaur.subarea.pct_zero IS 'This field is a percentage';
+COMMENT ON COLUMN alcantara.subarea.pct_zero IS 'This field is a percentage';
 -- ddl-end --
-ALTER TABLE centaur.subarea OWNER TO postgres;
+ALTER TABLE alcantara.subarea OWNER TO postgres;
 -- ddl-end --
 
--- object: centaur.coordinates | type: TABLE --
--- DROP TABLE IF EXISTS centaur.coordinates CASCADE;
-CREATE TABLE centaur.coordinates(
+-- object: alcantara.coordinates | type: TABLE --
+-- DROP TABLE IF EXISTS alcantara.coordinates CASCADE;
+CREATE TABLE alcantara.coordinates(
 	id_node integer NOT NULL,
 	x numeric,
 	y numeric,
@@ -276,12 +276,12 @@ CREATE TABLE centaur.coordinates(
 
 );
 -- ddl-end --
-ALTER TABLE centaur.coordinates OWNER TO postgres;
+ALTER TABLE alcantara.coordinates OWNER TO postgres;
 -- ddl-end --
 
--- object: centaur.polygon | type: TABLE --
--- DROP TABLE IF EXISTS centaur.polygon CASCADE;
-CREATE TABLE centaur.polygon(
+-- object: alcantara.polygon | type: TABLE --
+-- DROP TABLE IF EXISTS alcantara.polygon CASCADE;
+CREATE TABLE alcantara.polygon(
 	id serial NOT NULL,
 	id_subcatchment integer,
 	x numeric,
@@ -290,12 +290,12 @@ CREATE TABLE centaur.polygon(
 
 );
 -- ddl-end --
-ALTER TABLE centaur.polygon OWNER TO postgres;
+ALTER TABLE alcantara.polygon OWNER TO postgres;
 -- ddl-end --
 
--- object: centaur.candidate | type: TABLE --
--- DROP TABLE IF EXISTS centaur.candidate CASCADE;
-CREATE TABLE centaur.candidate(
+-- object: alcantara.candidate | type: TABLE --
+-- DROP TABLE IF EXISTS alcantara.candidate CASCADE;
+CREATE TABLE alcantara.candidate(
 	id_node integer NOT NULL,
 	outflow_elevation numeric NOT NULL,
 	volume numeric,
@@ -303,12 +303,12 @@ CREATE TABLE centaur.candidate(
 
 );
 -- ddl-end --
-ALTER TABLE centaur.candidate OWNER TO postgres;
+ALTER TABLE alcantara.candidate OWNER TO postgres;
 -- ddl-end --
 
--- object: centaur.flooded | type: TABLE --
--- DROP TABLE IF EXISTS centaur.flooded CASCADE;
-CREATE TABLE centaur.flooded(
+-- object: alcantara.flooded | type: TABLE --
+-- DROP TABLE IF EXISTS alcantara.flooded CASCADE;
+CREATE TABLE alcantara.flooded(
 	id_flooded serial NOT NULL,
 	id_node integer NOT NULL,
 	id_link integer NOT NULL,
@@ -318,146 +318,146 @@ CREATE TABLE centaur.flooded(
 
 );
 -- ddl-end --
-ALTER TABLE centaur.flooded OWNER TO postgres;
+ALTER TABLE alcantara.flooded OWNER TO postgres;
 -- ddl-end --
 
 -- object: fk_curve_parameter_curve | type: CONSTRAINT --
--- ALTER TABLE centaur.curve_parameter DROP CONSTRAINT IF EXISTS fk_curve_parameter_curve CASCADE;
-ALTER TABLE centaur.curve_parameter ADD CONSTRAINT fk_curve_parameter_curve FOREIGN KEY (id_curve)
-REFERENCES centaur.curve (id) MATCH FULL
+-- ALTER TABLE alcantara.curve_parameter DROP CONSTRAINT IF EXISTS fk_curve_parameter_curve CASCADE;
+ALTER TABLE alcantara.curve_parameter ADD CONSTRAINT fk_curve_parameter_curve FOREIGN KEY (id_curve)
+REFERENCES alcantara.curve (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
 -- object: fk_link_node_from | type: CONSTRAINT --
--- ALTER TABLE centaur.link DROP CONSTRAINT IF EXISTS fk_link_node_from CASCADE;
-ALTER TABLE centaur.link ADD CONSTRAINT fk_link_node_from FOREIGN KEY (id_node_from)
-REFERENCES centaur.node (id) MATCH FULL
+-- ALTER TABLE alcantara.link DROP CONSTRAINT IF EXISTS fk_link_node_from CASCADE;
+ALTER TABLE alcantara.link ADD CONSTRAINT fk_link_node_from FOREIGN KEY (id_node_from)
+REFERENCES alcantara.node (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
 -- object: fk_link_node_to | type: CONSTRAINT --
--- ALTER TABLE centaur.link DROP CONSTRAINT IF EXISTS fk_link_node_to CASCADE;
-ALTER TABLE centaur.link ADD CONSTRAINT fk_link_node_to FOREIGN KEY (id_node_to)
-REFERENCES centaur.node (id) MATCH FULL
+-- ALTER TABLE alcantara.link DROP CONSTRAINT IF EXISTS fk_link_node_to CASCADE;
+ALTER TABLE alcantara.link ADD CONSTRAINT fk_link_node_to FOREIGN KEY (id_node_to)
+REFERENCES alcantara.node (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
 -- object: fk_conduit_link | type: CONSTRAINT --
--- ALTER TABLE centaur.conduit DROP CONSTRAINT IF EXISTS fk_conduit_link CASCADE;
-ALTER TABLE centaur.conduit ADD CONSTRAINT fk_conduit_link FOREIGN KEY (id_link)
-REFERENCES centaur.link (id) MATCH FULL
+-- ALTER TABLE alcantara.conduit DROP CONSTRAINT IF EXISTS fk_conduit_link CASCADE;
+ALTER TABLE alcantara.conduit ADD CONSTRAINT fk_conduit_link FOREIGN KEY (id_link)
+REFERENCES alcantara.link (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
 -- object: fk_pump_link | type: CONSTRAINT --
--- ALTER TABLE centaur.pump DROP CONSTRAINT IF EXISTS fk_pump_link CASCADE;
-ALTER TABLE centaur.pump ADD CONSTRAINT fk_pump_link FOREIGN KEY (id_link)
-REFERENCES centaur.link (id) MATCH FULL
+-- ALTER TABLE alcantara.pump DROP CONSTRAINT IF EXISTS fk_pump_link CASCADE;
+ALTER TABLE alcantara.pump ADD CONSTRAINT fk_pump_link FOREIGN KEY (id_link)
+REFERENCES alcantara.link (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
 -- object: fk_pump_curve | type: CONSTRAINT --
--- ALTER TABLE centaur.pump DROP CONSTRAINT IF EXISTS fk_pump_curve CASCADE;
-ALTER TABLE centaur.pump ADD CONSTRAINT fk_pump_curve FOREIGN KEY (id_curve)
-REFERENCES centaur.curve (id) MATCH FULL
+-- ALTER TABLE alcantara.pump DROP CONSTRAINT IF EXISTS fk_pump_curve CASCADE;
+ALTER TABLE alcantara.pump ADD CONSTRAINT fk_pump_curve FOREIGN KEY (id_curve)
+REFERENCES alcantara.curve (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
 -- object: fk_junction_node | type: CONSTRAINT --
--- ALTER TABLE centaur.junction DROP CONSTRAINT IF EXISTS fk_junction_node CASCADE;
-ALTER TABLE centaur.junction ADD CONSTRAINT fk_junction_node FOREIGN KEY (id_node)
-REFERENCES centaur.node (id) MATCH FULL
+-- ALTER TABLE alcantara.junction DROP CONSTRAINT IF EXISTS fk_junction_node CASCADE;
+ALTER TABLE alcantara.junction ADD CONSTRAINT fk_junction_node FOREIGN KEY (id_node)
+REFERENCES alcantara.node (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
 -- object: fk_weir_link | type: CONSTRAINT --
--- ALTER TABLE centaur.weir DROP CONSTRAINT IF EXISTS fk_weir_link CASCADE;
-ALTER TABLE centaur.weir ADD CONSTRAINT fk_weir_link FOREIGN KEY (id_link)
-REFERENCES centaur.link (id) MATCH FULL
+-- ALTER TABLE alcantara.weir DROP CONSTRAINT IF EXISTS fk_weir_link CASCADE;
+ALTER TABLE alcantara.weir ADD CONSTRAINT fk_weir_link FOREIGN KEY (id_link)
+REFERENCES alcantara.link (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
 -- object: fk_outfall_node | type: CONSTRAINT --
--- ALTER TABLE centaur.outfall DROP CONSTRAINT IF EXISTS fk_outfall_node CASCADE;
-ALTER TABLE centaur.outfall ADD CONSTRAINT fk_outfall_node FOREIGN KEY (id_node)
-REFERENCES centaur.node (id) MATCH FULL
+-- ALTER TABLE alcantara.outfall DROP CONSTRAINT IF EXISTS fk_outfall_node CASCADE;
+ALTER TABLE alcantara.outfall ADD CONSTRAINT fk_outfall_node FOREIGN KEY (id_node)
+REFERENCES alcantara.node (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
 -- object: fk_storage_node | type: CONSTRAINT --
--- ALTER TABLE centaur.storage DROP CONSTRAINT IF EXISTS fk_storage_node CASCADE;
-ALTER TABLE centaur.storage ADD CONSTRAINT fk_storage_node FOREIGN KEY (id_node)
-REFERENCES centaur.node (id) MATCH FULL
+-- ALTER TABLE alcantara.storage DROP CONSTRAINT IF EXISTS fk_storage_node CASCADE;
+ALTER TABLE alcantara.storage ADD CONSTRAINT fk_storage_node FOREIGN KEY (id_node)
+REFERENCES alcantara.node (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
 -- object: fk_storage_curve | type: CONSTRAINT --
--- ALTER TABLE centaur.storage DROP CONSTRAINT IF EXISTS fk_storage_curve CASCADE;
-ALTER TABLE centaur.storage ADD CONSTRAINT fk_storage_curve FOREIGN KEY (id_curve)
-REFERENCES centaur.curve (id) MATCH FULL
+-- ALTER TABLE alcantara.storage DROP CONSTRAINT IF EXISTS fk_storage_curve CASCADE;
+ALTER TABLE alcantara.storage ADD CONSTRAINT fk_storage_curve FOREIGN KEY (id_curve)
+REFERENCES alcantara.curve (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
 -- object: fk_xsection_link | type: CONSTRAINT --
--- ALTER TABLE centaur.xsection DROP CONSTRAINT IF EXISTS fk_xsection_link CASCADE;
-ALTER TABLE centaur.xsection ADD CONSTRAINT fk_xsection_link FOREIGN KEY (id_link)
-REFERENCES centaur.link (id) MATCH FULL
+-- ALTER TABLE alcantara.xsection DROP CONSTRAINT IF EXISTS fk_xsection_link CASCADE;
+ALTER TABLE alcantara.xsection ADD CONSTRAINT fk_xsection_link FOREIGN KEY (id_link)
+REFERENCES alcantara.link (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
 -- object: fk_subcatchment_raingage | type: CONSTRAINT --
--- ALTER TABLE centaur.subcatchment DROP CONSTRAINT IF EXISTS fk_subcatchment_raingage CASCADE;
-ALTER TABLE centaur.subcatchment ADD CONSTRAINT fk_subcatchment_raingage FOREIGN KEY (id_raingage)
-REFERENCES centaur.raingage (id) MATCH FULL
+-- ALTER TABLE alcantara.subcatchment DROP CONSTRAINT IF EXISTS fk_subcatchment_raingage CASCADE;
+ALTER TABLE alcantara.subcatchment ADD CONSTRAINT fk_subcatchment_raingage FOREIGN KEY (id_raingage)
+REFERENCES alcantara.raingage (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
 -- object: fk_subcatchment_node | type: CONSTRAINT --
--- ALTER TABLE centaur.subcatchment DROP CONSTRAINT IF EXISTS fk_subcatchment_node CASCADE;
-ALTER TABLE centaur.subcatchment ADD CONSTRAINT fk_subcatchment_node FOREIGN KEY (id_node_outlet)
-REFERENCES centaur.node (id) MATCH FULL
+-- ALTER TABLE alcantara.subcatchment DROP CONSTRAINT IF EXISTS fk_subcatchment_node CASCADE;
+ALTER TABLE alcantara.subcatchment ADD CONSTRAINT fk_subcatchment_node FOREIGN KEY (id_node_outlet)
+REFERENCES alcantara.node (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
 -- object: fk_subarea_subcatchment | type: CONSTRAINT --
--- ALTER TABLE centaur.subarea DROP CONSTRAINT IF EXISTS fk_subarea_subcatchment CASCADE;
-ALTER TABLE centaur.subarea ADD CONSTRAINT fk_subarea_subcatchment FOREIGN KEY (id_subcatchment)
-REFERENCES centaur.subcatchment (id) MATCH FULL
+-- ALTER TABLE alcantara.subarea DROP CONSTRAINT IF EXISTS fk_subarea_subcatchment CASCADE;
+ALTER TABLE alcantara.subarea ADD CONSTRAINT fk_subarea_subcatchment FOREIGN KEY (id_subcatchment)
+REFERENCES alcantara.subcatchment (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
 -- object: fk_coordinates_node | type: CONSTRAINT --
--- ALTER TABLE centaur.coordinates DROP CONSTRAINT IF EXISTS fk_coordinates_node CASCADE;
-ALTER TABLE centaur.coordinates ADD CONSTRAINT fk_coordinates_node FOREIGN KEY (id_node)
-REFERENCES centaur.node (id) MATCH FULL
+-- ALTER TABLE alcantara.coordinates DROP CONSTRAINT IF EXISTS fk_coordinates_node CASCADE;
+ALTER TABLE alcantara.coordinates ADD CONSTRAINT fk_coordinates_node FOREIGN KEY (id_node)
+REFERENCES alcantara.node (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
 -- object: fk_polygon_subcatchment | type: CONSTRAINT --
--- ALTER TABLE centaur.polygon DROP CONSTRAINT IF EXISTS fk_polygon_subcatchment CASCADE;
-ALTER TABLE centaur.polygon ADD CONSTRAINT fk_polygon_subcatchment FOREIGN KEY (id_subcatchment)
-REFERENCES centaur.subcatchment (id) MATCH FULL
+-- ALTER TABLE alcantara.polygon DROP CONSTRAINT IF EXISTS fk_polygon_subcatchment CASCADE;
+ALTER TABLE alcantara.polygon ADD CONSTRAINT fk_polygon_subcatchment FOREIGN KEY (id_subcatchment)
+REFERENCES alcantara.subcatchment (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
 -- object: fk_candidate_node | type: CONSTRAINT --
--- ALTER TABLE centaur.candidate DROP CONSTRAINT IF EXISTS fk_candidate_node CASCADE;
-ALTER TABLE centaur.candidate ADD CONSTRAINT fk_candidate_node FOREIGN KEY (id_node)
-REFERENCES centaur.node (id) MATCH FULL
+-- ALTER TABLE alcantara.candidate DROP CONSTRAINT IF EXISTS fk_candidate_node CASCADE;
+ALTER TABLE alcantara.candidate ADD CONSTRAINT fk_candidate_node FOREIGN KEY (id_node)
+REFERENCES alcantara.node (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
 -- object: fk_flooded_link | type: CONSTRAINT --
--- ALTER TABLE centaur.flooded DROP CONSTRAINT IF EXISTS fk_flooded_link CASCADE;
-ALTER TABLE centaur.flooded ADD CONSTRAINT fk_flooded_link FOREIGN KEY (id_link)
-REFERENCES centaur.link (id) MATCH FULL
+-- ALTER TABLE alcantara.flooded DROP CONSTRAINT IF EXISTS fk_flooded_link CASCADE;
+ALTER TABLE alcantara.flooded ADD CONSTRAINT fk_flooded_link FOREIGN KEY (id_link)
+REFERENCES alcantara.link (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
 -- object: fk_flooded_candidate | type: CONSTRAINT --
--- ALTER TABLE centaur.flooded DROP CONSTRAINT IF EXISTS fk_flooded_candidate CASCADE;
-ALTER TABLE centaur.flooded ADD CONSTRAINT fk_flooded_candidate FOREIGN KEY (id_node)
-REFERENCES centaur.candidate (id_node) MATCH FULL
+-- ALTER TABLE alcantara.flooded DROP CONSTRAINT IF EXISTS fk_flooded_candidate CASCADE;
+ALTER TABLE alcantara.flooded ADD CONSTRAINT fk_flooded_candidate FOREIGN KEY (id_node)
+REFERENCES alcantara.candidate (id_node) MATCH FULL
 ON DELETE CASCADE ON UPDATE NO ACTION;
 -- ddl-end --
 
