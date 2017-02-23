@@ -67,6 +67,17 @@ public class Main {
 		Query query =  session.createQuery("from Subcatchment s");
 		subcatchments = new LinkedList<Subcatchment>(query.list());
 		
+		WriteRaingageHeader();
+		
+		// Write out raingages
+		for(Subcatchment sub : subcatchments)
+		{
+			WriteContentToFile("Gage_" + sub.getName() + 
+							   "            VOLUME    0:05   1.0    TIMESERIES TS_" + sub.getName() + "\n");
+		}
+		
+		WriteTimeSeriesHeader();
+		
 		for(Subcatchment sub : subcatchments)
 		{
 			double[] coords = getNodeCoords(schema, sub.getNode().getId());
@@ -89,6 +100,8 @@ public class Main {
 			
 			//System.exit(0);
 		}
+		
+		CloseTextFile();
 	}
 	
 	static protected Boolean OpenTextFile()
@@ -211,6 +224,21 @@ public class Main {
 		coords[1] = Double.parseDouble(session.createSQLQuery(query).list().get(0).toString());
 		
 		return coords;
+	}
+	
+	protected static void WriteRaingageHeader()
+	{
+		WriteContentToFile("\n[RAINGAGES]\n");
+		WriteContentToFile(";;               Rain      Time   Snow   Data\n");
+		WriteContentToFile(";;Name           Type      Intrvl Catch  Source\n");
+		WriteContentToFile(";;-------------- --------- ------ ------ ----------\n");
+	}
+	
+	protected static void WriteTimeSeriesHeader()
+	{
+		WriteContentToFile("\n[TIMESERIES]\n");
+		WriteContentToFile(";;Name           Date       Time       Value\n");
+		WriteContentToFile(";;-------------- ---------- ---------- ----------\n");
 	}
     
 	/**
