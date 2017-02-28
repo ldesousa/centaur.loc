@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 28-Feb-2017 15:38:29 by Hibernate Tools 5.2.0.CR1 -->
+<hibernate-mapping>
+    <class name="centaur.db.SimNode" table="sim_node" optimistic-lock="version">
+        <composite-id name="id" class="centaur.db.SimNodeId">
+            <key-property name="idNode" type="java.lang.Integer">
+                <column name="id_node" />
+            </key-property>
+            <key-property name="idSim" type="java.lang.Integer">
+                <column name="id_sim" />
+            </key-property>
+            <key-property name="average" type="big_decimal">
+                <column name="average" precision="131089" scale="0" />
+            </key-property>
+            <key-property name="stddev" type="big_decimal">
+                <column name="stddev" precision="131089" scale="0" />
+            </key-property>
+            <key-property name="max" type="big_decimal">
+                <column name="max" precision="131089" scale="0" />
+            </key-property>
+            <key-property name="min" type="big_decimal">
+                <column name="min" precision="131089" scale="0" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="node" class="centaur.db.Node" update="false" insert="false" fetch="select">
+            <column name="id_node" />
+        </many-to-one>
+        <many-to-one name="simulation" class="centaur.db.Simulation" update="false" insert="false" fetch="select">
+            <column name="id_sim" />
+        </many-to-one>
+    </class>
+</hibernate-mapping>

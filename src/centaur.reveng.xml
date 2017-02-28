@@ -29,6 +29,8 @@
 	<table-filter match-name="candidate" />
 	<table-filter match-name="v_candidate" />
 	<table-filter match-name="v_junction" />
+	<table-filter match-name="simulation" />
+	<table-filter match-name="sim_node" />
 	
 	<!-- Sequences -->
 		<table name="node">
@@ -73,6 +75,15 @@
 		    	<param name="optimizer">none</param>
 		    	<param name="increment_size">1</param>
 		    	<param name="sequence_name">flooded_id_flooded_seq</param>
+			</generator>
+        </primary-key>
+	</table>
+	<table name="simulation">
+		<primary-key>
+            <generator class="org.hibernate.id.enhanced.SequenceStyleGenerator">
+		    	<param name="optimizer">none</param>
+		    	<param name="increment_size">1</param>
+		    	<param name="sequence_name">simulation_id_seq</param>
 			</generator>
         </primary-key>
 	</table>

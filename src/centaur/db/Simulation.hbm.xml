@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 28-Feb-2017 15:38:29 by Hibernate Tools 5.2.0.CR1 -->
+<hibernate-mapping>
+    <class name="centaur.db.Simulation" table="simulation" optimistic-lock="version">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="org.hibernate.id.enhanced.SequenceStyleGenerator">
+                <param name="optimizer">none</param>
+                <param name="sequence_name">simulation_id_seq</param>
+                <param name="increment_size">1</param>
+            </generator>
+        </id>
+        <property name="name" type="string">
+            <column name="name" not-null="true" unique="true" />
+        </property>
+        <property name="details" type="string">
+            <column name="details" />
+        </property>
+        <property name="date" type="date">
+            <column name="date" length="13" />
+        </property>
+        <set name="simNodes" table="sim_node" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_sim" />
+            </key>
+            <one-to-many class="centaur.db.SimNode" />
+        </set>
+    </class>
+</hibernate-mapping>

@@ -32,5 +32,7 @@
 		<mapping resource="centaur/db/Flooded.hbm.xml"/>
 		<mapping resource="centaur/db/VCandidate.hbm.xml"/>
 		<mapping resource="centaur/db/VJunction.hbm.xml"/>
+		<mapping resource="centaur/db/Simulation.hbm.xml"/>
+		<mapping resource="centaur/db/SimNode.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>
