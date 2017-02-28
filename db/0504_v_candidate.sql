@@ -86,3 +86,4 @@ SELECT c.id_node,
    AND a.served_area IS NOT NULL
    AND s.num_subcatchments > 0
    AND (n.taken = FALSE OR n.taken IS NULL);
+   

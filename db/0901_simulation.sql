@@ -1,5 +1,6 @@
 ﻿SET search_path TO luzern,pg_catalog,public;
 
+-- DROP TABLE simulation
 CREATE TABLE simulation
 (
 	id   SERIAL,
@@ -30,3 +31,15 @@ ALTER TABLE sim_node ADD CONSTRAINT fk_sim_node_sim FOREIGN KEY (id_sim)
 REFERENCES simulation (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 
+
+CREATE OR REPLACE VIEW v_sim_node AS
+SELECT n.id,
+       n.geom,
+       s.id_sim,
+       s.average,
+       s.stddev,
+       s.max,
+       s.min
+  FROM node n,
+       sim_node s
+ WHERE n.id = s.id_node;
