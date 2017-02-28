@@ -1,5 +1,5 @@
 package centaur.db;
-// Generated 28-Feb-2017 15:38:29 by Hibernate Tools 5.2.0.CR1
+// Generated 28-Feb-2017 16:09:34 by Hibernate Tools 5.2.0.CR1
 
 import java.math.BigDecimal;
 
@@ -8,21 +8,40 @@ import java.math.BigDecimal;
  */
 public class SimNode implements java.io.Serializable {
 
+	private SimNodeId id;
 	private Node node;
 	private Simulation simulation;
 	private BigDecimal average;
 	private BigDecimal stddev;
 	private BigDecimal max;
 	private BigDecimal min;
-	
 
 	public SimNode() {
 	}
 
-	public SimNode(Node node, Simulation simulation, BigDecimal average, BigDecimal stddev, 
-			BigDecimal max, BigDecimal min) {
+	public SimNode(SimNodeId id, Node node, Simulation simulation) {
+		this.id = id;
 		this.node = node;
 		this.simulation = simulation;
+	}
+
+	public SimNode(SimNodeId id, Node node, Simulation simulation, BigDecimal average, BigDecimal stddev,
+			BigDecimal max, BigDecimal min) {
+		this.id = id;
+		this.node = node;
+		this.simulation = simulation;
+		this.average = average;
+		this.stddev = stddev;
+		this.max = max;
+		this.min = min;
+	}
+
+	public SimNodeId getId() {
+		return this.id;
+	}
+
+	public void setId(SimNodeId id) {
+		this.id = id;
 	}
 
 	public Node getNode() {
@@ -72,4 +91,5 @@ public class SimNode implements java.io.Serializable {
 	public void setMin(BigDecimal min) {
 		this.min = min;
 	}
+
 }

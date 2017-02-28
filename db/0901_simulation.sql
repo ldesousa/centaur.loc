@@ -1,4 +1,4 @@
-SET search_path TO luzern,pg_catalog,public;
+﻿SET search_path TO luzern,pg_catalog,public;
 
 CREATE TABLE simulation
 (
@@ -19,7 +19,7 @@ CREATE TABLE sim_node
 	stddev  NUMERIC,
 	max     NUMERIC,
 	min     NUMERIC,
-	CONSTRAINT unq_sim_node UNIQUE (id_node, id_sim)
+	CONSTRAINT pk_sim_node PRIMARY KEY (id_node, id_sim)
 );
 
 ALTER TABLE sim_node ADD CONSTRAINT fk_sim_node_node FOREIGN KEY (id_node)
