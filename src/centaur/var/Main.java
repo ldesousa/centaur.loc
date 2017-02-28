@@ -4,7 +4,6 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.LinkedList;
-import java.util.List;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -14,9 +13,8 @@ import org.hibernate.cfg.Configuration;
 import org.rosuda.JRI.REXP;
 import org.rosuda.JRI.Rengine;
 
-import centaur.db.Node;
 import centaur.db.Subcatchment;
-import centaur.db.VCandidate;
+
 
 public class Main {
 	
@@ -65,7 +63,7 @@ public class Main {
         String schema = "luzern";
 		setUpConnection(schema);
 		Query query =  session.createQuery("from Subcatchment s");
-		subcatchments = new LinkedList<Subcatchment>(query.list());
+		subcatchments = new LinkedList<Subcatchment>(query.list());	
 		
 		WriteRaingageHeader();
 		
@@ -94,9 +92,10 @@ public class Main {
 			double[] values = GenerateSeries(engine, vectorCoord);
 			
 			for(int i = 0; i < values.length; i++)
-				WriteContentToFile("TS_" + sub.getName() + "\t\t" + 
-								   (5 * i / 60) + ":" + (5 * i % 60) + "\t" + 
-						           values[i] + "\n");
+				WriteContentToFile(
+					"TS_" + sub.getName() + "\t\t" + 
+					String.format("%02d", (5 * i / 60) + ":" + (5 * i % 60)) + "\t" + 
+					values[i] + "\n");
 			
 			//System.exit(0);
 		}
@@ -165,13 +164,14 @@ public class Main {
     {
     	double[] values = new double[numSims];
     	double sum = 0;
-    	double sumExpected = 480;
+    	double sumExpected = 40; // mm 2 year return period
     	int numPositive = 0;
+    	int timeStep = 5; //minutes
     	
-    	for (int time = 0, sim=1; time <= 120; time += 5, sim++)
+    	for (int time = 0, sim=1; time <= 120; time += timeStep, sim++)
     	{
     		String simName = noiseSim + "[" + String.valueOf(sim) + "]$sim" + String.valueOf(sim);
-    		values[sim-1] = Surge(time / 60.0, engine, simName, vectorCoord);
+    		values[sim-1] = Surge(time / 60.0, timeStep / 60.0, engine, simName, vectorCoord);
     		sum += values[sim-1];
     		if (values[sim-1] > 0) numPositive++;
     	}
@@ -187,12 +187,12 @@ public class Main {
     	return values;
     }
     
-    static public double Surge(double time, Rengine engine, String simName, int vectorCoord)
+    static public double Surge(double time, double timeStep, Rengine engine, String simName, int vectorCoord)
     {
     	double A = 280.0;
     	double b = 2.6;
-    	double maxVar = 32.0;
-    	double value = A * time * Math.exp(-b * time);
+    	double maxVar = 2.0;
+    	double value = A * time * Math.exp(-b * time) * timeStep;
     	String coord = String.valueOf(vectorCoord);
     	REXP noise = engine.eval(simName + "[" + coord + "]");
     	//System.out.println(simName + "[" + coord + "]");
