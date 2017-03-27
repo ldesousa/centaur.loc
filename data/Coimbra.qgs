@@ -1,12 +1,12 @@
 <!DOCTYPE qgis PUBLIC 'http://mrcc.com/qgis.dtd' 'SYSTEM'>
-<qgis projectname="" version="2.14.1-Essen">
+<qgis projectname="" version="2.14.11-Essen">
   <title></title>
   <layer-tree-group expanded="1" checked="Qt::PartiallyChecked" name="">
     <customproperties/>
     <layer-tree-layer expanded="0" checked="Qt::Unchecked" id="v_flooded20161124163631916" name="v_flooded">
       <customproperties/>
     </layer-tree-layer>
-    <layer-tree-layer expanded="1" checked="Qt::Checked" id="v_candidate20161118171927662" name="Candidate volume (m3)">
+    <layer-tree-layer expanded="0" checked="Qt::Checked" id="v_candidate20161118171927662" name="Candidate volume (m3)">
       <customproperties/>
     </layer-tree-layer>
     <layer-tree-layer expanded="1" checked="Qt::Checked" id="v_conduit20161123135502795" name="Conduit">
@@ -35,10 +35,10 @@
   <mapcanvas>
     <units>meters</units>
     <extent>
-      <xmin>-25961.5954965832279413</xmin>
-      <ymin>60691.08300922875787364</ymin>
-      <xmax>-24977.27270490067166975</xmax>
-      <ymax>61330.58536719688709127</ymax>
+      <xmin>-25328.38322304321627598</xmin>
+      <ymin>59339.61291030314168893</ymin>
+      <xmax>-23359.73763967810373288</xmax>
+      <ymax>60618.61762623940012418</ymax>
     </extent>
     <rotation>0</rotation>
     <projections>0</projections>
@@ -76,8 +76,8 @@
         <legendlayerfile isInOverview="0" layerid="v_flooded20161124163631916" visible="0"/>
       </filegroup>
     </legendlayer>
-    <legendlayer drawingOrder="-1" open="true" checked="Qt::Checked" name="Candidate volume (m3)" showFeatureCount="0">
-      <filegroup open="true" hidden="false">
+    <legendlayer drawingOrder="-1" open="false" checked="Qt::Checked" name="Candidate volume (m3)" showFeatureCount="0">
+      <filegroup open="false" hidden="false">
         <legendlayerfile isInOverview="0" layerid="v_candidate20161118171927662" visible="1"/>
       </filegroup>
     </legendlayer>
@@ -134,7 +134,7 @@
           <prop k="style" v="solid"/>
         </layer>
       </symbol>
-      <ComposerPicture resizeMode="0" svgBorderWidth="0.2" pictureRotation="0" pictureWidth="6.67993" svgFillColor="255,255,255,255" svgBorderColor="0,0,0,255" file="../../../Desktop/Symbols/north_arrow.svg" pictureHeight="28.2193" mapId="-1" anchorPoint="0">
+      <ComposerPicture resizeMode="0" svgBorderWidth="0.2" pictureRotation="0" pictureWidth="6.67993" svgFillColor="255,255,255,255" svgBorderColor="0,0,0,255" northMode="0" file="../../../Desktop/Symbols/north_arrow.svg" northOffset="0" pictureHeight="28.2193" mapId="-1" anchorPoint="0">
         <ComposerItem pagey="177.857" page="1" id="" lastValidViewScaleFactor="-1" positionMode="0" positionLock="false" x="53.4656" y="177.857" visibility="1" zValue="4" background="false" transparency="0" frameJoinStyle="miter" blendMode="0" width="10.0552" outlineWidth="0.3" excludeFromExports="0" uuid="{2a1a70ca-1817-4845-8b97-0d4be4598a3a}" height="28.2193" itemRotation="0" frame="false" pagex="53.4656">
           <FrameColor alpha="255" red="0" blue="0" green="0"/>
           <BackgroundColor alpha="255" red="255" blue="255" green="255"/>
@@ -154,7 +154,7 @@
           <customproperties/>
         </ComposerItem>
       </ComposerScaleBar>
-      <ComposerLegend symbolWidth="7" title="Legend" boxSpace="2" rasterBorderWidth="0" splitLayer="0" equalColumnWidth="0" map="0" titleAlignment="1" rasterBorder="1" symbolHeight="4" wmsLegendHeight="25" wrapChar="" fontColor="#000000" columnSpace="2" wmsLegendWidth="50" columnCount="1" rasterBorderColor="0,0,0,255">
+      <ComposerLegend symbolWidth="7" title="Legend" rasterBorderWidth="0" titleAlignment="1" map="0" wmsLegendWidth="50" rasterBorderColor="0,0,0,255" wrapChar="" fontColor="#000000" columnCount="1" wmsLegendHeight="25" columnSpace="2" symbolHeight="4" equalColumnWidth="0" resizeToContents="1" splitLayer="0" boxSpace="2" rasterBorder="1">
         <styles>
           <style marginBottom="2" name="title">
             <styleFont description="Ubuntu,16,-1,5,50,0,0,0,0,0" style=""/>
@@ -275,11 +275,15 @@
   </Composer>
   <projectlayers>
     <maplayer minimumScale="0" maximumScale="1e+08" simplifyDrawingHints="1" minLabelScale="0" maxLabelScale="1e+08" simplifyDrawingTol="1" geometry="Polygon" simplifyMaxScale="1" type="vector" hasScaleBasedVisibilityFlag="0" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
+      <extent>
+        <xmin>-25959.251953125</xmin>
+        <ymin>59426.5703125</ymin>
+        <xmax>-23328.955078125</xmax>
+        <ymax>61067.07421875</ymax>
+      </extent>
       <id>subcatchment20161118171927633</id>
       <datasource>dbname='centaur' host=localhost port=5433 sslmode=disable key='id' srid=3035 type=Polygon table="coimbra"."subcatchment" (geom) sql=</datasource>
       <shortname>subcatchment</shortname>
-      <title></title>
-      <abstract></abstract>
       <keywordList>
         <value></value>
       </keywordList>
@@ -575,11 +579,15 @@ def my_form_open(dialog, layer, feature):
       </conditionalstyles>
     </maplayer>
     <maplayer minimumScale="-4.65661e-10" maximumScale="1e+08" simplifyDrawingHints="0" minLabelScale="0" maxLabelScale="1e+08" simplifyDrawingTol="1" geometry="Point" simplifyMaxScale="1" type="vector" hasScaleBasedVisibilityFlag="0" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
+      <extent>
+        <xmin>-26072.19900000000052387</xmin>
+        <ymin>59442.57499999999708962</ymin>
+        <xmax>-23454.16999999999825377</xmax>
+        <ymax>61208.82200000000011642</ymax>
+      </extent>
       <id>v_candidate20161118171927662</id>
-      <datasource>dbname='centaur' host=localhost port=5433 sslmode=disable key='id' srid=3035 type=Point table="coimbra"."v_candidate" (geom) sql=</datasource>
+      <datasource>dbname='centaur' host=localhost port=5433 sslmode=disable key='id_node' srid=3035 type=Point table="coimbra"."v_candidate" (geom) sql=</datasource>
       <shortname>v_candidate</shortname>
-      <title></title>
-      <abstract></abstract>
       <keywordList>
         <value></value>
       </keywordList>
@@ -605,7 +613,7 @@ def my_form_open(dialog, layer, feature):
         <map-layer-style name=""/>
       </map-layer-style-manager>
       <edittypes>
-        <edittype widgetv2type="TextEdit" name="id">
+        <edittype widgetv2type="TextEdit" name="id_node">
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
         <edittype widgetv2type="TextEdit" name="outflow_elevation">
@@ -620,10 +628,16 @@ def my_form_open(dialog, layer, feature):
         <edittype widgetv2type="TextEdit" name="served_area">
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
-        <edittype widgetv2type="TextEdit" name="contributions">
+        <edittype widgetv2type="TextEdit" name="num_subcatchments">
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
-        <edittype widgetv2type="TextEdit" name="num_subcatchments">
+        <edittype widgetv2type="TextEdit" name="norm_flooded_volume">
+          <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
+        </edittype>
+        <edittype widgetv2type="TextEdit" name="norm_served_area">
+          <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
+        </edittype>
+        <edittype widgetv2type="TextEdit" name="norm_num_subcatchments">
           <widgetv2config IsMultiline="0" fieldEditable="1" UseHtml="0" labelOnTop="0"/>
         </edittype>
       </edittypes>
@@ -1055,11 +1069,15 @@ def my_form_open(dialog, layer, feature):
       </conditionalstyles>
     </maplayer>
     <maplayer minimumScale="-4.65661e-10" maximumScale="1e+08" simplifyDrawingHints="1" minLabelScale="0" maxLabelScale="1e+08" simplifyDrawingTol="1" geometry="Line" simplifyMaxScale="1" type="vector" hasScaleBasedVisibilityFlag="0" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
+      <extent>
+        <xmin>-26072.19900000000052387</xmin>
+        <ymin>59442.57499999999708962</ymin>
+        <xmax>-23402.49000000000160071</xmax>
+        <ymax>61208.82200000000011642</ymax>
+      </extent>
       <id>v_conduit20161123135502795</id>
       <datasource>dbname='centaur' host=localhost port=5433 sslmode=disable key='id' srid=3035 type=LineString table="coimbra"."v_conduit" (geom) sql=</datasource>
       <shortname>v_conduit</shortname>
-      <title></title>
-      <abstract></abstract>
       <keywordList>
         <value></value>
       </keywordList>
@@ -1077,7 +1095,7 @@ def my_form_open(dialog, layer, feature):
         </spatialrefsys>
       </srs>
       <provider encoding="System">postgres</provider>
-      <previewExpression></previewExpression>
+      <previewExpression>COALESCE( "name", '&lt;NULL>' )</previewExpression>
       <vectorjoins/>
       <layerDependencies/>
       <expressionfields/>
@@ -1377,8 +1395,6 @@ def my_form_open(dialog, layer, feature):
       <id>v_flooded20161124163631916</id>
       <datasource>dbname='centaur' host=localhost port=5433 sslmode=disable key='id_flooded' srid=3035 type=LineString table="coimbra"."v_flooded" (geom) sql=</datasource>
       <shortname>v_flooded</shortname>
-      <title></title>
-      <abstract></abstract>
       <keywordList>
         <value></value>
       </keywordList>
@@ -18090,11 +18106,15 @@ def my_form_open(dialog, layer, feature):
       </conditionalstyles>
     </maplayer>
     <maplayer minimumScale="-4.65661e-10" maximumScale="1e+08" simplifyDrawingHints="0" minLabelScale="0" maxLabelScale="1e+08" simplifyDrawingTol="1" geometry="Point" simplifyMaxScale="1" type="vector" hasScaleBasedVisibilityFlag="0" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
+      <extent>
+        <xmin>-26053.2680000000000291</xmin>
+        <ymin>59442.57499999999708962</ymin>
+        <xmax>-23402.49000000000160071</xmax>
+        <ymax>61199.05200000000331784</ymax>
+      </extent>
       <id>v_junction20161123153847848</id>
       <datasource>dbname='centaur' host=localhost port=5433 sslmode=disable key='id_node' srid=3035 type=Point table="coimbra"."v_junction" (geom) sql=</datasource>
       <shortname>v_junction</shortname>
-      <title></title>
-      <abstract></abstract>
       <keywordList>
         <value></value>
       </keywordList>
@@ -18112,7 +18132,7 @@ def my_form_open(dialog, layer, feature):
         </spatialrefsys>
       </srs>
       <provider encoding="System">postgres</provider>
-      <previewExpression></previewExpression>
+      <previewExpression>COALESCE( "name", '&lt;NULL>' )</previewExpression>
       <vectorjoins/>
       <layerDependencies/>
       <expressionfields/>
@@ -18390,11 +18410,15 @@ def my_form_open(dialog, layer, feature):
       </conditionalstyles>
     </maplayer>
     <maplayer minimumScale="0" maximumScale="1e+08" simplifyDrawingHints="0" minLabelScale="0" maxLabelScale="1e+08" simplifyDrawingTol="1" geometry="Point" simplifyMaxScale="1" type="vector" hasScaleBasedVisibilityFlag="0" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
+      <extent>
+        <xmin>-26072.19900000000052387</xmin>
+        <ymin>59817.86899999999877764</ymin>
+        <xmax>-24952</xmax>
+        <ymax>61208.82200000000011642</ymax>
+      </extent>
       <id>v_outfall20161118171927739</id>
       <datasource>dbname='centaur' host=localhost port=5433 sslmode=disable key='id' srid=3035 type=Point table="coimbra"."v_outfall" (geom) sql=</datasource>
       <shortname>v_outfall</shortname>
-      <title></title>
-      <abstract></abstract>
       <keywordList>
         <value></value>
       </keywordList>
@@ -18690,8 +18714,6 @@ def my_form_open(dialog, layer, feature):
       <id>v_pump20161118171927743</id>
       <datasource>dbname='centaur' host=localhost port=5433 sslmode=disable key='id' srid=3035 type=LineString table="coimbra"."v_pump" (geom) sql=</datasource>
       <shortname>v_pump</shortname>
-      <title></title>
-      <abstract></abstract>
       <keywordList>
         <value></value>
       </keywordList>
@@ -19005,8 +19027,6 @@ def my_form_open(dialog, layer, feature):
       <id>v_storage20161118171927748</id>
       <datasource>dbname='centaur' host=localhost port=5433 sslmode=disable key='id' srid=3035 type=Point table="coimbra"."v_storage" (geom) sql=</datasource>
       <shortname>v_storage</shortname>
-      <title></title>
-      <abstract></abstract>
       <keywordList>
         <value></value>
       </keywordList>
@@ -19314,11 +19334,15 @@ def my_form_open(dialog, layer, feature):
       </conditionalstyles>
     </maplayer>
     <maplayer minimumScale="0" maximumScale="1e+08" simplifyDrawingHints="1" minLabelScale="0" maxLabelScale="1e+08" simplifyDrawingTol="1" geometry="Line" simplifyMaxScale="1" type="vector" hasScaleBasedVisibilityFlag="0" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
+      <extent>
+        <xmin>-25220.9209999999984575</xmin>
+        <ymin>59830.69099999999889405</ymin>
+        <xmax>-25049.64900000000125146</xmax>
+        <ymax>60371.13599999999860302</ymax>
+      </extent>
       <id>v_weir20161118171927753</id>
       <datasource>dbname='centaur' host=localhost port=5433 sslmode=disable key='id' srid=3035 type=LineString table="coimbra"."v_weir" (geom) sql=</datasource>
       <shortname>v_weir</shortname>
-      <title></title>
-      <abstract></abstract>
       <keywordList>
         <value></value>
       </keywordList>
