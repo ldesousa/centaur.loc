@@ -1,19 +1,24 @@
-SELECT * 
-  FROM coimbra.node
- WHERE name LIKE '75';
+﻿SET search_path TO alcantara, public;
+
+-- Links flooded be a certain node
+SELECT f.name
+  FROM v_flooded f,
+       v_candidate c
+ WHERE c.id_node = f.id_node_candidate
+   AND c.name LIKE '6';
  
- -- Nodes flooded by node 64 (or 75)
+ -- Nodes flooded by a certain node
 SELECT n2.id, n2.name
   FROM coimbra.flooded f,
-  	   coimbra.node n,
-  	   coimbra.link l,
-  	   coimbra.node n2
+       coimbra.node n,
+       coimbra.link l,
+       coimbra.node n2
  WHERE n.name LIKE '75'
    AND n.id = f.id_node
    AND l.id = f.id_link
    AND n2.id = l.id_node_to;
    
--- Links arriving at node 55   
+-- Links arriving at a certain node   
 SELECT *
 FROM coimbra.link
 WHERE id_node_to = -488094952
