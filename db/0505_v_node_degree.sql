@@ -17,6 +17,3 @@ SELECT AVG(degree),
        MAX(degree),
        MIN(degree) 
   FROM v_node_degree;
-
-
-
