@@ -13,11 +13,14 @@ SELECT n.id AS id_node,
        j.init_depth,
        j.sur_depth,
        j.aponded,
-       COALESCE(c.energy_slope, 0) AS energy_slope
+       c.energy_line_offset
   FROM node n,
        junction j
-  LEFT JOIN v_conduit c
-    ON j.id_node = c.id_node_to
+  LEFT JOIN (SELECT c.id_node_from,
+                    MAX(energy_line_offset) AS energy_line_offset
+               FROM v_conduit c
+              GROUP BY c.id_node_from) c
+    ON j.id_node = c.id_node_from
  WHERE j.id_node = n.id;
 
 -- SELECT COUNT(*) FROM v_junction;
