@@ -113,27 +113,6 @@ public class FloodedSegments
 		session.createQuery(String.format("delete from %s", Candidate.class.getName())).executeUpdate();
 		session.flush();
 	}
-	
-	/**
-	 * Computes the overflow height for a given node. It takes the energy line
-	 * slope into account if useEnergySlope is set to true.
-	 * @param n the node for which to compute the overflow height.
-	 * @return Node overflow height.
-	 */
-	
-	static double computeNodeOverflow(Node n)
-	{		
-		if(useEnergySlope)
-		{
-			VJunction j = (VJunction) session.get(VJunction.class, n.getId());
-			if(j == null) // Check if is not a manhole
-				return n.getElevation().doubleValue();
-			else
-				return j.getElevation().doubleValue() * (1 + j.getEnergySlope().doubleValue());
-		}
-		else
-			return n.getElevation().doubleValue();
-	}
 
 	/**
 	 * Analyses a Node, stopping if no Conduit leads to it, if it is an Outfall 
@@ -153,10 +132,10 @@ public class FloodedSegments
 		// 3. There is more than one link leading downstream (bifurcation). 
 		if( linksTo.size() <= 0    || linksFrom.size() > 1   ||
 		    n.getOutfall() != null || n.getStorage() != null )
-			updateCurrentOverflow(computeNodeOverflow(n), 0);
+			updateCurrentOverflow(n, 0);
 		else
 		{
-			updateCurrentOverflow(computeNodeOverflow(n), n.getJunction().getMaxDepth().doubleValue());
+			updateCurrentOverflow(n, n.getJunction().getMaxDepth().doubleValue());
 			searchLinks(linksTo);
 		}
 	}
@@ -176,13 +155,13 @@ public class FloodedSegments
 		{
 			// Pump: search stops at downstream junction
 			if (l.getPump() != null) 
-				updateCurrentOverflow(computeNodeOverflow(l.getNodeByIdNodeTo()), 0);
+				updateCurrentOverflow(l.getNodeByIdNodeTo(), 0);
 
 			// Weir: search stops at crest height
 			else if (l.getWeir() != null) 
 			{
 				updateCurrentOverflow(
-						computeNodeOverflow(l.getNodeByIdNodeTo()), 
+						l.getNodeByIdNodeTo(), 
 						l.getWeir().getCrestHeight().doubleValue());
 				if(!floodedLinks.contains(l)) floodedLinks.add(l);
 			}
@@ -191,21 +170,31 @@ public class FloodedSegments
 			else
 			{ 						
 				if(!floodedLinks.contains(l)) floodedLinks.add(l);
-				if(computeNodeOverflow(l.getNodeByIdNodeFrom()) < currentOverflow)
+				if(l.getNodeByIdNodeFrom().getElevation().doubleValue() < currentOverflow)
 					analyseNode(l.getNodeByIdNodeFrom());
 			}
 		}
 	}
 	
 	/**
-	 * Updates the current overflow height.
+	 * Updates the current overflow height. Takes depth as argument to allow
+	 * alternative values, e.g. pump or wier. In the dynamic calculation it is
+	 * always updated with the energy line offset. 
 	 *
-	 * @param newLevel the node groundsill height.
+	 * @param n the node being analysed.
 	 * @param depth the node depth (e.g. from groundsill to manhole lid).
 	 */
-	protected static void updateCurrentOverflow(double newLevel, double depth)
+	protected static void updateCurrentOverflow(Node n, double depth)
 	{
-		//Dynamic
+		Double newLevel = n.getElevation().doubleValue();
+		
+		//Dynamic - update current overflow with energy slope
+		if(useEnergySlope)
+		{
+			VJunction j = (VJunction) session.get(VJunction.class, n.getId());
+			if(j != null) // Check if it is a manhole
+				currentOverflow += j.getEnergyLineOffset().doubleValue();
+		}
 		
 		//Static
 		newLevel = newLevel + depth - safetyMargin;
@@ -223,7 +212,7 @@ public class FloodedSegments
 		{
 		    Link l = it.next();
 		    Node arrivalNode = l.getNodeByIdNodeTo();
-		    if (computeNodeOverflow(arrivalNode) >= currentOverflow)
+		    if (arrivalNode.getElevation().doubleValue() >= currentOverflow)
 				it.remove();
 		}
 	}
@@ -242,9 +231,9 @@ public class FloodedSegments
 		for(Link l : floodedLinks)
 		{
 			Flooded f = new Flooded(c, l);
-			double outletElev = computeNodeOverflow(l.getNodeByIdNodeTo());
-		    double inletElev = computeNodeOverflow(l.getNodeByIdNodeFrom());
-		    if (computeNodeOverflow(l.getNodeByIdNodeFrom()) >= currentOverflow)
+			double outletElev = l.getNodeByIdNodeTo().getElevation().doubleValue();
+		    double inletElev = l.getNodeByIdNodeFrom().getElevation().doubleValue();
+		    if (l.getNodeByIdNodeFrom().getElevation().doubleValue() >= currentOverflow)
 		    	f.setVolumeFraction(new BigDecimal(
 		    			(currentOverflow - outletElev) / (inletElev - outletElev)));
 			session.save(f);
