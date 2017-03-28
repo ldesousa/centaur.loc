@@ -1,5 +1,5 @@
 package centaur.db;
-// Generated 25-Jan-2017 14:43:53 by Hibernate Tools 5.2.0.CR1
+// Generated 28-Mar-2017 17:48:11 by Hibernate Tools 5.2.0.CR1
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -17,7 +17,7 @@ public class VJunction implements java.io.Serializable {
 	private BigDecimal initDepth;
 	private BigDecimal surDepth;
 	private BigDecimal aponded;
-	private Double energySlope;
+	private Double energyLineOffset;
 
 	public VJunction() {
 	}
@@ -27,7 +27,7 @@ public class VJunction implements java.io.Serializable {
 	}
 
 	public VJunction(int idNode, BigDecimal elevation, String name, /*Serializable geom,*/ BigDecimal maxDepth,
-			BigDecimal initDepth, BigDecimal surDepth, BigDecimal aponded, Double energySlope) {
+			BigDecimal initDepth, BigDecimal surDepth, BigDecimal aponded, Double energyLineOffset) {
 		this.idNode = idNode;
 		this.elevation = elevation;
 		this.name = name;
@@ -36,7 +36,7 @@ public class VJunction implements java.io.Serializable {
 		this.initDepth = initDepth;
 		this.surDepth = surDepth;
 		this.aponded = aponded;
-		this.energySlope = energySlope;
+		this.energyLineOffset = energyLineOffset;
 	}
 
 	public int getIdNode() {
@@ -103,12 +103,12 @@ public class VJunction implements java.io.Serializable {
 		this.aponded = aponded;
 	}
 
-	public Double getEnergySlope() {
-		return this.energySlope;
+	public Double getEnergyLineOffset() {
+		return this.energyLineOffset;
 	}
 
-	public void setEnergySlope(Double energySlope) {
-		this.energySlope = energySlope;
+	public void setEnergyLineOffset(Double energyLineOffset) {
+		this.energyLineOffset = energyLineOffset;
 	}
 
 }

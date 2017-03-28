@@ -129,7 +129,7 @@ public class FloodedSegments
 			if(j == null) // Check if is not a manhole
 				return n.getElevation().doubleValue();
 			else
-				return j.getElevation().doubleValue() * (1 - j.getEnergySlope().doubleValue());
+				return j.getElevation().doubleValue() * (1 + j.getEnergySlope().doubleValue());
 		}
 		else
 			return n.getElevation().doubleValue();
@@ -205,6 +205,9 @@ public class FloodedSegments
 	 */
 	protected static void updateCurrentOverflow(double newLevel, double depth)
 	{
+		//Dynamic
+		
+		//Static
 		newLevel = newLevel + depth - safetyMargin;
 		if(newLevel < currentOverflow) 
 			currentOverflow = newLevel;
