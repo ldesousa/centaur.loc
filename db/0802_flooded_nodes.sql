@@ -1,11 +1,18 @@
-﻿SET search_path TO alcantara, public;
+﻿SET search_path TO coimbra, public;
 
 -- Links flooded be a certain node
-SELECT f.name
+SELECT f.name,
+       p.energy_slope,
+       p.q_max,
+       p.id
   FROM v_flooded f,
-       v_candidate c
+       v_candidate c,
+       v_conduit p
  WHERE c.id_node = f.id_node_candidate
-   AND c.name LIKE '6';
+   AND f.id = p.id
+   AND c.name LIKE '64';
+
+
  
  -- Nodes flooded by a certain node
 SELECT n2.id, n2.name
