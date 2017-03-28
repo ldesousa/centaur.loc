@@ -1,5 +1,5 @@
 ﻿-- Set search path to desired schema
-SET search_path TO alcantara, public;
+SET search_path TO coimbra, public;
 
 DROP VIEW v_flooded CASCADE;
 DROP VIEW v_junction CASCADE;
@@ -13,30 +13,14 @@ SELECT n.id AS id_node,
        j.init_depth,
        j.sur_depth,
        j.aponded,
-       c.energy_slope
-  FROM junction j,
-       node n,
-       (SELECT id_node_from, 
-               MAX((q_max * 0.015 / ((area / perimeter) ^ (2/3))) ^ 2) AS energy_slope
-          FROM v_conduit 
-         GROUP BY id_node_from) c	
- WHERE j.id_node = n.id
-   AND j.id_node = c.id_node_from
- UNION
-SELECT n.id AS id_node,
-       n.elevation,
-       n.name,
-       n.geom,
-       j.max_depth,
-       j.init_depth,
-       j.sur_depth,
-       j.aponded,
-       0 AS energy_slope
-  FROM junction j,
-       node n 	
- WHERE j.id_node = n.id
-   AND j.id_node NOT IN (SELECT id_node_from FROM link);
+       COALESCE(c.energy_slope, 0) AS energy_slope
+  FROM node n,
+       junction j
+  LEFT JOIN v_conduit c
+    ON j.id_node = c.id_node_to
+ WHERE j.id_node = n.id;
 
+-- SELECT COUNT(*) FROM v_junction;
 
 CREATE OR REPLACE VIEW v_flooded AS
 SELECT f.id_flooded,
