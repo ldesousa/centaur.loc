@@ -192,23 +192,25 @@ public class Main
 	public static void main(final String[] args) 
 	{
 		//String schema = "toulouse";
-		//String schema = "coimbra";
-		String schema = "alcantara";
+		String schema = "coimbra";
+		//String schema = "alcantara";
 		setUpConnection(schema);
 		
-		FloodedSegments.compute(session, true);
-		commitData(session, tx);
+		//FloodedSegments.compute(session, true);
+		//commitData(session, tx);
 		
 		// Reset connection - to force the data to be saved.
 		// This does not make much sense, but apparently is a feature of Hibernate.
 		//session.close();
 		//setUpConnection(schema);
 		
-		// By Volume    113: node Alcântara
-		//OptimalLocation.computeByVolume(session, 5, 113, false, true, schema);
-		// Over Area
-		//OptimalLocation.computeOverArea(session, 5, 113, schema);
+		// Alcântara id: 113 
+		// Coimbra name: 517 id: 554472168 
 		
+		// By Volume    
+		OptimalLocation.computeByVolume(session, 5, 554472168, false, true, schema);
+		// Over Area
+		//OptimalLocation.computeOverArea(session, 5, 554472168, schema);
 
 		
 		//plotData(session);
