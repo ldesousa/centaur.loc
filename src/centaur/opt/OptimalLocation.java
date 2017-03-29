@@ -51,7 +51,7 @@ public class OptimalLocation {
 	
 	/**
 	 * Computes the locations of a number of flood control gates optimising by 
-	 * pipe volume. Served area and number of subcatchments can used optionally
+	 * pipe volume. Served area and number of subcatchments can be used optionally
 	 * in the expression: volume * area / subcatchments.  A node of interest 
 	 * may be indicated to restrict search to a subset of the sewer network. 
 	 *
@@ -164,7 +164,7 @@ public class OptimalLocation {
 			query += "NULL, ";
 		
 		query += useArea + ", " + useCatchments + ")";
-		
+			
 		List max = session.createSQLQuery(query).list();
 		System.out.println("\nMax: " + df.format(max.get(0)));
 		return (VCandidate) session.get(VCandidate.class, new Integer(max.get(0).toString()));
