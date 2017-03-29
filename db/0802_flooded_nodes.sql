@@ -10,7 +10,7 @@ SELECT f.name,
        v_conduit p
  WHERE c.id_node = f.id_node_candidate
    AND f.id = p.id
-   AND c.name LIKE '64';
+   AND c.name LIKE '75';
 
 
  

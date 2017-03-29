@@ -1,8 +1,8 @@
 ﻿-- Set search path to desired schema
-SET search_path TO coimbra, public;
+SET search_path TO alcantara, public;
 
-DROP VIEW v_flooded CASCADE;
-DROP VIEW v_junction CASCADE;
+-- DROP VIEW v_flooded CASCADE;
+-- DROP VIEW v_junction CASCADE;
 
 CREATE OR REPLACE VIEW v_junction AS
 SELECT n.id AS id_node,
