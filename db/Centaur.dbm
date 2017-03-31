@@ -132,6 +132,10 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="max_flow">
 		<type name="numeric"/>
 	</column>
+	<column name="q_p">
+		<type name="numeric"/>
+		<comment><![CDATA[Practical flow: to be calculated by f_flow]]></comment>
+	</column>
 	<constraint name="pk_conduit" type="pk-constr" table="centaur.conduit">
 		<columns names="id_link" ref-type="src-columns"/>
 	</constraint>

@@ -94,6 +94,7 @@ CREATE TABLE alcantara.conduit(
 	out_offset numeric,
 	init_flow numeric,
 	max_flow numeric,
+	q_p numeric,
 	CONSTRAINT pk_conduit PRIMARY KEY (id_link)
 
 );
