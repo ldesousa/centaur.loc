@@ -2,7 +2,7 @@
 
 -- Links flooded be a certain node
 SELECT f.name,
-       p.energy_slope,
+       --p.energy_slope_offset,
        p.q_max,
        p.id
   FROM v_flooded f,
@@ -10,7 +10,7 @@ SELECT f.name,
        v_conduit p
  WHERE c.id_node = f.id_node_candidate
    AND f.id = p.id
-   AND c.name LIKE '75';
+   AND c.name LIKE '517';
 
 
  
@@ -41,4 +41,15 @@ SELECT n.name as node,
    AND n.id = f.id_node
    AND l.id = f.id_link;
    
-   
+ 
+SELECT * FROM coimbra.f_optimal(554472168, false, false)
+
+SELECT v.id_node
+  FROM v_candidate v
+  JOIN f_node_subgraph(554472168) s
+    ON (v.id_node = s.id)
+ ORDER BY v.norm_flooded_volume DESC;
+
+SELECT coimbra.f_node_subgraph(554472168);
+
+SELECT * from v_candidate where name like '64';

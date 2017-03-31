@@ -43,3 +43,6 @@ SELECT n.id,
   FROM node n,
        sim_node s
  WHERE n.id = s.id_node;
+
+
+select * from node where name is null order by id;
