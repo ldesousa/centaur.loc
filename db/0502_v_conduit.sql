@@ -21,6 +21,12 @@ SELECT c.id_link,
 
 -- SELECT COUNT(*) FROM v_conduit_slope;
 
+-- Computes the maximum flow of each conduit, using Maning's formula:
+-- Qmax = (area/n) * Rh^2/3 * S^1/2
+-- Where:
+-- n is roughness (0.015 by default)
+-- Rh is the hidraulic radius, i.e. area / perimeter
+-- S is the slope of the conduit   
 CREATE OR REPLACE VIEW v_conduit_q_max AS
 SELECT c.id_link,
        s.id_node_from,
@@ -28,7 +34,7 @@ SELECT c.id_link,
        area,
        perimeter,
        area * c.length::double precision AS volume,
-       1.0/0.015 * area * power(area / perimeter, 2.0/3.0) * power(abs(s.slope), 1.0/2.0) AS q_max
+       (area/0.015) * power(area / perimeter, 2.0/3.0) * sqrt(abs(s.slope)) AS q_max
   FROM conduit c,
        v_conduit_slope s,
        xsection x,
@@ -46,7 +52,7 @@ SELECT c.id_link,
        area,
        perimeter,
        area * c.length::double precision AS volume,
-       1.0/0.015 * power(area / perimeter, 2.0/3.0) * power(abs(s.slope), 1.0/2.0) AS q_max
+       (area/0.015) * power(area / perimeter, 2.0/3.0) * sqrt(abs(s.slope)) AS q_max
   FROM conduit c,
        v_conduit_slope s,
        xsection x,
@@ -65,7 +71,7 @@ SELECT c.id_link,
        area,
        perimeter,
        area * c.length::double precision AS volume,
-       1.0/0.015 * power(area / perimeter, 2.0/3.0) * power(abs(s.slope), 1.0/2.0) AS q_max
+       (area/0.015) * power(area / perimeter, 2.0/3.0) * sqrt(abs(s.slope)) AS q_max
   FROM conduit c,
        v_conduit_slope s,
        xsection x,
@@ -135,4 +141,6 @@ SELECT c.id, sum(l.volume)
    AND c.id = f.id_node
  GROUP BY(c.id);
 
+ 
+ 
 
