@@ -34,7 +34,7 @@ SELECT c.id_link,
        area,
        perimeter,
        area * c.length::double precision AS volume,
-       (area/0.015) * power(area / perimeter, 2.0/3.0) * sqrt(abs(s.slope)) AS q_max
+       (1/c.roughness) * area * power(area / perimeter, 2.0/3.0) * sqrt(abs(s.slope)) AS q_max
   FROM conduit c,
        v_conduit_slope s,
        xsection x,
@@ -52,7 +52,7 @@ SELECT c.id_link,
        area,
        perimeter,
        area * c.length::double precision AS volume,
-       (area/0.015) * power(area / perimeter, 2.0/3.0) * sqrt(abs(s.slope)) AS q_max
+       (1/c.roughness) * area * power(area / perimeter, 2.0/3.0) * sqrt(abs(s.slope)) AS q_max
   FROM conduit c,
        v_conduit_slope s,
        xsection x,
@@ -71,7 +71,7 @@ SELECT c.id_link,
        area,
        perimeter,
        area * c.length::double precision AS volume,
-       (area/0.015) * power(area / perimeter, 2.0/3.0) * sqrt(abs(s.slope)) AS q_max
+       (1/c.roughness) * area * power(area / perimeter, 2.0/3.0) * sqrt(abs(s.slope)) AS q_max
   FROM conduit c,
        v_conduit_slope s,
        xsection x,
@@ -141,6 +141,4 @@ SELECT c.id, sum(l.volume)
    AND c.id = f.id_node
  GROUP BY(c.id);
 
- 
- 
 
