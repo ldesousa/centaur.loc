@@ -111,7 +111,8 @@ SELECT l.id,
        q.q_max,
        ((((q.q_max + COALESCE(lf.q_max, 0) + COALESCE(lt.q_max, 0)) / 
          (1 + COALESCE((lt.q_max + 1) / (lt.q_max + 1), 0) + COALESCE((lt.q_max + 1) / (lt.q_max + 1), 0))) * 
-        0.015 / ((q.area / q.perimeter) ^ (2/3::double precision))) ^ 2) * c.length AS energy_line_offset
+        0.015 / ((q.area / q.perimeter) ^ (2/3::double precision))) ^ 2) * c.length AS energy_line_offset_old,
+       ((c.q_p * c.roughness) / (q.area * power(q.area / q.perimeter, 2.0/3.0))) ^ 2 AS energy_line_offset
   FROM conduit c,
        v_conduit_slope s,
        v_conduit_q_max q,
