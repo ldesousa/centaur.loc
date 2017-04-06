@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 06-Apr-2017 15:50:29 by Hibernate Tools 5.2.0.CR1 -->
+<hibernate-mapping>
+    <class name="centaur.db.VConduit" table="v_conduit" optimistic-lock="version">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <property name="name" type="string">
+            <column name="name" />
+        </property>
+        <property name="idNodeFrom" type="java.lang.Integer">
+            <column name="id_node_from" />
+        </property>
+        <property name="idNodeTo" type="java.lang.Integer">
+            <column name="id_node_to" />
+        </property>
+        <!-- <property name="geom" type="serializable">
+            <column name="geom" />
+        </property>-->
+        <property name="length" type="big_decimal">
+            <column name="length" precision="131089" scale="0" />
+        </property>
+        <property name="roughness" type="big_decimal">
+            <column name="roughness" precision="131089" scale="0" />
+        </property>
+        <property name="inOffset" type="big_decimal">
+            <column name="in_offset" precision="131089" scale="0" />
+        </property>
+        <property name="outOffset" type="big_decimal">
+            <column name="out_offset" precision="131089" scale="0" />
+        </property>
+        <property name="initFlow" type="big_decimal">
+            <column name="init_flow" precision="131089" scale="0" />
+        </property>
+        <property name="maxFlow" type="big_decimal">
+            <column name="max_flow" precision="131089" scale="0" />
+        </property>
+        <property name="QP" type="big_decimal">
+            <column name="q_p" precision="131089" scale="0" />
+        </property>
+        <property name="slope" type="java.lang.Double">
+            <column name="slope" precision="17" scale="17" />
+        </property>
+        <property name="area" type="java.lang.Double">
+            <column name="area" precision="17" scale="17" />
+        </property>
+        <property name="perimeter" type="java.lang.Double">
+            <column name="perimeter" precision="17" scale="17" />
+        </property>
+        <property name="volume" type="java.lang.Double">
+            <column name="volume" precision="17" scale="17" />
+        </property>
+        <property name="QMax" type="java.lang.Double">
+            <column name="q_max" precision="17" scale="17" />
+        </property>
+        <property name="energyLineOffsetOld" type="java.lang.Double">
+            <column name="energy_line_offset_old" precision="17" scale="17" />
+        </property>
+        <property name="energyLineOffset" type="java.lang.Double">
+            <column name="energy_line_offset" precision="17" scale="17" />
+        </property>
+    </class>
+</hibernate-mapping>
