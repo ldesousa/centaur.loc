@@ -132,10 +132,6 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="max_flow">
 		<type name="numeric"/>
 	</column>
-	<column name="q_p">
-		<type name="numeric"/>
-		<comment><![CDATA[Practical flow: to be calculated by f_flow]]></comment>
-	</column>
 	<constraint name="pk_conduit" type="pk-constr" table="centaur.conduit">
 		<columns names="id_link" ref-type="src-columns"/>
 	</constraint>
@@ -493,6 +489,14 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</column>
 	<column name="volume_fraction">
 		<type name="numeric"/>
+	</column>
+	<column name="q_prac">
+		<type name="numeric"/>
+		<comment><![CDATA[Practical flow calculated for this conduit]]></comment>
+	</column>
+	<column name="energy_line_offset">
+		<type name="numeric"/>
+		<comment><![CDATA[The offset in upstream height induced by the energy line]]></comment>
 	</column>
 	<constraint name="pk_flooded" type="pk-constr" table="centaur.flooded">
 		<columns names="id_flooded" ref-type="src-columns"/>

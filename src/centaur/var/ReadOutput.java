@@ -48,9 +48,9 @@ public class ReadOutput {
         String schema = "luzern";
 		setUpConnection(schema);
 		
-		Simulation sim = new Simulation("Variability 2 minutes");
+		Simulation sim = new Simulation("No Variability 2 minutes");
 		sim.setDetails("Rainfall event: 40 mm in 2 hours following a Gompertz curve.\n"
-				     + "With spatial correlated noise.");
+				     + "No noise - same input for all subcatchments.");
 		session.save(sim);
 		
 		Query query =  session.createQuery("from Node n");
@@ -61,7 +61,7 @@ public class ReadOutput {
 			if(n.getName() == null) n.setName(String.valueOf(n.getId()));
 			System.out.println("\n### PRocessing node: " + n.getId() + " | " + n.getName());
 		
-			String cmd = "swmmtoolbox extract data/Wartegg_Luzern_output.bin node,";
+			String cmd = "swmmtoolbox extract data/Wartegg_Luzern_Sim_NoVar_output.bin node,";
 			cmd += n.getName() + ",0";
 			openRuntime(cmd);			
 			// Ditch the first line, it is just the header

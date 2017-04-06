@@ -1,5 +1,5 @@
 package centaur.db;
-// Generated 28-Mar-2017 17:48:11 by Hibernate Tools 5.2.0.CR1
+// Generated 06-Apr-2017 10:49:34 by Hibernate Tools 5.2.0.CR1
 
 import java.math.BigDecimal;
 
@@ -12,6 +12,8 @@ public class Flooded implements java.io.Serializable {
 	private Candidate candidate;
 	private Link link;
 	private BigDecimal volumeFraction;
+	private BigDecimal QPrac;
+	private BigDecimal energyLineOffset;
 
 	public Flooded() {
 	}
@@ -21,10 +23,13 @@ public class Flooded implements java.io.Serializable {
 		this.link = link;
 	}
 
-	public Flooded(Candidate candidate, Link link, BigDecimal volumeFraction) {
+	public Flooded(Candidate candidate, Link link, BigDecimal volumeFraction, BigDecimal QPrac,
+			BigDecimal energyLineOffset) {
 		this.candidate = candidate;
 		this.link = link;
 		this.volumeFraction = volumeFraction;
+		this.QPrac = QPrac;
+		this.energyLineOffset = energyLineOffset;
 	}
 
 	public Integer getIdFlooded() {
@@ -57,6 +62,22 @@ public class Flooded implements java.io.Serializable {
 
 	public void setVolumeFraction(BigDecimal volumeFraction) {
 		this.volumeFraction = volumeFraction;
+	}
+
+	public BigDecimal getQPrac() {
+		return this.QPrac;
+	}
+
+	public void setQPrac(BigDecimal QPrac) {
+		this.QPrac = QPrac;
+	}
+
+	public BigDecimal getEnergyLineOffset() {
+		return this.energyLineOffset;
+	}
+
+	public void setEnergyLineOffset(BigDecimal energyLineOffset) {
+		this.energyLineOffset = energyLineOffset;
 	}
 
 }

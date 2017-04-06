@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 28-Mar-2017 17:48:11 by Hibernate Tools 5.2.0.CR1 -->
+<!-- Generated 06-Apr-2017 10:49:34 by Hibernate Tools 5.2.0.CR1 -->
 <hibernate-mapping>
     <class name="centaur.db.Flooded" table="flooded" optimistic-lock="version">
         <id name="idFlooded" type="java.lang.Integer">
@@ -20,6 +20,12 @@
         </many-to-one>
         <property name="volumeFraction" type="big_decimal">
             <column name="volume_fraction" precision="131089" scale="0" />
+        </property>
+        <property name="QPrac" type="big_decimal">
+            <column name="q_prac" precision="131089" scale="0" />
+        </property>
+        <property name="energyLineOffset" type="big_decimal">
+            <column name="energy_line_offset" precision="131089" scale="0" />
         </property>
     </class>
 </hibernate-mapping>

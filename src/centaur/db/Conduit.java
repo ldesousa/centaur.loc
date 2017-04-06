@@ -1,5 +1,5 @@
 package centaur.db;
-// Generated 28-Mar-2017 17:48:11 by Hibernate Tools 5.2.0.CR1
+// Generated 06-Apr-2017 10:49:34 by Hibernate Tools 5.2.0.CR1
 
 import java.math.BigDecimal;
 
@@ -16,6 +16,7 @@ public class Conduit implements java.io.Serializable {
 	private BigDecimal outOffset;
 	private BigDecimal initFlow;
 	private BigDecimal maxFlow;
+	private BigDecimal QP;
 
 	public Conduit() {
 	}
@@ -25,7 +26,7 @@ public class Conduit implements java.io.Serializable {
 	}
 
 	public Conduit(Link link, BigDecimal length, BigDecimal roughness, BigDecimal inOffset, BigDecimal outOffset,
-			BigDecimal initFlow, BigDecimal maxFlow) {
+			BigDecimal initFlow, BigDecimal maxFlow, BigDecimal QP) {
 		this.link = link;
 		this.length = length;
 		this.roughness = roughness;
@@ -33,6 +34,7 @@ public class Conduit implements java.io.Serializable {
 		this.outOffset = outOffset;
 		this.initFlow = initFlow;
 		this.maxFlow = maxFlow;
+		this.QP = QP;
 	}
 
 	public int getIdLink() {
@@ -97,6 +99,14 @@ public class Conduit implements java.io.Serializable {
 
 	public void setMaxFlow(BigDecimal maxFlow) {
 		this.maxFlow = maxFlow;
+	}
+
+	public BigDecimal getQP() {
+		return this.QP;
+	}
+
+	public void setQP(BigDecimal QP) {
+		this.QP = QP;
 	}
 
 }
