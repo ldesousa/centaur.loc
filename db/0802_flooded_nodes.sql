@@ -2,15 +2,20 @@
 
 -- Links flooded be a certain node
 SELECT f.name,
-       --p.energy_slope_offset,
+       p.energy_line_offset,
+       p.roughness,
+       p.area,
+       p.perimeter,
+       p.slope,
+       p.volume,
        p.q_max,
-       p.id
+       p.q_p
   FROM v_flooded f,
        v_candidate c,
        v_conduit p
  WHERE c.id_node = f.id_node_candidate
    AND f.id = p.id
-   AND c.name LIKE '517';
+   AND c.name LIKE '64';
 
 
  
@@ -53,3 +58,7 @@ SELECT v.id_node
 SELECT coimbra.f_node_subgraph(554472168);
 
 SELECT * from v_candidate where name like '64';
+
+SELECT * from v_conduit where q_p IS NOt NULL;
+
+
