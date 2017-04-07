@@ -45,8 +45,8 @@ BEGIN
 			  FROM node n,
 			       v_conduit c
 			 WHERE c.id_node_to = n.id
-		       AND n.id = $1 
-		       AND c.id <> cond.id;
+		       AND n.id = $1; 
+		    --   AND c.id <> cond.id;
 		    -- Update the result
 		    IF down_q_p IS NULL THEN
 		    	this_q_p := cond.q_max;
@@ -87,6 +87,6 @@ SELECT f_flow(id)
   FROM node
  WHERE id NOT IN (SELECT id_node_from 
                     FROM link);  
-                    
-                     
 
+                    
+SELECT id, name, q_p, q_max FROM v_conduit WHERE q_p IS NOT NULL;
