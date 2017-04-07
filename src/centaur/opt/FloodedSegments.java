@@ -18,7 +18,6 @@ import java.lang.Math;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Set;
 
@@ -49,8 +48,11 @@ public class FloodedSegments
 	/** The candidates. */
 	static ArrayList<Node> candidates = new ArrayList<Node>();
 	
-	/** The flooded links. */
+	/** The flooded links and their respective practical flows. */
 	static HashMap<Link, Double> floodedLinks = new HashMap<Link, Double>();
+	
+	/** The energy line offsets, indexed by the conduit id. */
+	static HashMap<Integer, Double> energyOffsets = new HashMap<Integer, Double>();
 	
 	/** The current overflow. */
 	static double currentOverflow = Double.MAX_VALUE;
@@ -236,12 +238,13 @@ public class FloodedSegments
 				 (vc.getArea() * 
 				  Math.pow(vc.getArea().doubleValue() / vc.getPerimeter().doubleValue(), 2.0/3.0)), 
 				 2.0); 
-			
-				// ((c.q_p * c.roughness) / (q.area * power(q.area / q.perimeter, 2.0/3.0))) ^ 2
 
 			VJunction j = (VJunction) session.get(VJunction.class, n.getId());
 			if(j != null) // Check if it is a manhole
+			{
 				currentOverflow += energyLineOffset;
+				energyOffsets.put(vc.getId(), energyLineOffset);
+			}
 		}
 		
 		//Static
@@ -280,9 +283,13 @@ public class FloodedSegments
 		for(Link l : floodedLinks.keySet())
 		{
 			Flooded f = new Flooded(c, l);
+			// Record practical flow and energy line offset
 			double practicalFlow = floodedLinks.get(l);
 			if(! Double.isNaN(practicalFlow))
 				f.setQPrac(new BigDecimal(practicalFlow));
+			if(energyOffsets.containsKey(l.getId()))
+				f.setEnergyLineOffset(new BigDecimal(energyOffsets.get(l.getId())));
+			// Compute wet fraction
 			double outletElev = l.getNodeByIdNodeTo().getElevation().doubleValue();
 		    double inletElev = l.getNodeByIdNodeFrom().getElevation().doubleValue();
 		    if (l.getNodeByIdNodeFrom().getElevation().doubleValue() >= currentOverflow)
