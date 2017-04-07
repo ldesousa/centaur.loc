@@ -14,8 +14,10 @@
  * ***************************************************************************/
 package centaur.opt;
 
+import java.lang.Math;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Set;
@@ -28,6 +30,7 @@ import centaur.db.Candidate;
 import centaur.db.Flooded;
 import centaur.db.Link;
 import centaur.db.VJunction;
+import centaur.db.VConduit;
 
 
 // TODO: Auto-generated Javadoc
@@ -47,7 +50,7 @@ public class FloodedSegments
 	static ArrayList<Node> candidates = new ArrayList<Node>();
 	
 	/** The flooded links. */
-	static ArrayList<Link> floodedLinks = new ArrayList<Link>();
+	static HashMap<Link, Double> floodedLinks = new HashMap<Link, Double>();
 	
 	/** The current overflow. */
 	static double currentOverflow = Double.MAX_VALUE;
@@ -72,8 +75,8 @@ public class FloodedSegments
 		useEnergySlope = useEnergySlopeFlag;
 		System.out.println("Clearing database ...");
 		clearDB();
-		
-		Query query =  session.createQuery("from Node n");
+															// Testing with node 64
+		Query query =  session.createQuery("from Node n");  // Where id = -545475706");
 		prospects = new LinkedList<Node>(query.list());
 		
 		while(prospects.size() > 0)
@@ -81,14 +84,14 @@ public class FloodedSegments
 			System.out.println("Candidates: " + prospects.size());
 			Node n = prospects.pop();					
 			currentOverflow = Double.MAX_VALUE;
-			floodedLinks = new ArrayList<Link>();
+			floodedLinks = new HashMap<Link, Double>();
 			
 			Set<Link> links = n.getLinksForIdNodeTo();
 			if(links.size() > 0)
 			{
 				System.out.println("--------\nId: " + n.getId() + " arrivals: " + links.size());
 				candidates.add(n);
-				searchLinks(links);
+				searchLinks(links, Double.MAX_VALUE);
 				System.out.println("Calculated overflow: " + currentOverflow);
 				System.out.println("Number of links: " + floodedLinks.size());
 				prune();
@@ -120,23 +123,24 @@ public class FloodedSegments
 	 * Links arriving at the node. 
 	 *
 	 * @param n the node to be analysed.
+	 * @param practicalFlow practical flow in the downstream conduit
 	 */
-	protected static void analyseNode(Node n)
+	protected static void analyseNode(Node n, VConduit vc, double practicalFlow)
 	{
 		Set<Link> linksTo   = n.getLinksForIdNodeTo();
 		Set<Link> linksFrom = n.getLinksForIdNodeFrom();
-		
+				
 		// Search stops if:
 		// 1. No links arrive at this node;
 		// 2. This node is an outfall or a storage.
 		// 3. There is more than one link leading downstream (bifurcation). 
 		if( linksTo.size() <= 0    || linksFrom.size() > 1   ||
 		    n.getOutfall() != null || n.getStorage() != null )
-			updateCurrentOverflow(n, 0);
+			updateCurrentOverflow(n, vc, 0, practicalFlow);
 		else
 		{
-			updateCurrentOverflow(n, n.getJunction().getMaxDepth().doubleValue());
-			searchLinks(linksTo);
+			updateCurrentOverflow(n, vc, n.getJunction().getMaxDepth().doubleValue(), practicalFlow);
+			searchLinks(linksTo, practicalFlow);
 		}
 	}
 	
@@ -148,32 +152,67 @@ public class FloodedSegments
 	 * the current overflow. 
 	 *
 	 * @param links the set of links with a common outlet.
+	 * @param practicalFlow maximum practical flow downstream the node 
 	 */
-	protected static void searchLinks(Set<Link> links)
+	protected static void searchLinks(Set<Link> links, double practicalFlow)
 	{
+		double newPracticalFlow;
+		
 		for (Link l : links)
 		{
+			VConduit vconduit = (VConduit) session.get(VConduit.class, l.getId());
+			
 			// Pump: search stops at downstream junction
 			if (l.getPump() != null) 
-				updateCurrentOverflow(l.getNodeByIdNodeTo(), 0);
+				updateCurrentOverflow(l.getNodeByIdNodeTo(), vconduit, 0, practicalFlow);
 
 			// Weir: search stops at crest height
 			else if (l.getWeir() != null) 
 			{
+				newPracticalFlow = enqueueFlooded(l, 0, practicalFlow);
 				updateCurrentOverflow(
 						l.getNodeByIdNodeTo(), 
-						l.getWeir().getCrestHeight().doubleValue());
-				if(!floodedLinks.contains(l)) floodedLinks.add(l);
+						vconduit,
+						l.getWeir().getCrestHeight().doubleValue(),
+						newPracticalFlow);
 			}
 			
 			// Conduit: search continues if upstream junction is lower than current overflow
 			else
 			{ 						
-				if(!floodedLinks.contains(l)) floodedLinks.add(l);
+				newPracticalFlow = enqueueFlooded(l, vconduit.getQMax(), practicalFlow);
 				if(l.getNodeByIdNodeFrom().getElevation().doubleValue() < currentOverflow)
-					analyseNode(l.getNodeByIdNodeFrom());
+					analyseNode(l.getNodeByIdNodeFrom(), vconduit, newPracticalFlow);
 			}
 		}
+	}
+	
+	/**
+	 * Adds a new link to the list of flooded conduits. It also calculates the 
+	 * practical flow for the conduit.
+	 * @param l the link to add to the flooded list
+	 * @param linkMaxFlow theoritical flow of the conduit
+	 * @param downstreamPracticalFlow practical flow of the downstream conduit
+	 * @return the practical flow calculated.
+	 */
+	protected static double enqueueFlooded(Link l, double linkMaxFlow, double downstreamPracticalFlow)
+	{
+		double parallelTeoriticalFlow = 0;
+
+		// Get other conduits leading to the some node and sum their practical flow
+		Set<Link> linksTo = l.getNodeByIdNodeTo().getLinksForIdNodeTo();
+		for (Link lt : linksTo)
+		{
+			VConduit vc = (VConduit) session.get(VConduit.class, lt.getId());
+			if (vc != null) parallelTeoriticalFlow += vc.getQMax();
+		}
+
+		double practicalFlow = linkMaxFlow * downstreamPracticalFlow / parallelTeoriticalFlow;
+		if (linkMaxFlow < practicalFlow) practicalFlow = linkMaxFlow;
+		
+		// This replaces the old flow value if the link is already in the hashMap 
+		floodedLinks.put(l, practicalFlow);		
+		return practicalFlow;
 	}
 	
 	/**
@@ -183,17 +222,26 @@ public class FloodedSegments
 	 *
 	 * @param n the node being analysed.
 	 * @param depth the node depth (e.g. from groundsill to manhole lid).
+	 * @param practicalFlow practical flow in the downstream conduit
 	 */
-	protected static void updateCurrentOverflow(Node n, double depth)
+	protected static void updateCurrentOverflow(Node n, VConduit vc, double depth, double practicalFlow)
 	{
 		Double newLevel = n.getElevation().doubleValue();
 		
 		//Dynamic - update current overflow with energy slope
-		if(useEnergySlope)
+		if(useEnergySlope && (vc != null))
 		{
+			double energyLineOffset = Math.pow(
+				(practicalFlow * vc.getRoughness().doubleValue()) /
+				 (vc.getArea() * 
+				  Math.pow(vc.getArea().doubleValue() / vc.getPerimeter().doubleValue(), 2.0/3.0)), 
+				 2.0); 
+			
+				// ((c.q_p * c.roughness) / (q.area * power(q.area / q.perimeter, 2.0/3.0))) ^ 2
+
 			VJunction j = (VJunction) session.get(VJunction.class, n.getId());
 			if(j != null) // Check if it is a manhole
-				currentOverflow += j.getEnergyLineOffset().doubleValue();
+				currentOverflow += energyLineOffset;
 		}
 		
 		//Static
@@ -208,13 +256,14 @@ public class FloodedSegments
 	 */
 	protected static void prune()
 	{
-		for (Iterator<Link> it = floodedLinks.iterator(); it.hasNext(); ) 
+		HashMap<Link, Double> prunedLinks = new HashMap<Link, Double>();
+		for(Link l : floodedLinks.keySet()) 
 		{
-		    Link l = it.next();
 		    Node arrivalNode = l.getNodeByIdNodeTo();
-		    if (arrivalNode.getElevation().doubleValue() >= currentOverflow)
-				it.remove();
+		    if (arrivalNode.getElevation().doubleValue() < currentOverflow)
+		    	prunedLinks.put(l, floodedLinks.get(l));
 		}
+		floodedLinks = prunedLinks;
 	}
 	
 	/**
@@ -228,9 +277,12 @@ public class FloodedSegments
 	{
 		Candidate c = new Candidate(n, new BigDecimal(currentOverflow));
 		session.save(c);
-		for(Link l : floodedLinks)
+		for(Link l : floodedLinks.keySet())
 		{
 			Flooded f = new Flooded(c, l);
+			double practicalFlow = floodedLinks.get(l);
+			if(! Double.isNaN(practicalFlow))
+				f.setQPrac(new BigDecimal(practicalFlow));
 			double outletElev = l.getNodeByIdNodeTo().getElevation().doubleValue();
 		    double inletElev = l.getNodeByIdNodeFrom().getElevation().doubleValue();
 		    if (l.getNodeByIdNodeFrom().getElevation().doubleValue() >= currentOverflow)
