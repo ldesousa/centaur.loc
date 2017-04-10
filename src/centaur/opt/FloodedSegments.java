@@ -233,11 +233,16 @@ public class FloodedSegments
 		//Dynamic - update current overflow with energy slope
 		if(useEnergySlope && (vc != null))
 		{
-			double energyLineOffset = Math.pow(
+			double energyLineSlope = Math.pow(
 				(practicalFlow * vc.getRoughness().doubleValue()) /
 				 (vc.getArea() * 
 				  Math.pow(vc.getArea().doubleValue() / vc.getPerimeter().doubleValue(), 2.0/3.0)), 
 				 2.0); 
+			
+			double projectPipeLength = vc.getLength().doubleValue() / 
+									   Math.sqrt(Math.pow(vc.getSlope().doubleValue(), 2) + 1);
+			
+			double energyLineOffset = projectPipeLength * energyLineSlope;
 
 			VJunction j = (VJunction) session.get(VJunction.class, n.getId());
 			if(j != null) // Check if it is a manhole
