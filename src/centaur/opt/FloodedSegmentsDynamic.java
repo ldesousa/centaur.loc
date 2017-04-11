@@ -181,8 +181,11 @@ public class FloodedSegmentsDynamic extends FloodedSegments
 	 */
 	protected void save(Node n)
 	{
+		if(Double.isNaN(currentOverflow)) return;
+			
 		Candidate c = new Candidate(n, new BigDecimal(currentOverflow));
 		session.save(c);
+		
 		for(Link l : floodedLinks.keySet())
 		{
 			Flooded f = new Flooded(c, l);
