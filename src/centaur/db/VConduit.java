@@ -20,14 +20,11 @@ public class VConduit implements java.io.Serializable {
 	private BigDecimal outOffset;
 	private BigDecimal initFlow;
 	private BigDecimal maxFlow;
-	private BigDecimal QP;
 	private Double slope;
 	private Double area;
 	private Double perimeter;
 	private Double volume;
 	private Double QMax;
-	private Double energyLineOffsetOld;
-	private Double energyLineOffset;
 
 	public VConduit() {
 	}
@@ -38,8 +35,7 @@ public class VConduit implements java.io.Serializable {
 
 	public VConduit(int id, String name, Integer idNodeFrom, Integer idNodeTo, /*Serializable geom,*/ BigDecimal length,
 			BigDecimal roughness, BigDecimal inOffset, BigDecimal outOffset, BigDecimal initFlow, BigDecimal maxFlow,
-			BigDecimal QP, Double slope, Double area, Double perimeter, Double volume, Double QMax,
-			Double energyLineOffsetOld, Double energyLineOffset) {
+			Double slope, Double area, Double perimeter, Double volume, Double QMax) {
 		this.id = id;
 		this.name = name;
 		this.idNodeFrom = idNodeFrom;
@@ -51,14 +47,11 @@ public class VConduit implements java.io.Serializable {
 		this.outOffset = outOffset;
 		this.initFlow = initFlow;
 		this.maxFlow = maxFlow;
-		this.QP = QP;
 		this.slope = slope;
 		this.area = area;
 		this.perimeter = perimeter;
 		this.volume = volume;
 		this.QMax = QMax;
-		this.energyLineOffsetOld = energyLineOffsetOld;
-		this.energyLineOffset = energyLineOffset;
 	}
 
 	public int getId() {
@@ -149,14 +142,6 @@ public class VConduit implements java.io.Serializable {
 		this.maxFlow = maxFlow;
 	}
 
-	public BigDecimal getQP() {
-		return this.QP;
-	}
-
-	public void setQP(BigDecimal QP) {
-		this.QP = QP;
-	}
-
 	public Double getSlope() {
 		return this.slope;
 	}
@@ -195,22 +180,6 @@ public class VConduit implements java.io.Serializable {
 
 	public void setQMax(Double QMax) {
 		this.QMax = QMax;
-	}
-
-	public Double getEnergyLineOffsetOld() {
-		return this.energyLineOffsetOld;
-	}
-
-	public void setEnergyLineOffsetOld(Double energyLineOffsetOld) {
-		this.energyLineOffsetOld = energyLineOffsetOld;
-	}
-
-	public Double getEnergyLineOffset() {
-		return this.energyLineOffset;
-	}
-
-	public void setEnergyLineOffset(Double energyLineOffset) {
-		this.energyLineOffset = energyLineOffset;
 	}
 
 }

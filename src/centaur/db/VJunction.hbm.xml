@@ -29,8 +29,5 @@
         <property name="aponded" type="big_decimal">
             <column name="aponded" precision="131089" scale="0" />
         </property>
-        <property name="energyLineOffset" type="java.lang.Double">
-            <column name="energy_line_offset" precision="17" scale="17" />
-        </property>
     </class>
 </hibernate-mapping>

@@ -1,4 +1,4 @@
-﻿SET search_path TO alcantara, public;
+﻿SET search_path TO coimbra, public;
 
 DROP VIEW v_conduit CASCADE;
 DROP VIEW v_conduit_q_max;
@@ -103,16 +103,11 @@ SELECT l.id,
        c.out_offset,
        c.init_flow,
        c.max_flow,
-       c.q_p,
        s.slope,
        q.area,
        q.perimeter,
        q.volume,
-       q.q_max,
-       ((((q.q_max + COALESCE(lf.q_max, 0) + COALESCE(lt.q_max, 0)) / 
-         (1 + COALESCE((lt.q_max + 1) / (lt.q_max + 1), 0) + COALESCE((lt.q_max + 1) / (lt.q_max + 1), 0))) * 
-        0.015 / ((q.area / q.perimeter) ^ (2/3::double precision))) ^ 2) * c.length AS energy_line_offset_old,
-       ((c.q_p * c.roughness) / (q.area * power(q.area / q.perimeter, 2.0/3.0))) ^ 2 AS energy_line_offset
+       q.q_max
   FROM conduit c,
        v_conduit_slope s,
        v_conduit_q_max q,

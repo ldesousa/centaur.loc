@@ -38,9 +38,6 @@
         <property name="maxFlow" type="big_decimal">
             <column name="max_flow" precision="131089" scale="0" />
         </property>
-        <property name="QP" type="big_decimal">
-            <column name="q_p" precision="131089" scale="0" />
-        </property>
         <property name="slope" type="java.lang.Double">
             <column name="slope" precision="17" scale="17" />
         </property>
@@ -55,12 +52,6 @@
         </property>
         <property name="QMax" type="java.lang.Double">
             <column name="q_max" precision="17" scale="17" />
-        </property>
-        <property name="energyLineOffsetOld" type="java.lang.Double">
-            <column name="energy_line_offset_old" precision="17" scale="17" />
-        </property>
-        <property name="energyLineOffset" type="java.lang.Double">
-            <column name="energy_line_offset" precision="17" scale="17" />
         </property>
     </class>
 </hibernate-mapping>

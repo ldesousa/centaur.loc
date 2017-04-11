@@ -1,5 +1,5 @@
 ﻿-- Set search path to desired schema
-SET search_path TO alcantara, public;
+SET search_path TO coimbra, public;
 
 -- DROP VIEW v_flooded CASCADE;
 -- DROP VIEW v_junction CASCADE;
@@ -12,15 +12,9 @@ SELECT n.id AS id_node,
        j.max_depth,
        j.init_depth,
        j.sur_depth,
-       j.aponded,
-       c.energy_line_offset
+       j.aponded
   FROM node n,
        junction j
-  LEFT JOIN (SELECT c.id_node_from,
-                    MAX(energy_line_offset) AS energy_line_offset
-               FROM v_conduit c
-              GROUP BY c.id_node_from) c
-    ON j.id_node = c.id_node_from
  WHERE j.id_node = n.id;
 
 -- SELECT COUNT(*) FROM v_junction;
@@ -40,6 +34,9 @@ SELECT f.id_flooded,
        link l	
  WHERE f.id_link = l.id;
  
+-- Node 64 Coimbra 
 -- SELECT * FROM v_flooded WHERE id_node_candidate = -545475706;
  
+-- Node 75 Coimbra 
+-- SELECT * FROM v_flooded WHERE id_node_candidate = 643983129; 
  

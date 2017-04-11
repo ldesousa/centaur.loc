@@ -31,8 +31,5 @@
         <property name="maxFlow" type="big_decimal">
             <column name="max_flow" precision="131089" scale="0" />
         </property>
-        <property name="QP" type="big_decimal">
-            <column name="q_p" precision="131089" scale="0" />
-        </property>
     </class>
 </hibernate-mapping>

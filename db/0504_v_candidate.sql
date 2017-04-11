@@ -87,3 +87,5 @@ SELECT c.id_node,
    AND s.num_subcatchments > 0
    AND (n.taken = FALSE OR n.taken IS NULL);
    
+SELECT * FROM v_candidate ORDER BY flooded_volume DESC;
+   

@@ -2,7 +2,7 @@
 
 -- Links flooded be a certain node
 SELECT f.name,
-       p.energy_line_offset,
+       f.energy_line_offset,
        p.roughness,
        p.area,
        p.perimeter,
@@ -10,11 +10,9 @@ SELECT f.name,
        p.volume,
        p.q_max,
        p.q_p
-  FROM v_flooded f,
-       v_candidate c,
+  FROM v_flooded f
        v_conduit p
- WHERE c.id_node = f.id_node_candidate
-   AND f.id = p.id
+ WHERE f.id = p.id
    AND c.name LIKE '64';
 
 

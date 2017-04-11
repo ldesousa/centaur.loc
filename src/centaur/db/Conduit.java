@@ -16,7 +16,6 @@ public class Conduit implements java.io.Serializable {
 	private BigDecimal outOffset;
 	private BigDecimal initFlow;
 	private BigDecimal maxFlow;
-	private BigDecimal QP;
 
 	public Conduit() {
 	}
@@ -26,7 +25,7 @@ public class Conduit implements java.io.Serializable {
 	}
 
 	public Conduit(Link link, BigDecimal length, BigDecimal roughness, BigDecimal inOffset, BigDecimal outOffset,
-			BigDecimal initFlow, BigDecimal maxFlow, BigDecimal QP) {
+			BigDecimal initFlow, BigDecimal maxFlow) {
 		this.link = link;
 		this.length = length;
 		this.roughness = roughness;
@@ -34,7 +33,6 @@ public class Conduit implements java.io.Serializable {
 		this.outOffset = outOffset;
 		this.initFlow = initFlow;
 		this.maxFlow = maxFlow;
-		this.QP = QP;
 	}
 
 	public int getIdLink() {
@@ -99,14 +97,6 @@ public class Conduit implements java.io.Serializable {
 
 	public void setMaxFlow(BigDecimal maxFlow) {
 		this.maxFlow = maxFlow;
-	}
-
-	public BigDecimal getQP() {
-		return this.QP;
-	}
-
-	public void setQP(BigDecimal QP) {
-		this.QP = QP;
 	}
 
 }
