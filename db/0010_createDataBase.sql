@@ -3,7 +3,7 @@
 -- DROP DATABASE centaur;
 
 CREATE DATABASE centaur
-  WITH OWNER = desouslu
+  WITH OWNER = centaur
        ENCODING = 'UTF8'
        TABLESPACE = pg_default
        LC_COLLATE = 'en_GB.UTF-8'
