@@ -29,30 +29,27 @@ public class CreateDBSchema {
 	 * @param args the arguments
 	 */
 	public static void main(final String[] args) 
-	{
-		// => Postgres 9.3 is ignoring the PGPASSWORD variable
-		ProcessBuilder pb = new ProcessBuilder("psql", "-d centaur", "-U desouslu", "-f db/0100_createSchema.sql");
-		Map<String, String> env = pb.environment();
-		env.put("PGPASSWORD", "desouslu#");
-		env.put("PGPASSFILE", "/home/desouslu/.pgpass");
-		pb.redirectErrorStream(true);
-		try
+	{		
+		try 
 		{
-			 Process p = pb.start();
-			 InputStream stdout = p.getInputStream ();
-			 BufferedReader reader = new BufferedReader (new InputStreamReader(stdout));
-			 
-			 String line;
-			 while ((line = reader.readLine ()) != null) 
-			 {
-				 System.out.println ("Stdout: " + line);
-			}
-		}
-		catch (Exception ex)
-		{
-			System.out.println("Something went wrong: " + ex.getMessage());
-		}
+			String line;
+			String[] envp = {"PGPASSWORD=toto1"};
+			Process p = Runtime.getRuntime().exec
+					("psql -U centaur -d centaur -f db/0100_createSchema.sql", envp);
+			BufferedReader input =
+					new BufferedReader(new InputStreamReader(p.getInputStream()));
 			
+			while ((line = input.readLine()) != null) 
+			{
+				System.out.println(line);
+			}
+			input.close();
+		}
+		catch (Exception err) 
+		{
+			err.printStackTrace();
+		}
+		
 		System.out.println("Done!");
     }
 
