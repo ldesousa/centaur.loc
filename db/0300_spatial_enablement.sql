@@ -1,7 +1,7 @@
 ﻿-- SELECT postgis_full_version();
 
 -- Set search path to desired schema
-SET search_path TO alcantara, public;
+SET search_path TO <schema>, public;
 
 -- Enable PostGIS (includes raster)
 CREATE EXTENSION postgis;
@@ -18,11 +18,17 @@ CREATE INDEX node_gix ON node USING GIST (geom);
 CREATE INDEX link_gix ON link USING GIST (geom);
 CREATE INDEX subcatchment_gix ON subcatchment USING GIST (geom);
 
--- Import nodes
-UPDATE node n
-   SET geom = ST_SetSRID(ST_MakePoint(c.x, c.y), 3035)
-  FROM coordinates c
- WHERE c.id_node = n.id;
+-- Create nodes
+CREATE OR REPLACE FUNCTION create_nodes() RETURNS VOID AS $$
+  BEGIN
+	UPDATE node n
+	   SET geom = ST_SetSRID(ST_MakePoint(c.x, c.y), 3035)
+	  FROM coordinates c
+	 WHERE c.id_node = n.id;
+  END;
+$$ LANGUAGE plpgsql;
+
+SELECT create_nodes();
 
 -- Check if something was missing
 SELECT COUNT(*) FROM node WHERE geom IS NULL;
@@ -68,11 +74,17 @@ SELECT create_polygons();
 SELECT COUNT(*) FROM subcatchment WHERE geom IS NULL;
 
 -- Create links
-UPDATE link l
-   SET geom = ST_SetSRID(ST_LineFromMultiPoint(ST_Union(
-	 (SELECT geom FROM node WHERE id = l.id_node_from),
-	 (SELECT geom FROM node WHERE id = l.id_node_to))),
-	3035);
+CREATE OR REPLACE FUNCTION create_links() RETURNS VOID AS $$
+  BEGIN
+	UPDATE link l
+	   SET geom = ST_SetSRID(ST_LineFromMultiPoint(ST_Union(
+		 (SELECT geom FROM node WHERE id = l.id_node_from),
+		 (SELECT geom FROM node WHERE id = l.id_node_to))),
+		3035);
+  END;
+$$ LANGUAGE plpgsql;
+
+SELECT create_links();
 
 -- Check if something was missing
 SELECT COUNT(*) FROM link WHERE geom IS NULL;
