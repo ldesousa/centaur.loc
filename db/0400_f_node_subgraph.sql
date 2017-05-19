@@ -1,4 +1,4 @@
-﻿SET search_path TO alcantara, public;
+﻿SET search_path TO <schema>, public;
 
 
 -- ############################################################################

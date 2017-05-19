@@ -1,4 +1,4 @@
-﻿SET search_path TO alcantara, public;
+﻿SET search_path TO <schema>, public;
 
 CREATE OR REPLACE VIEW v_node_degree AS
 SELECT f.id_node_from AS id_node,

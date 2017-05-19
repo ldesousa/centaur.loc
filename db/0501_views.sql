@@ -1,13 +1,13 @@
 ﻿-- Set search path to desired schema
-SET search_path TO alcantara, public;
+SET search_path TO <schema>, public;
 
-DROP VIEW v_weir CASCADE;
-DROP VIEW v_pump CASCADE;
-DROP VIEW v_conduit CASCADE;
-DROP VIEW v_outfall CASCADE;
-DROP VIEW v_storage CASCADE;
-DROP VIEW v_junction CASCADE;
-DROP VIEW v_flooded CASCADE;
+-- DROP VIEW v_weir CASCADE;
+-- DROP VIEW v_pump CASCADE;
+-- DROP VIEW v_conduit CASCADE;
+-- DROP VIEW v_outfall CASCADE;
+-- DROP VIEW v_storage CASCADE;
+-- DROP VIEW v_junction CASCADE;
+-- DROP VIEW v_flooded CASCADE;
 
 
 CREATE OR REPLACE VIEW v_weir AS

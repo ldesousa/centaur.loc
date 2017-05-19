@@ -1,4 +1,4 @@
-﻿SET search_path TO coimbra, public;
+﻿SET search_path TO <schema>, public;
 
 DROP VIEW v_conduit CASCADE;
 DROP VIEW v_conduit_q_max;

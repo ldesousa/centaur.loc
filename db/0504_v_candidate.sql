@@ -1,4 +1,4 @@
-﻿SET search_path TO alcantara, public;
+﻿SET search_path TO <schema>, public;
 
 CREATE OR REPLACE VIEW v_candidate_volume AS
 SELECT c.id_node, 

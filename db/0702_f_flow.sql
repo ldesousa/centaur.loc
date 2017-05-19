@@ -1,4 +1,4 @@
-﻿SET search_path TO coimbra, public;
+﻿SET search_path TO <schema>, public;
 
 -- Adding new field, only use in testing
 -- ALTER TABLE conduit ADD COLUMN q_p NUMERIC;
@@ -79,7 +79,7 @@ BEGIN
 END;
 $BODY$ LANGUAGE plpgsql VOLATILE;
 
--- Testing with node 64 (Coimbra)
+-- Testing with node 64 (<schema>)
 SELECT f_flow(-545475706);
 
 -- Run maximum flow calculation starting on all outlets

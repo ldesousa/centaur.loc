@@ -48,8 +48,24 @@ public class CreateDBSchema
 		schema = "test02";
 		envp = new String[]{"PGPASSWORD=" + pass};
 		
+		System.out.println("Creating Schema");
 		execScript(createTempScript("db/0100_createSchema.sql"));
-		
+		System.out.println("Enabling spatial features");
+		execScript(createTempScript("db/0300_spatial_enablement.sql"));
+		System.out.println("Creating subgraph functions");
+		execScript(createTempScript("db/0400_f_node_subgraph.sql"));
+		System.out.println("Creating generic views");
+		execScript(createTempScript("db/0501_views.sql"));
+		System.out.println("Creating Conduit views");
+		execScript(createTempScript("db/0502_v_conduit.sql"));
+		System.out.println("Creating Junction views");
+		execScript(createTempScript("db/0503_v_junction.sql"));
+		System.out.println("Creating Candidate views");
+		execScript(createTempScript("db/0504_v_candidate.sql"));
+		System.out.println("Creating optimal location search functions");
+		execScript(createTempScript("db/0701_f_optimal.sql"));
+		System.out.println("Creating optimal flow functions");
+		execScript(createTempScript("db/0702_f_flow.sql"));
 		System.out.println("Done!");
     }
 	

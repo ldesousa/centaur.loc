@@ -1,5 +1,5 @@
 ﻿-- Set search path to desired schema
-SET search_path TO coimbra, public;
+SET search_path TO <schema>, public;
 
 -- DROP VIEW v_flooded CASCADE;
 -- DROP VIEW v_junction CASCADE;
