@@ -7,26 +7,26 @@
 
 -- Database creation must be done outside an multicommand file.
 -- These commands were put in this file only for convenience.
--- -- object: test01 | type: DATABASE --
--- -- DROP DATABASE IF EXISTS test01;
--- CREATE DATABASE test01
+-- -- object: <schema> | type: DATABASE --
+-- -- DROP DATABASE IF EXISTS <schema>;
+-- CREATE DATABASE <schema>
 -- ;
 -- -- ddl-end --
 -- 
 
--- object: test01 | type: SCHEMA --
--- DROP SCHEMA IF EXISTS test01 CASCADE;
-CREATE SCHEMA test01;
+-- object: <schema> | type: SCHEMA --
+-- DROP SCHEMA IF EXISTS <schema> CASCADE;
+CREATE SCHEMA <schema>;
 -- ddl-end --
-ALTER SCHEMA test01 OWNER TO centaur;
--- ddl-end --
-
-SET search_path TO pg_catalog,public,test01;
+ALTER SCHEMA <schema> OWNER TO <user>;
 -- ddl-end --
 
--- object: test01.curve | type: TABLE --
--- DROP TABLE IF EXISTS test01.curve CASCADE;
-CREATE TABLE test01.curve(
+SET search_path TO pg_catalog,public,<schema>;
+-- ddl-end --
+
+-- object: <schema>.curve | type: TABLE --
+-- DROP TABLE IF EXISTS <schema>.curve CASCADE;
+CREATE TABLE <schema>.curve(
 	id integer NOT NULL,
 	name varchar,
 	type varchar,
@@ -35,12 +35,12 @@ CREATE TABLE test01.curve(
 
 );
 -- ddl-end --
-ALTER TABLE test01.curve OWNER TO centaur;
+ALTER TABLE <schema>.curve OWNER TO <user>;
 -- ddl-end --
 
--- object: test01.curve_parameter | type: TABLE --
--- DROP TABLE IF EXISTS test01.curve_parameter CASCADE;
-CREATE TABLE test01.curve_parameter(
+-- object: <schema>.curve_parameter | type: TABLE --
+-- DROP TABLE IF EXISTS <schema>.curve_parameter CASCADE;
+CREATE TABLE <schema>.curve_parameter(
 	id serial NOT NULL,
 	x numeric,
 	y numeric,
@@ -49,12 +49,12 @@ CREATE TABLE test01.curve_parameter(
 
 );
 -- ddl-end --
-ALTER TABLE test01.curve_parameter OWNER TO centaur;
+ALTER TABLE <schema>.curve_parameter OWNER TO <user>;
 -- ddl-end --
 
--- object: test01.node | type: TABLE --
--- DROP TABLE IF EXISTS test01.node CASCADE;
-CREATE TABLE test01.node(
+-- object: <schema>.node | type: TABLE --
+-- DROP TABLE IF EXISTS <schema>.node CASCADE;
+CREATE TABLE <schema>.node(
 	id serial NOT NULL,
 	elevation numeric,
 	name varchar,
@@ -64,14 +64,14 @@ CREATE TABLE test01.node(
 
 );
 -- ddl-end --
-COMMENT ON COLUMN test01.node.taken IS 'True if this node is already being used by a gate or flooded by one.';
+COMMENT ON COLUMN <schema>.node.taken IS 'True if this node is already being used by a gate or flooded by one.';
 -- ddl-end --
-ALTER TABLE test01.node OWNER TO centaur;
+ALTER TABLE <schema>.node OWNER TO <user>;
 -- ddl-end --
 
--- object: test01.link | type: TABLE --
--- DROP TABLE IF EXISTS test01.link CASCADE;
-CREATE TABLE test01.link(
+-- object: <schema>.link | type: TABLE --
+-- DROP TABLE IF EXISTS <schema>.link CASCADE;
+CREATE TABLE <schema>.link(
 	id serial NOT NULL,
 	name varchar,
 	id_node_from integer,
@@ -81,12 +81,12 @@ CREATE TABLE test01.link(
 
 );
 -- ddl-end --
-ALTER TABLE test01.link OWNER TO centaur;
+ALTER TABLE <schema>.link OWNER TO <user>;
 -- ddl-end --
 
--- object: test01.conduit | type: TABLE --
--- DROP TABLE IF EXISTS test01.conduit CASCADE;
-CREATE TABLE test01.conduit(
+-- object: <schema>.conduit | type: TABLE --
+-- DROP TABLE IF EXISTS <schema>.conduit CASCADE;
+CREATE TABLE <schema>.conduit(
 	id_link integer NOT NULL,
 	length numeric,
 	roughness numeric,
@@ -98,14 +98,14 @@ CREATE TABLE test01.conduit(
 
 );
 -- ddl-end --
-COMMENT ON COLUMN test01.conduit.length IS 'This can be calculated from the junctions coordinates';
+COMMENT ON COLUMN <schema>.conduit.length IS 'This can be calculated from the junctions coordinates';
 -- ddl-end --
-ALTER TABLE test01.conduit OWNER TO centaur;
+ALTER TABLE <schema>.conduit OWNER TO <user>;
 -- ddl-end --
 
--- object: test01.pump | type: TABLE --
--- DROP TABLE IF EXISTS test01.pump CASCADE;
-CREATE TABLE test01.pump(
+-- object: <schema>.pump | type: TABLE --
+-- DROP TABLE IF EXISTS <schema>.pump CASCADE;
+CREATE TABLE <schema>.pump(
 	id_link integer NOT NULL,
 	id_curve integer,
 	status varchar,
@@ -115,12 +115,12 @@ CREATE TABLE test01.pump(
 
 );
 -- ddl-end --
-ALTER TABLE test01.pump OWNER TO centaur;
+ALTER TABLE <schema>.pump OWNER TO <user>;
 -- ddl-end --
 
--- object: test01.junction | type: TABLE --
--- DROP TABLE IF EXISTS test01.junction CASCADE;
-CREATE TABLE test01.junction(
+-- object: <schema>.junction | type: TABLE --
+-- DROP TABLE IF EXISTS <schema>.junction CASCADE;
+CREATE TABLE <schema>.junction(
 	id_node integer NOT NULL,
 	max_depth numeric,
 	init_depth numeric,
@@ -130,12 +130,12 @@ CREATE TABLE test01.junction(
 
 );
 -- ddl-end --
-ALTER TABLE test01.junction OWNER TO centaur;
+ALTER TABLE <schema>.junction OWNER TO <user>;
 -- ddl-end --
 
--- object: test01.weir | type: TABLE --
--- DROP TABLE IF EXISTS test01.weir CASCADE;
-CREATE TABLE test01.weir(
+-- object: <schema>.weir | type: TABLE --
+-- DROP TABLE IF EXISTS <schema>.weir CASCADE;
+CREATE TABLE <schema>.weir(
 	id_link integer NOT NULL,
 	type varchar,
 	crest_height numeric,
@@ -148,12 +148,12 @@ CREATE TABLE test01.weir(
 
 );
 -- ddl-end --
-ALTER TABLE test01.weir OWNER TO centaur;
+ALTER TABLE <schema>.weir OWNER TO <user>;
 -- ddl-end --
 
--- object: test01.outfall | type: TABLE --
--- DROP TABLE IF EXISTS test01.outfall CASCADE;
-CREATE TABLE test01.outfall(
+-- object: <schema>.outfall | type: TABLE --
+-- DROP TABLE IF EXISTS <schema>.outfall CASCADE;
+CREATE TABLE <schema>.outfall(
 	id_node integer NOT NULL,
 	type varchar,
 	stage_date varchar,
@@ -163,14 +163,14 @@ CREATE TABLE test01.outfall(
 
 );
 -- ddl-end --
-COMMENT ON TABLE test01.outfall IS 'This is a special kind of junction';
+COMMENT ON TABLE <schema>.outfall IS 'This is a special kind of junction';
 -- ddl-end --
-ALTER TABLE test01.outfall OWNER TO centaur;
+ALTER TABLE <schema>.outfall OWNER TO <user>;
 -- ddl-end --
 
--- object: test01.storage | type: TABLE --
--- DROP TABLE IF EXISTS test01.storage CASCADE;
-CREATE TABLE test01.storage(
+-- object: <schema>.storage | type: TABLE --
+-- DROP TABLE IF EXISTS <schema>.storage CASCADE;
+CREATE TABLE <schema>.storage(
 	id_node integer NOT NULL,
 	max_depth numeric,
 	init_depth numeric,
@@ -185,12 +185,12 @@ CREATE TABLE test01.storage(
 
 );
 -- ddl-end --
-ALTER TABLE test01.storage OWNER TO centaur;
+ALTER TABLE <schema>.storage OWNER TO <user>;
 -- ddl-end --
 
--- object: test01.xsection | type: TABLE --
--- DROP TABLE IF EXISTS test01.xsection CASCADE;
-CREATE TABLE test01.xsection(
+-- object: <schema>.xsection | type: TABLE --
+-- DROP TABLE IF EXISTS <schema>.xsection CASCADE;
+CREATE TABLE <schema>.xsection(
 	id_link integer NOT NULL,
 	shape varchar,
 	geom1 numeric,
@@ -203,12 +203,12 @@ CREATE TABLE test01.xsection(
 
 );
 -- ddl-end --
-ALTER TABLE test01.xsection OWNER TO centaur;
+ALTER TABLE <schema>.xsection OWNER TO <user>;
 -- ddl-end --
 
--- object: test01.raingage | type: TABLE --
--- DROP TABLE IF EXISTS test01.raingage CASCADE;
-CREATE TABLE test01.raingage(
+-- object: <schema>.raingage | type: TABLE --
+-- DROP TABLE IF EXISTS <schema>.raingage CASCADE;
+CREATE TABLE <schema>.raingage(
 	id integer NOT NULL,
 	format varchar,
 	"interval" varchar,
@@ -218,12 +218,12 @@ CREATE TABLE test01.raingage(
 
 );
 -- ddl-end --
-ALTER TABLE test01.raingage OWNER TO centaur;
+ALTER TABLE <schema>.raingage OWNER TO <user>;
 -- ddl-end --
 
--- object: test01.subcatchment | type: TABLE --
--- DROP TABLE IF EXISTS test01.subcatchment CASCADE;
-CREATE TABLE test01.subcatchment(
+-- object: <schema>.subcatchment | type: TABLE --
+-- DROP TABLE IF EXISTS <schema>.subcatchment CASCADE;
+CREATE TABLE <schema>.subcatchment(
 	id serial NOT NULL,
 	name varchar,
 	id_node_outlet integer,
@@ -239,16 +239,16 @@ CREATE TABLE test01.subcatchment(
 
 );
 -- ddl-end --
-COMMENT ON COLUMN test01.subcatchment.imperv IS 'This field is a percentage (<= 100)';
+COMMENT ON COLUMN <schema>.subcatchment.imperv IS 'This field is a percentage (<= 100)';
 -- ddl-end --
-COMMENT ON COLUMN test01.subcatchment.slope IS 'This field is a percentage';
+COMMENT ON COLUMN <schema>.subcatchment.slope IS 'This field is a percentage';
 -- ddl-end --
-ALTER TABLE test01.subcatchment OWNER TO centaur;
+ALTER TABLE <schema>.subcatchment OWNER TO <user>;
 -- ddl-end --
 
--- object: test01.subarea | type: TABLE --
--- DROP TABLE IF EXISTS test01.subarea CASCADE;
-CREATE TABLE test01.subarea(
+-- object: <schema>.subarea | type: TABLE --
+-- DROP TABLE IF EXISTS <schema>.subarea CASCADE;
+CREATE TABLE <schema>.subarea(
 	id_subcatchment serial NOT NULL,
 	n_imperv numeric,
 	n_perv numeric,
@@ -261,14 +261,14 @@ CREATE TABLE test01.subarea(
 
 );
 -- ddl-end --
-COMMENT ON COLUMN test01.subarea.pct_zero IS 'This field is a percentage';
+COMMENT ON COLUMN <schema>.subarea.pct_zero IS 'This field is a percentage';
 -- ddl-end --
-ALTER TABLE test01.subarea OWNER TO centaur;
+ALTER TABLE <schema>.subarea OWNER TO <user>;
 -- ddl-end --
 
--- object: test01.coordinates | type: TABLE --
--- DROP TABLE IF EXISTS test01.coordinates CASCADE;
-CREATE TABLE test01.coordinates(
+-- object: <schema>.coordinates | type: TABLE --
+-- DROP TABLE IF EXISTS <schema>.coordinates CASCADE;
+CREATE TABLE <schema>.coordinates(
 	id_node integer NOT NULL,
 	x numeric,
 	y numeric,
@@ -276,12 +276,12 @@ CREATE TABLE test01.coordinates(
 
 );
 -- ddl-end --
-ALTER TABLE test01.coordinates OWNER TO centaur;
+ALTER TABLE <schema>.coordinates OWNER TO <user>;
 -- ddl-end --
 
--- object: test01.polygon | type: TABLE --
--- DROP TABLE IF EXISTS test01.polygon CASCADE;
-CREATE TABLE test01.polygon(
+-- object: <schema>.polygon | type: TABLE --
+-- DROP TABLE IF EXISTS <schema>.polygon CASCADE;
+CREATE TABLE <schema>.polygon(
 	id serial NOT NULL,
 	id_subcatchment integer,
 	x numeric,
@@ -290,12 +290,12 @@ CREATE TABLE test01.polygon(
 
 );
 -- ddl-end --
-ALTER TABLE test01.polygon OWNER TO centaur;
+ALTER TABLE <schema>.polygon OWNER TO <user>;
 -- ddl-end --
 
--- object: test01.candidate | type: TABLE --
--- DROP TABLE IF EXISTS test01.candidate CASCADE;
-CREATE TABLE test01.candidate(
+-- object: <schema>.candidate | type: TABLE --
+-- DROP TABLE IF EXISTS <schema>.candidate CASCADE;
+CREATE TABLE <schema>.candidate(
 	id_node integer NOT NULL,
 	outflow_elevation numeric NOT NULL,
 	volume numeric,
@@ -303,12 +303,12 @@ CREATE TABLE test01.candidate(
 
 );
 -- ddl-end --
-ALTER TABLE test01.candidate OWNER TO centaur;
+ALTER TABLE <schema>.candidate OWNER TO <user>;
 -- ddl-end --
 
--- object: test01.flooded | type: TABLE --
--- DROP TABLE IF EXISTS test01.flooded CASCADE;
-CREATE TABLE test01.flooded(
+-- object: <schema>.flooded | type: TABLE --
+-- DROP TABLE IF EXISTS <schema>.flooded CASCADE;
+CREATE TABLE <schema>.flooded(
 	id_flooded serial NOT NULL,
 	id_node integer NOT NULL,
 	id_link integer NOT NULL,
@@ -320,150 +320,150 @@ CREATE TABLE test01.flooded(
 
 );
 -- ddl-end --
-COMMENT ON COLUMN test01.flooded.q_prac IS 'Practical flow calculated for this conduit';
+COMMENT ON COLUMN <schema>.flooded.q_prac IS 'Practical flow calculated for this conduit';
 -- ddl-end --
-COMMENT ON COLUMN test01.flooded.energy_line_offset IS 'The offset in upstream height induced by the energy line';
+COMMENT ON COLUMN <schema>.flooded.energy_line_offset IS 'The offset in upstream height induced by the energy line';
 -- ddl-end --
-ALTER TABLE test01.flooded OWNER TO centaur;
+ALTER TABLE <schema>.flooded OWNER TO <user>;
 -- ddl-end --
 
 -- object: fk_curve_parameter_curve | type: CONSTRAINT --
--- ALTER TABLE test01.curve_parameter DROP CONSTRAINT IF EXISTS fk_curve_parameter_curve CASCADE;
-ALTER TABLE test01.curve_parameter ADD CONSTRAINT fk_curve_parameter_curve FOREIGN KEY (id_curve)
-REFERENCES test01.curve (id) MATCH FULL
+-- ALTER TABLE <schema>.curve_parameter DROP CONSTRAINT IF EXISTS fk_curve_parameter_curve CASCADE;
+ALTER TABLE <schema>.curve_parameter ADD CONSTRAINT fk_curve_parameter_curve FOREIGN KEY (id_curve)
+REFERENCES <schema>.curve (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
 -- object: fk_link_node_from | type: CONSTRAINT --
--- ALTER TABLE test01.link DROP CONSTRAINT IF EXISTS fk_link_node_from CASCADE;
-ALTER TABLE test01.link ADD CONSTRAINT fk_link_node_from FOREIGN KEY (id_node_from)
-REFERENCES test01.node (id) MATCH FULL
+-- ALTER TABLE <schema>.link DROP CONSTRAINT IF EXISTS fk_link_node_from CASCADE;
+ALTER TABLE <schema>.link ADD CONSTRAINT fk_link_node_from FOREIGN KEY (id_node_from)
+REFERENCES <schema>.node (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
 -- object: fk_link_node_to | type: CONSTRAINT --
--- ALTER TABLE test01.link DROP CONSTRAINT IF EXISTS fk_link_node_to CASCADE;
-ALTER TABLE test01.link ADD CONSTRAINT fk_link_node_to FOREIGN KEY (id_node_to)
-REFERENCES test01.node (id) MATCH FULL
+-- ALTER TABLE <schema>.link DROP CONSTRAINT IF EXISTS fk_link_node_to CASCADE;
+ALTER TABLE <schema>.link ADD CONSTRAINT fk_link_node_to FOREIGN KEY (id_node_to)
+REFERENCES <schema>.node (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
 -- object: fk_conduit_link | type: CONSTRAINT --
--- ALTER TABLE test01.conduit DROP CONSTRAINT IF EXISTS fk_conduit_link CASCADE;
-ALTER TABLE test01.conduit ADD CONSTRAINT fk_conduit_link FOREIGN KEY (id_link)
-REFERENCES test01.link (id) MATCH FULL
+-- ALTER TABLE <schema>.conduit DROP CONSTRAINT IF EXISTS fk_conduit_link CASCADE;
+ALTER TABLE <schema>.conduit ADD CONSTRAINT fk_conduit_link FOREIGN KEY (id_link)
+REFERENCES <schema>.link (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
 -- object: fk_pump_link | type: CONSTRAINT --
--- ALTER TABLE test01.pump DROP CONSTRAINT IF EXISTS fk_pump_link CASCADE;
-ALTER TABLE test01.pump ADD CONSTRAINT fk_pump_link FOREIGN KEY (id_link)
-REFERENCES test01.link (id) MATCH FULL
+-- ALTER TABLE <schema>.pump DROP CONSTRAINT IF EXISTS fk_pump_link CASCADE;
+ALTER TABLE <schema>.pump ADD CONSTRAINT fk_pump_link FOREIGN KEY (id_link)
+REFERENCES <schema>.link (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
 -- object: fk_pump_curve | type: CONSTRAINT --
--- ALTER TABLE test01.pump DROP CONSTRAINT IF EXISTS fk_pump_curve CASCADE;
-ALTER TABLE test01.pump ADD CONSTRAINT fk_pump_curve FOREIGN KEY (id_curve)
-REFERENCES test01.curve (id) MATCH FULL
+-- ALTER TABLE <schema>.pump DROP CONSTRAINT IF EXISTS fk_pump_curve CASCADE;
+ALTER TABLE <schema>.pump ADD CONSTRAINT fk_pump_curve FOREIGN KEY (id_curve)
+REFERENCES <schema>.curve (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
 -- object: fk_junction_node | type: CONSTRAINT --
--- ALTER TABLE test01.junction DROP CONSTRAINT IF EXISTS fk_junction_node CASCADE;
-ALTER TABLE test01.junction ADD CONSTRAINT fk_junction_node FOREIGN KEY (id_node)
-REFERENCES test01.node (id) MATCH FULL
+-- ALTER TABLE <schema>.junction DROP CONSTRAINT IF EXISTS fk_junction_node CASCADE;
+ALTER TABLE <schema>.junction ADD CONSTRAINT fk_junction_node FOREIGN KEY (id_node)
+REFERENCES <schema>.node (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
 -- object: fk_weir_link | type: CONSTRAINT --
--- ALTER TABLE test01.weir DROP CONSTRAINT IF EXISTS fk_weir_link CASCADE;
-ALTER TABLE test01.weir ADD CONSTRAINT fk_weir_link FOREIGN KEY (id_link)
-REFERENCES test01.link (id) MATCH FULL
+-- ALTER TABLE <schema>.weir DROP CONSTRAINT IF EXISTS fk_weir_link CASCADE;
+ALTER TABLE <schema>.weir ADD CONSTRAINT fk_weir_link FOREIGN KEY (id_link)
+REFERENCES <schema>.link (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
 -- object: fk_outfall_node | type: CONSTRAINT --
--- ALTER TABLE test01.outfall DROP CONSTRAINT IF EXISTS fk_outfall_node CASCADE;
-ALTER TABLE test01.outfall ADD CONSTRAINT fk_outfall_node FOREIGN KEY (id_node)
-REFERENCES test01.node (id) MATCH FULL
+-- ALTER TABLE <schema>.outfall DROP CONSTRAINT IF EXISTS fk_outfall_node CASCADE;
+ALTER TABLE <schema>.outfall ADD CONSTRAINT fk_outfall_node FOREIGN KEY (id_node)
+REFERENCES <schema>.node (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
 -- object: fk_storage_node | type: CONSTRAINT --
--- ALTER TABLE test01.storage DROP CONSTRAINT IF EXISTS fk_storage_node CASCADE;
-ALTER TABLE test01.storage ADD CONSTRAINT fk_storage_node FOREIGN KEY (id_node)
-REFERENCES test01.node (id) MATCH FULL
+-- ALTER TABLE <schema>.storage DROP CONSTRAINT IF EXISTS fk_storage_node CASCADE;
+ALTER TABLE <schema>.storage ADD CONSTRAINT fk_storage_node FOREIGN KEY (id_node)
+REFERENCES <schema>.node (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
 -- object: fk_storage_curve | type: CONSTRAINT --
--- ALTER TABLE test01.storage DROP CONSTRAINT IF EXISTS fk_storage_curve CASCADE;
-ALTER TABLE test01.storage ADD CONSTRAINT fk_storage_curve FOREIGN KEY (id_curve)
-REFERENCES test01.curve (id) MATCH FULL
+-- ALTER TABLE <schema>.storage DROP CONSTRAINT IF EXISTS fk_storage_curve CASCADE;
+ALTER TABLE <schema>.storage ADD CONSTRAINT fk_storage_curve FOREIGN KEY (id_curve)
+REFERENCES <schema>.curve (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
 -- object: fk_xsection_link | type: CONSTRAINT --
--- ALTER TABLE test01.xsection DROP CONSTRAINT IF EXISTS fk_xsection_link CASCADE;
-ALTER TABLE test01.xsection ADD CONSTRAINT fk_xsection_link FOREIGN KEY (id_link)
-REFERENCES test01.link (id) MATCH FULL
+-- ALTER TABLE <schema>.xsection DROP CONSTRAINT IF EXISTS fk_xsection_link CASCADE;
+ALTER TABLE <schema>.xsection ADD CONSTRAINT fk_xsection_link FOREIGN KEY (id_link)
+REFERENCES <schema>.link (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
 -- object: fk_subcatchment_raingage | type: CONSTRAINT --
--- ALTER TABLE test01.subcatchment DROP CONSTRAINT IF EXISTS fk_subcatchment_raingage CASCADE;
-ALTER TABLE test01.subcatchment ADD CONSTRAINT fk_subcatchment_raingage FOREIGN KEY (id_raingage)
-REFERENCES test01.raingage (id) MATCH FULL
+-- ALTER TABLE <schema>.subcatchment DROP CONSTRAINT IF EXISTS fk_subcatchment_raingage CASCADE;
+ALTER TABLE <schema>.subcatchment ADD CONSTRAINT fk_subcatchment_raingage FOREIGN KEY (id_raingage)
+REFERENCES <schema>.raingage (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
 -- object: fk_subcatchment_node | type: CONSTRAINT --
--- ALTER TABLE test01.subcatchment DROP CONSTRAINT IF EXISTS fk_subcatchment_node CASCADE;
-ALTER TABLE test01.subcatchment ADD CONSTRAINT fk_subcatchment_node FOREIGN KEY (id_node_outlet)
-REFERENCES test01.node (id) MATCH FULL
+-- ALTER TABLE <schema>.subcatchment DROP CONSTRAINT IF EXISTS fk_subcatchment_node CASCADE;
+ALTER TABLE <schema>.subcatchment ADD CONSTRAINT fk_subcatchment_node FOREIGN KEY (id_node_outlet)
+REFERENCES <schema>.node (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
 -- object: fk_subarea_subcatchment | type: CONSTRAINT --
--- ALTER TABLE test01.subarea DROP CONSTRAINT IF EXISTS fk_subarea_subcatchment CASCADE;
-ALTER TABLE test01.subarea ADD CONSTRAINT fk_subarea_subcatchment FOREIGN KEY (id_subcatchment)
-REFERENCES test01.subcatchment (id) MATCH FULL
+-- ALTER TABLE <schema>.subarea DROP CONSTRAINT IF EXISTS fk_subarea_subcatchment CASCADE;
+ALTER TABLE <schema>.subarea ADD CONSTRAINT fk_subarea_subcatchment FOREIGN KEY (id_subcatchment)
+REFERENCES <schema>.subcatchment (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
 -- object: fk_coordinates_node | type: CONSTRAINT --
--- ALTER TABLE test01.coordinates DROP CONSTRAINT IF EXISTS fk_coordinates_node CASCADE;
-ALTER TABLE test01.coordinates ADD CONSTRAINT fk_coordinates_node FOREIGN KEY (id_node)
-REFERENCES test01.node (id) MATCH FULL
+-- ALTER TABLE <schema>.coordinates DROP CONSTRAINT IF EXISTS fk_coordinates_node CASCADE;
+ALTER TABLE <schema>.coordinates ADD CONSTRAINT fk_coordinates_node FOREIGN KEY (id_node)
+REFERENCES <schema>.node (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
 -- object: fk_polygon_subcatchment | type: CONSTRAINT --
--- ALTER TABLE test01.polygon DROP CONSTRAINT IF EXISTS fk_polygon_subcatchment CASCADE;
-ALTER TABLE test01.polygon ADD CONSTRAINT fk_polygon_subcatchment FOREIGN KEY (id_subcatchment)
-REFERENCES test01.subcatchment (id) MATCH FULL
+-- ALTER TABLE <schema>.polygon DROP CONSTRAINT IF EXISTS fk_polygon_subcatchment CASCADE;
+ALTER TABLE <schema>.polygon ADD CONSTRAINT fk_polygon_subcatchment FOREIGN KEY (id_subcatchment)
+REFERENCES <schema>.subcatchment (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
 -- object: fk_candidate_node | type: CONSTRAINT --
--- ALTER TABLE test01.candidate DROP CONSTRAINT IF EXISTS fk_candidate_node CASCADE;
-ALTER TABLE test01.candidate ADD CONSTRAINT fk_candidate_node FOREIGN KEY (id_node)
-REFERENCES test01.node (id) MATCH FULL
+-- ALTER TABLE <schema>.candidate DROP CONSTRAINT IF EXISTS fk_candidate_node CASCADE;
+ALTER TABLE <schema>.candidate ADD CONSTRAINT fk_candidate_node FOREIGN KEY (id_node)
+REFERENCES <schema>.node (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
 -- object: fk_flooded_link | type: CONSTRAINT --
--- ALTER TABLE test01.flooded DROP CONSTRAINT IF EXISTS fk_flooded_link CASCADE;
-ALTER TABLE test01.flooded ADD CONSTRAINT fk_flooded_link FOREIGN KEY (id_link)
-REFERENCES test01.link (id) MATCH FULL
+-- ALTER TABLE <schema>.flooded DROP CONSTRAINT IF EXISTS fk_flooded_link CASCADE;
+ALTER TABLE <schema>.flooded ADD CONSTRAINT fk_flooded_link FOREIGN KEY (id_link)
+REFERENCES <schema>.link (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
 -- object: fk_flooded_candidate | type: CONSTRAINT --
--- ALTER TABLE test01.flooded DROP CONSTRAINT IF EXISTS fk_flooded_candidate CASCADE;
-ALTER TABLE test01.flooded ADD CONSTRAINT fk_flooded_candidate FOREIGN KEY (id_node)
-REFERENCES test01.candidate (id_node) MATCH FULL
+-- ALTER TABLE <schema>.flooded DROP CONSTRAINT IF EXISTS fk_flooded_candidate CASCADE;
+ALTER TABLE <schema>.flooded ADD CONSTRAINT fk_flooded_candidate FOREIGN KEY (id_node)
+REFERENCES <schema>.candidate (id_node) MATCH FULL
 ON DELETE CASCADE ON UPDATE NO ACTION;
 -- ddl-end --
 
