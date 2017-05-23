@@ -29,6 +29,7 @@ public class CreateDBSchema
 	static String user = "";
 	static String pass = "";
 	static String schema = "";
+	static String db = "";
 	static String[] envp = {};
 
 	public CreateDBSchema() 
@@ -43,9 +44,14 @@ public class CreateDBSchema
 	 */
 	public static void main(final String[] args) 
 	{	
-		user = "centaur";
+		/*user = "centaur";
 		pass = "toto1";
-		schema = "test02";
+		schema = "test02";*/
+		checkArgs(args);
+		user = args[0];
+		pass = args[1];
+		schema = args[2];
+		db = args[3];
 		envp = new String[]{"PGPASSWORD=" + pass};
 		
 		System.out.println("Creating Schema");
@@ -69,12 +75,21 @@ public class CreateDBSchema
 		System.out.println("Done!");
     }
 	
+	protected static void checkArgs(String[] args)
+	{
+		if (args.length < 4)
+		{
+			System.out.println("ERROR: four parameters are required: user, password, schema and data-base.");
+			System.exit(-1);
+		}
+	}
+	
 	protected static void execScript(String script)
 	{
 		try 
 		{
 			Process p = Runtime.getRuntime().exec
-					("psql -U " + user + " -d centaur -f " + script, envp);
+					("psql -U " + user + " -d " + db + " -f " + script, envp);
 			BufferedReader input =
 					new BufferedReader(new InputStreamReader(p.getInputStream()));
 			
