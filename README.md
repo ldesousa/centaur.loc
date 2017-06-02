@@ -40,6 +40,17 @@ desired schema. Takes as arguments (in this order):
  - database user password
  - new schema name 
  - database name
+ 
+### centaur.in/CreateHibernateConfig.java
+
+Creates the Hibernate configuration files to access a given database schema. 
+These are necessary assets to use a new schema created with the CreateDBSchema
+class.  Takes as arguments (in this order):
+ - database user name
+ - database user password
+ - new schema name 
+ - database name (optional)
+ - database port (optional)
 
 ### centaur.in/ImportSWMM.java
 
