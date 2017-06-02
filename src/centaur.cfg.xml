@@ -5,10 +5,10 @@
 <hibernate-configuration>
     <session-factory>
         <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
-        <property name="hibernate.connection.password">desouslu#</property>
-        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5433/centaur</property>
-        <property name="hibernate.connection.username">desouslu</property>
-        <property name="hibernate.default_schema">luzern</property>
+        <property name="hibernate.connection.password">pass</property>
+        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/centaur</property>
+        <property name="hibernate.connection.username">user</property>
+        <property name="hibernate.default_schema">schema</property>
         <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
         <!-- <property name="hibernate.dialect">org.hibernate.spatial.dialect.postgis.PostgisDialect</property> -->
         <!-- "Import" the mapping resources here -->		
@@ -32,7 +32,6 @@
 		<mapping resource="centaur/db/Flooded.hbm.xml"/>
 		<mapping resource="centaur/db/VCandidate.hbm.xml"/>
 		<mapping resource="centaur/db/VJunction.hbm.xml"/>
-		<mapping resource="centaur/db/Simulation.hbm.xml"/>
-		<mapping resource="centaur/db/SimNode.hbm.xml"/>
+		<mapping resource="centaur/db/VConduit.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>

@@ -29,8 +29,7 @@
 	<table-filter match-name="candidate" />
 	<table-filter match-name="v_candidate" />
 	<table-filter match-name="v_junction" />
-	<table-filter match-name="simulation" />
-	<table-filter match-name="sim_node" />
+	<table-filter match-name="v_conduit" />
 	
 	<!-- Sequences -->
 		<table name="node">
@@ -97,9 +96,14 @@
         <column name="served_area"/>
         <column name="flooded_volume"/> -->
     </table>
-    	<table name="v_junction">
+    <table name="v_junction">
         <primary-key>
             <key-column name="id_node"/>
+        </primary-key>
+    </table>
+    <table name="v_conduit">
+        <primary-key>
+            <key-column name="id"/>
         </primary-key>
     </table>
 	
