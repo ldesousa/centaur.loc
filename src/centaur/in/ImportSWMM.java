@@ -104,8 +104,8 @@ public class ImportSWMM
 	{
 		Session session;
 		Transaction tx;
-		String schema = "alcantara";
-		filePath = "data/1d_apenasCollection.inp";
+		String schema = args[0];
+		filePath = args[1];
 		
 		initScanner();
 		
