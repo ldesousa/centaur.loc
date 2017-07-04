@@ -18,6 +18,7 @@ import centaur.db.Link;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -124,9 +125,9 @@ public class ImportSWMM
 	         scanner.close();
 	         return;
 	    }
-					
-		//clearDB(session);
-		//commitData(session, tx);	
+		
+		clearDB(session);
+		commitData(session, tx);	
 		
 		importObjects(Outfall.class, headOutfalls, session, tx);
 		importObjects(Junction.class, headJunctions, session, tx);
@@ -143,10 +144,18 @@ public class ImportSWMM
 		//Geometries
 		importObjects(Coordinates.class, headCoordinates, session, tx);
 		importObjects(Polygon.class, headPolygons, session, tx);
+		
+		createSpatialObjects(session, schema);
 				
 		// Close file and database session.
 		scanner.close();
 		session.close();
+		
+		System.out.println();
+		System.out.println("##############################################");
+		System.out.println("# Finished importing relations from INP file #");
+		System.out.println("##############################################");
+		System.out.println();
 	}
 	
 	/**
@@ -273,6 +282,42 @@ public class ImportSWMM
 		}
 		commitData(session, tx);
 		System.out.println("=> Succesfully imported " + dbClass.getName());
+	}
+	
+	/**
+	 * Creates the appropriate database spatial objects from the raw 
+	 * coordinates in the .inp file. Uses special database functions.
+	 * 
+	 * @param session database session object
+	 * @param schema database schema containing the CENTAUR tables
+	 */
+	static void createSpatialObjects(Session session, String schema)
+	{
+		System.out.println("\nCreating spatial objects... ");
+		// Set search_path
+		String query = "SET search_path TO " + schema + " , public";
+		session.createSQLQuery(query).executeUpdate();
+
+		query = "SELECT create_nodes();";
+		Integer num = new Integer(session.createSQLQuery(query).list().get(0).toString());
+		if (num == 0)
+			System.out.println("All spatial node objects created correctly.");
+		else
+			System.out.println("Failed to create " + num.toString() + " spatial nodes.");
+		
+		query = "SELECT create_polygons();";
+		num = new Integer(session.createSQLQuery(query).list().get(0).toString());
+		if (num == 0)
+			System.out.println("All spatial polygon objects created correctly.");
+		else
+			System.out.println("Failed to create " + num.toString() + " spatial polygons.");
+		
+		query = "SELECT create_links();";
+		num = new Integer(session.createSQLQuery(query).list().get(0).toString());
+		if (num == 0)
+			System.out.println("All spatial link objects created correctly.");
+		else
+			System.out.println("Failed to create " + num.toString() + " spatial links.");
 	}
 	
 }

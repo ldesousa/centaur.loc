@@ -19,26 +19,27 @@ CREATE INDEX link_gix ON link USING GIST (geom);
 CREATE INDEX subcatchment_gix ON subcatchment USING GIST (geom);
 
 -- Create nodes
-CREATE OR REPLACE FUNCTION create_nodes() RETURNS VOID AS $$
+CREATE OR REPLACE FUNCTION create_nodes() RETURNS NUMERIC AS $$
+  DECLARE
+    ret NUMERIC;
   BEGIN
 	UPDATE node n
 	   SET geom = ST_SetSRID(ST_MakePoint(c.x, c.y), 3035)
 	  FROM coordinates c
 	 WHERE c.id_node = n.id;
+	 SELECT COUNT(*) INTO ret FROM node WHERE geom IS NULL;
+	 RETURN ret;
   END;
 $$ LANGUAGE plpgsql;
 
-SELECT create_nodes();
-
--- Check if something was missing
-SELECT COUNT(*) FROM node WHERE geom IS NULL;
 
 -- Create polygons
-CREATE OR REPLACE FUNCTION create_polygons() RETURNS VOID AS $$
+CREATE OR REPLACE FUNCTION create_polygons() RETURNS NUMERIC AS $$
   DECLARE
     subcatch_rec RECORD;
     poly_rec RECORD;
     line GEOMETRY;
+    ret NUMERIC;
   BEGIN
     FOR subcatch_rec IN SELECT id FROM subcatchment LOOP
 
@@ -64,27 +65,25 @@ CREATE OR REPLACE FUNCTION create_polygons() RETURNS VOID AS $$
          WHERE id = subcatch_rec.id;
 
     END LOOP;
-    RETURN;
+    
+    SELECT COUNT(*) INTO ret FROM subcatchment WHERE geom IS NULL;
+    RETURN ret;
   END;
 $$ LANGUAGE plpgsql;
 
-SELECT create_polygons();
-
--- Check if something was missing
-SELECT COUNT(*) FROM subcatchment WHERE geom IS NULL;
 
 -- Create links
-CREATE OR REPLACE FUNCTION create_links() RETURNS VOID AS $$
+CREATE OR REPLACE FUNCTION create_links() RETURNS NUMERIC AS $$
+  DECLARE
+    ret NUMERIC;
   BEGIN
 	UPDATE link l
 	   SET geom = ST_SetSRID(ST_LineFromMultiPoint(ST_Union(
 		 (SELECT geom FROM node WHERE id = l.id_node_from),
 		 (SELECT geom FROM node WHERE id = l.id_node_to))),
 		3035);
+	SELECT COUNT(*) INTO ret FROM link WHERE geom IS NULL;
+	RETURN ret;
   END;
 $$ LANGUAGE plpgsql;
 
-SELECT create_links();
-
--- Check if something was missing
-SELECT COUNT(*) FROM link WHERE geom IS NULL;
