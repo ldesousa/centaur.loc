@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data-sources>
+	<data-source id="postgres-jdbc-15d0c34ed6d-3cb8c8d19744ea0c" provider="postgresql" driver="postgres-jdbc" name="PostgreSQL - postgres" save-password="true" show-system-objects="true" read-only="false">
+		<connection host="localhost" port="5433" server="" database="centaur" url="jdbc:postgresql://localhost:5433/centaur" user="desouslu" password="FwEVL1RQSANGcuc=" type="dev">
+			<provider-property name="@dbeaver-show-non-default-db@" value="false"/>
+			<network-handler type="TUNNEL" id="ssh_tunnel" enabled="false" save-password="false">
+				<property name="sshConnectTimeout" value="10000"/>
+				<property name="port" value="22"/>
+				<property name="authType" value="PASSWORD"/>
+			</network-handler>
+			<network-handler type="PROXY" id="socks_proxy" enabled="false" save-password="false">
+				<property name="socks-port" value="1080"/>
+			</network-handler>
+			<network-handler type="CONFIG" id="postgre_ssl" enabled="false" save-password="false"/>
+		</connection>
+	</data-source>
+</data-sources>
