@@ -44,9 +44,6 @@ public class CreateDBSchema
 	 */
 	public static void main(final String[] args) 
 	{	
-		/*user = "centaur";
-		pass = "toto1";
-		schema = "test02";*/
 		checkArgs(args);
 		user = args[0];
 		pass = args[1];

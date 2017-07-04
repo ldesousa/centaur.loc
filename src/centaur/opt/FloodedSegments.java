@@ -19,12 +19,14 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
 
 import centaur.db.Node;
+import centaur.db.VCandidate;
 import centaur.db.Candidate;
 import centaur.db.Flooded;
 import centaur.db.Link;
@@ -63,9 +65,9 @@ public abstract class FloodedSegments
      * locations in the network.
 	 *
 	 * @param session the session
-	 * @param useEnergySlopeFlag if true the algorithm uses the energy slope.
+	 * @param schema database schema containing the CENTAUR tables
 	 */
-	public void compute(Session sess) 
+	public void compute(Session sess, String schema) 
 	{
 		session = sess;
 		System.out.println("Clearing database ...");
@@ -93,6 +95,10 @@ public abstract class FloodedSegments
 				System.out.println("Gate candidates: " + candidates.size());
 			}
 		}
+		
+		// Refresh upstream view
+		updateUpstreamNodes(schema);
+		
 		System.out.println();
 		System.out.println("############################################");
 		System.out.println("# Successfully computed floodable segments #");
@@ -139,6 +145,23 @@ public abstract class FloodedSegments
 			updateCurrentOverflow(n, n.getJunction().getMaxDepth().doubleValue(), vc, practicalFlow);
 			searchLinks(linksTo, practicalFlow);
 		}
+	}
+	
+	/**
+	 * Updates the materialised view storing upstream floodable nodes.
+	 * 
+	 * @param schema database schema containing the CENTAUR tables
+	 */
+	protected void updateUpstreamNodes(String schema)
+	{	
+		System.out.print("\nUpdating upstream nodes... ");
+		// Set search_path
+		String query = "SET search_path TO " + schema + " , public";
+		session.createSQLQuery(query).executeUpdate();
+		
+		query = "REFRESH MATERIALIZED VIEW v_candidate_upstream;";			
+		session.createSQLQuery(query).executeUpdate();
+		System.out.print("done.\n");
 	}
 	
 	protected abstract void updateCurrentOverflow(Node n, Double depth, VConduit vc, Double practicalFlow);

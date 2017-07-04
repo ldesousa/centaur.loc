@@ -192,12 +192,16 @@ public class Main
 	public static void main(final String[] args) 
 	{
 		//String schema = "toulouse";
-		String schema = "coimbra";
+		//String schema = "coimbra";
 		//String schema = "alcantara";
+		String schema = "eawag";
 		setUpConnection(schema);
 		
-		//FloodedSegments.compute(session, true);
-		//commitData(session, tx);
+		FloodedSegmentsDynamic dynamicSegments = new FloodedSegmentsDynamic();
+		dynamicSegments.compute(session, schema);
+		//FloodedSegmentsStatic staticSegments = new FloodedSegmentsStatic();
+		//staticSegments.compute(session, schema);
+		commitData(session, tx);
 		
 		// Reset connection - to force the data to be saved.
 		// This does not make much sense, but apparently is a feature of Hibernate.
@@ -208,14 +212,14 @@ public class Main
 		// Coimbra name: 517 id: 554472168 
 		
 		// By Volume    
-		OptimalLocation.computeByVolume(session, 5, 554472168, false, true, schema);
+		//OptimalLocation.computeByVolume(session, 5, 554472168, false, false, schema);
 		// Over Area
 		//OptimalLocation.computeOverArea(session, 5, 554472168, schema);
 
 		
-		//plotData(session);
-		//plotVolumeRank(session);
-		//plotAreaRank(session);
+		plotData(session);
+		plotVolumeRank(session);
+		plotAreaRank(session);
 		
 		//plotAllGraphs(session);
 		
