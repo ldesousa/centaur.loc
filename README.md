@@ -32,7 +32,12 @@ Main Packages
 Executable classes
 -------------------------------------------------------------------------------
 
-### centaur.in/CreateDBSchema.java
+This package contains a number of different executable classes (i.e. with a 
+main() menthod) that perform different tasks, from importing the data to 
+computing flooded volumes and locating gates. They must be used in order 
+presented below.
+
+### 1. centaur.in/CreateDBSchema.java
 
 Creates all the necessary database assets (tables, functions and views) in the 
 desired schema. Takes as arguments (in this order):
@@ -41,7 +46,7 @@ desired schema. Takes as arguments (in this order):
  - new schema name 
  - database name
  
-### centaur.in/CreateHibernateConfig.java
+### 2. centaur.in/CreateHibernateConfig.java
 
 Creates the Hibernate configuration files to access a given database schema. 
 These are necessary assets to use a new schema created with the CreateDBSchema
@@ -52,18 +57,18 @@ class.  Takes as arguments (in this order):
  - database name (optional)
  - database port (optional)
 
-### centaur.in/ImportSWMM.java
+### 3. centaur.in/ImportSWMM.java
 
 Imports the sewer network data present in a given SWMM file into a desired 
-database schema. 
+database schema. Takes as arguments (in this order): 
+ - the path to the .inp file 
+ - the database schema
 
-In the future it should take as arguments the path to the file and the desired 
-schema.
-
-### centaur.opt/Main
+### 4. centaur.opt/Main.java
 
 Used to trigger the computation of flood segments for each network node and to 
-optimally locate flood control gates.
+optimally locate flood control gates. In the future it shall be split in more
+specific classes.
 
 
 Licence
