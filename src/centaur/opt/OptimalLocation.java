@@ -1,9 +1,9 @@
 /* *****************************************************************************
- * Copyright (c) 2016 EAWAG - Swiss Federal Institute for Aquatic Research 
+ * Copyright (c) 2017 EAWAG - Swiss Federal Institute for Aquatic Research 
  *                            and Technology
  *
  * Author: Luís de Sousa [luis.desousa@eawag.ch]
- * Date: 17-03-2016
+ * Date: 02-02-2017
  * Description:
  * Computes the area served by each gate Candidate. Recursively assigns the area 
  * of each Subcatchment to the Candidates downstream. The total served area 

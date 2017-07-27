@@ -1,9 +1,9 @@
 /* ****************************************************************************
- * Copyright (c) 2016 EAWAG - Swiss Federal Institute for Aquatic Research 
+ * Copyright (c) 2017 EAWAG - Swiss Federal Institute for Aquatic Research 
  *                            and Technology
  *
  * Author: Luís de Sousa [luis.desousa@eawag.ch]
- * Date: 18-03-2016
+ * Date: 27-07-2016
  * Description: 
  * Main class for the optimisation package. Contains utilitary methods managing
  * the database connection.
@@ -55,6 +55,8 @@ public class PlotGraphs
 	/**
 	 * Sets the up the connection to the database, creating a new session and 
 	 * initiating a transaction.
+	 * 
+	 * @param schema the databse schema.
 	 */
 	protected static void setUpConnection(String schema)
 	{

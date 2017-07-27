@@ -1,9 +1,9 @@
 /* ****************************************************************************
- * Copyright (c) 2016 EAWAG - Swiss Federal Institute for Aquatic Research 
+ * Copyright (c) 2017 EAWAG - Swiss Federal Institute for Aquatic Research 
  *                            and Technology
  *
  * Author: Luís de Sousa [luis.desousa@eawag.ch]
- * Date: 15-03-2016
+ * Date: 10-04-2017
  * Description:
  * Computes the floodable network links for each of the possible gate 
  * locations in the network.
@@ -16,13 +16,8 @@ package centaur.opt;
 
 import java.lang.Math;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Set;
-
-import org.hibernate.Query;
-import org.hibernate.Session;
 
 import centaur.db.Node;
 import centaur.db.Candidate;

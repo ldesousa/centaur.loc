@@ -1,9 +1,9 @@
 /* ****************************************************************************
- * Copyright (c) 2016 EAWAG - Swiss Federal Institute for Aquatic Research 
+ * Copyright (c) 2017 EAWAG - Swiss Federal Institute for Aquatic Research 
  *                            and Technology
  *
  * Author: Luís de Sousa [luis.desousa@eawag.ch]
- * Date: 15-03-2016
+ * Date: 21-03-2017
  * Description:
  * Computes the floodable network links for each of the possible gate 
  * locations in the network.
@@ -14,23 +14,18 @@
  * ***************************************************************************/
 package centaur.opt;
 
-import java.lang.Math;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
 
 import centaur.db.Node;
-import centaur.db.VCandidate;
 import centaur.db.Candidate;
 import centaur.db.Flooded;
 import centaur.db.Link;
-import centaur.db.VJunction;
 import centaur.db.VConduit;
 
 
@@ -40,7 +35,6 @@ import centaur.db.VConduit;
  */
 public abstract class FloodedSegments
 {	
-	
 	/** The safety margin in meters; to be deducted from node depth. */
 	protected double safetyMargin = 0.1;
 	

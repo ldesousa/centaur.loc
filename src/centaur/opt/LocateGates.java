@@ -1,9 +1,9 @@
 /* ****************************************************************************
- * Copyright (c) 2016 EAWAG - Swiss Federal Institute for Aquatic Research 
+ * Copyright (c) 2017 EAWAG - Swiss Federal Institute for Aquatic Research 
  *                            and Technology
  *
  * Author: Luís de Sousa [luis.desousa@eawag.ch]
- * Date: 18-03-2016
+ * Date: 26-07-2016
  * Description: 
  * Main class for the optimisation package. Contains utilitary methods managing
  * the database connection.

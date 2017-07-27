@@ -1,9 +1,9 @@
 /* ****************************************************************************
- * Copyright (c) 2016 EAWAG - Swiss Federal Institute for Aquatic Research 
+ * Copyright (c) 2017 EAWAG - Swiss Federal Institute for Aquatic Research 
  *                            and Technology
  *
  * Author: Luís de Sousa [luis.desousa@eawag.ch]
- * Date: 18-03-2016
+ * Date: 18-06-2017
  * Description: 
  * Executes a series of SQL scripts creating the appropriate CENTAUR objects in
  * the database. It is necessary since Hibernate does not know of PostGIS.
