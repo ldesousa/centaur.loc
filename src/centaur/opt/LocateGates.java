@@ -25,7 +25,6 @@ import org.hibernate.cfg.Configuration;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
-import org.kohsuke.args4j.OptionHandlerFilter;
 
 
 // TODO: Auto-generated Javadoc
@@ -124,11 +123,6 @@ public class LocateGates
 		CmdLineParser parser = new CmdLineParser(this);
 		if(!processArgs(parser, args)) System.exit(-1);
 		
-		//String schema = "toulouse";
-		//String schema = "coimbra";
-		//String schema = "alcantara";
-		//String schema = "eawag";
-		
 		setUpConnection(schema);
 		
 		if(assumeStatic)
@@ -153,6 +147,12 @@ public class LocateGates
 		session.close();		
     }
 	
+	/**
+	 * The main method.
+	 *
+	 * @param parser CmdLineParser object with argument definitions
+	 * @param args the command line arguments
+	 */
 	protected boolean processArgs(CmdLineParser parser, String[] args)
 	{
         try 
@@ -186,12 +186,16 @@ public class LocateGates
             System.err.println("           A : total area of sub-catchments contributing to the gate");
             System.err.println("           C : number of sub-catchments contributing to the gate");
             
-
             return false;
         }
         return true;
 	}
 	
+	/**
+	 * The required static main method. Only a stub to the real thing.
+	 *
+	 * @param args the arguments
+	 */
 	public static void main(String[] args) throws IOException 
 	{
         new LocateGates().doMain(args);
