@@ -1,3 +1,17 @@
+/* ****************************************************************************
+ * Copyright (c) 2017 EAWAG - Swiss Federal Institute for Aquatic Research 
+ *                            and Technology
+ *
+ * Author: Luís de Sousa [luis.desousa@eawag.ch]
+ * Date: 02-06-2017
+ * Description: 
+ * Creates the necessary Hibernate configuration files for a given database 
+ * schema.
+ * 
+ * This software is licenced under the European Union Public Licence V. 1.1,
+ * please check the LICENCE file for details or the web page:
+ * https://joinup.ec.europa.eu/community/eupl/og_page/eupl
+ * ***************************************************************************/
 package centaur.in;
 
 import java.io.IOException;
@@ -38,6 +52,11 @@ public class CreateHibernateConfig
 		System.out.println("New Hibernate configuration for schema " + schema + " created sucessfully.");
 	}
 	
+	/**
+	 * Checks if the necessary arguments where passed in the command line
+	 * 
+	 * @param args the command line arguments
+	 */
 	protected static void checkArgs(String[] args)
 	{
 		if (args.length < 4)
@@ -47,6 +66,10 @@ public class CreateHibernateConfig
 		}
 	}
 	
+	/**
+	 * Creates a new Hibernate connection configuration file, by inserting
+	 * in the template the arguments given in the command line.
+	 */
 	protected static void createCfg()
 	{
 		Path path = Paths.get(pathToConfig + templateCfg); 
@@ -69,6 +92,10 @@ public class CreateHibernateConfig
 		}
 	}
 	
+	/**
+	 * Creates a new Hibernate reverse engineering file, by inserting
+	 * in the template the arguments given in the command line.
+	 */
 	protected static void createReveng()
 	{
 		Path path = Paths.get(pathToConfig + templateReveng); 
