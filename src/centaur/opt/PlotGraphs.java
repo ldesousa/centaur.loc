@@ -19,7 +19,6 @@ import java.util.LinkedList;
 
 import javax.swing.JFrame;
 
-import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -32,7 +31,7 @@ import centaur.db.VCandidate;
 /**
  * The Class Main.
  */
-public class Main
+public class PlotGraphs
 {
 	
 	/** The database session factory. */
@@ -71,29 +70,6 @@ public class Main
 	         System.err.println("Failed to initialise database session: " + e);
 	         e.printStackTrace();
 	         return;
-	    }
-	}
-	
-	/**
-	 * Commits to the database any data modified or created during the present 
-	 * session. If successful, initiates a new transaction.
-	 *
-	 * @param session the database session.
-	 * @param tx the database transaction.
-	 */
-	protected static void commitData(Session session, Transaction tx)
-	{
-		try
-		{
-	         tx.commit();
-	         tx = session.beginTransaction();
-	    }
-		catch (HibernateException e) 
-		{
-	         System.err.println("Failed to commit objects to database: " + e);
-	         e.printStackTrace();
-	         session.close();  
-	         System.exit(-1); 
 	    }
 	}
 	
@@ -191,41 +167,17 @@ public class Main
 	 */
 	public static void main(final String[] args) 
 	{
-		//String schema = "toulouse";
-		//String schema = "coimbra";
-		//String schema = "alcantara";
-		String schema = "eawag";
+		if(args.length < 1)
+		{
+			System.out.println("Please provide the database schema.");
+			System.exit(-1);
+		}
+		String schema = args[0];
 		setUpConnection(schema);
-		
-		FloodedSegmentsDynamic dynamicSegments = new FloodedSegmentsDynamic();
-		dynamicSegments.compute(session, schema);
-		//FloodedSegmentsStatic staticSegments = new FloodedSegmentsStatic();
-		//staticSegments.compute(session, schema);
-		commitData(session, tx);
-		
-		// Reset connection - to force the data to be saved.
-		// This does not make much sense, but apparently is a feature of Hibernate.
-		//session.close();
-		//setUpConnection(schema);
-		
-		// Alcântara id: 113 
-		// Coimbra name: 517 id: 554472168 
-		
-		// By Volume    
-		//OptimalLocation.computeByVolume(session, 5, 554472168, false, false, schema);
-		// Over Area
-		//OptimalLocation.computeOverArea(session, 5, 554472168, schema);
-
-		
-		plotData(session);
-		plotVolumeRank(session);
-		plotAreaRank(session);
-		
-		//plotAllGraphs(session);
+			
+		plotAllGraphs(session);
 		
 		session.close();
-		
-		System.exit(0);
     }
 
 }

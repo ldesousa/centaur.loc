@@ -32,5 +32,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="/usr/share/java/commons-math3-3.6.1/commons-math3-3.6.1.jar"/>
+	<classpathentry kind="lib" path="/usr/share/java/args4j-2.33.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
