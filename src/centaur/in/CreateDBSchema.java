@@ -1,3 +1,17 @@
+/* ****************************************************************************
+ * Copyright (c) 2016 EAWAG - Swiss Federal Institute for Aquatic Research 
+ *                            and Technology
+ *
+ * Author: Luís de Sousa [luis.desousa@eawag.ch]
+ * Date: 18-03-2016
+ * Description: 
+ * Executes a series of SQL scripts creating the appropriate CENTAUR objects in
+ * the database. It is necessary since Hibernate does not know of PostGIS.
+ * 
+ * This software is licenced under the European Union Public Licence V. 1.1,
+ * please check the LICENCE file for details or the web page:
+ * https://joinup.ec.europa.eu/community/eupl/og_page/eupl
+ * ***************************************************************************/
 package centaur.in;
 
 import java.io.BufferedReader;
@@ -72,6 +86,11 @@ public class CreateDBSchema
 		System.out.println("Done!");
     }
 	
+	/**
+	 * Checks if the necessary arguments where passed in the command line
+	 * 
+	 * @param args the command line arguments
+	 */
 	protected static void checkArgs(String[] args)
 	{
 		if (args.length < 4)
@@ -81,6 +100,12 @@ public class CreateDBSchema
 		}
 	}
 	
+	/**
+	 * Executes a SQL script against the database schema specified in the
+	 * command line arguments.
+	 * 
+	 * @param script the command line arguments
+	 */
 	protected static void execScript(String script)
 	{
 		try 
@@ -99,10 +124,20 @@ public class CreateDBSchema
 		}
 		catch (Exception err) 
 		{
+			System.out.println("Failed to execute the SQL script " + script);
+			System.out.println("Please verify if the connection arguments are correct.");
 			err.printStackTrace();
+			System.exit(-1);
 		}
 	}
 	
+	/**
+	 * Creates a temporary file with a valid SQL script for execution.
+	 * It uses on of the existing templates in the db folder and adds the
+	 * user and schema information.
+	 * 
+	 * @param script the command line arguments
+	 */
 	protected static String createTempScript(String script)
 	{
 		Path path = Paths.get(script); 
@@ -118,7 +153,9 @@ public class CreateDBSchema
 		} 
 		catch (IOException e) 
 		{
+			System.out.println("Failed to create the SQL script " + script);
 			e.printStackTrace();
+			System.exit(-1);
 		}
 		return tempPath.toString();
 	}
