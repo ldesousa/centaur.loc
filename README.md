@@ -64,12 +64,40 @@ database schema. Takes as arguments (in this order):
  - the path to the .inp file 
  - the database schema
 
-### 4. centaur.opt/Main.java
+### 4. centaur.opt/LocateGates.java
 
-Used to trigger the computation of flood segments for each network node and to 
-optimally locate flood control gates. In the future it shall be split in more
-specific classes.
+Locates a desired number of gates upstream of a given node of a given network.
+It uses five different heuristics to rank the best gate locations using the 
+variables:
+ - upstream storage volume (V)
+ - total contributing surface area (A)
+ - number of contributing sub-catchments (C)
 
+The heuristics are:
+ - V 
+ - V * A
+ - V / C
+ - V * A / C
+ - V / A 
+
+This class can also trigger the computation of storage volumes, if required.
+The list of arguments:
+
+ - `-a`          : use Area in search function (default: false)
+ - `-c`          : use number of Catchments in search function (default: false)
+ - `-h` (`--help`) : Print help text (default: false)
+ - `-i` N        : identifier of a node of interest
+ - `-n` N        : number of gates to locate
+ - `-oa`         : use search function over Area (default: false)
+ - `-s` VAL      : the database schema
+ - `-sd`         : compute flooded segments with Dynamic assumption (default: false)
+ - `-st`         : compute flooded segments with Static assumption (default: false)
+
+### 5. centaur.opt/PlotGraphs.java
+
+Plots a series of graphs showing the rankings of each network node according to
+the variables used in the location algorithm. These graphs are displayed in a 
+Swing based GUI. It takes as single argument the database schema. 
 
 Licence
 -------------------------------------------------------------------------------
