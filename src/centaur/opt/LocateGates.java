@@ -31,22 +31,16 @@ import org.kohsuke.args4j.Option;
 /**
  * The Class Main.
  */
-public class LocateGates
+public class LocateGates extends DatabaseConnection
 {
 	@Option(name="-s",usage="the database schema", required=true)
-	protected  String schema;
+	protected String schema;
 	
 	@Option(name="-n",usage="number of gates to locate", required=true)
 	protected int numGates;
 	
 	@Option(name="-i",usage="identifier of a node of interest")
-	protected int identifier;
-	
-	@Option(name="-st",usage="compute flooded segments with Static assumption")
-	private boolean assumeStatic = false;
-	
-	@Option(name="-sd",usage="compute flooded segments with Dynamic assumption")
-	private boolean assumeDynamic = false;
+	protected Integer identifier = null;
 	
 	@Option(name="-a",usage="use Area in search function", forbids={"-oa"})
 	private boolean useArea = false;
@@ -59,60 +53,7 @@ public class LocateGates
 	
 	@Option(name = "-h", aliases = "--help", required = false, usage = "Print help text")
     private boolean printHelp = false;
-	
-	/** The database session factory. */
-	protected  SessionFactory factory;
-	
-	/** The database session. */
-	protected  Session session;
-	
-	/** The database transaction. */
-	protected  Transaction tx;
-	
-	/**
-	 * Sets the up the connection to the database, creating a new session and 
-	 * initiating a transaction.
-	 */
-	protected  void setUpConnection(String schema)
-	{
-		try
-		{
-	         factory = new Configuration()
-	        		 .configure(schema + ".cfg.xml").buildSessionFactory();	         
-	         session = factory.openSession();
-	         tx = session.beginTransaction();
-	    }
-		catch (Throwable e) 
-		{ 
-	         System.err.println("Failed to initialise database session: " + e);
-	         e.printStackTrace();
-	         return;
-	    }
-	}
-	
-	/**
-	 * Commits to the database any data modified or created during the present 
-	 * session. If successful, initiates a new transaction.
-	 *
-	 * @param session the database session.
-	 * @param tx the database transaction.
-	 */
-	protected  void commitData(Session session, Transaction tx)
-	{
-		try
-		{
-	         tx.commit();
-	         tx = session.beginTransaction();
-	    }
-		catch (HibernateException e) 
-		{
-	         System.err.println("Failed to commit objects to database: " + e);
-	         e.printStackTrace();
-	         session.close();  
-	         System.exit(-1); 
-	    }
-	}
-	
+		
 	/**
 	 * The main method.
 	 *
@@ -124,21 +65,7 @@ public class LocateGates
 		if(!processArgs(parser, args)) System.exit(-1);
 		
 		setUpConnection(schema);
-		
-		if(assumeStatic)
-		{
-			FloodedSegmentsStatic staticSegments = new FloodedSegmentsStatic();
-			staticSegments.compute(session, schema);
-			commitData(session, tx);
-		}
-		
-		if(assumeDynamic)
-		{
-			FloodedSegmentsDynamic dynamicSegments = new FloodedSegmentsDynamic();
-			dynamicSegments.compute(session, schema);
-			commitData(session, tx);
-		}
-		
+				
 		if(overArea)
 			OptimalLocation.computeOverArea(session, numGates, identifier, schema);
 		else
