@@ -64,11 +64,27 @@ database schema. Takes as arguments (in this order):
  - the path to the .inp file 
  - the database schema
 
-### 4. centaur.opt/LocateGates.java
+### 4. centaur.opt/FloodedSegmentsStatic.java
+
+Computes for each node of the network the segments floodable by a gate without 
+producing overflows. It fills (or updates) the contents of the `flooded` table. 
+This algorithm uses a *Static* assumption, i.e. there is no flow and energy 
+lines are all flat. It takes as single argument the database schema.
+
+### 5. centaur.opt/FloodedSegmentsDynamic.java
+
+Computes for each node of the network the segments floodable by a gate without 
+producing overflows. It fills (or updates) the contents of the `flooded`table. 
+This algorithm uses a *Dynamic* assumption, i.e. there is a flow and energy 
+lines are taken into account to determine the extent flooded in each segment. 
+It takes as single argument the database schema.
+
+### 6. centaur.opt/LocateGates.java
 
 Locates a desired number of gates upstream of a given node of a given network.
-It uses five different heuristics to rank the best gate locations using the 
-variables:
+To run this executable the `flooded` table must be filled in; this can be done 
+with one of the *FloodedSegments* classes listed above It uses five different 
+heuristics to rank the best gate locations using the variables:
  - upstream storage volume (V)
  - total contributing surface area (A)
  - number of contributing sub-catchments (C)
@@ -90,10 +106,8 @@ The list of arguments:
  - `-n` N        : number of gates to locate
  - `-oa`         : use search function over Area (default: false)
  - `-s` VAL      : the database schema
- - `-sd`         : compute flooded segments with Dynamic assumption (default: false)
- - `-st`         : compute flooded segments with Static assumption (default: false)
 
-### 5. centaur.opt/PlotGraphs.java
+### 7. centaur.opt/PlotGraphs.java
 
 Plots a series of graphs showing the rankings of each network node according to
 the variables used in the location algorithm. These graphs are displayed in a 
