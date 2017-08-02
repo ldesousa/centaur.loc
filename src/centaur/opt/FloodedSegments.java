@@ -33,7 +33,7 @@ import centaur.db.VConduit;
 /**
  * The Class FloodedSegmentsDynamic.
  */
-public abstract class FloodedSegments
+public abstract class FloodedSegments extends DatabaseConnection
 {	
 	/** The safety margin in meters; to be deducted from node depth. */
 	protected double safetyMargin = 0.1;
@@ -49,10 +49,7 @@ public abstract class FloodedSegments
 	
 	/** The current overflow. */
 	protected double currentOverflow = Double.MAX_VALUE;
-	
-	/** The database session. */
-	protected Session session;
-	
+
 
 	/**
 	 * Computes the floodable network links for each of the possible gate 
@@ -61,9 +58,10 @@ public abstract class FloodedSegments
 	 * @param session the session
 	 * @param schema database schema containing the CENTAUR tables
 	 */
-	public void compute(Session sess, String schema) 
+	public void compute(String schema) 
 	{
-		session = sess;
+		setUpConnection(schema);
+		
 		System.out.println("Clearing database ...");
 		clearDB();
 															// Testing with node 64
@@ -92,6 +90,9 @@ public abstract class FloodedSegments
 		
 		// Refresh upstream view
 		updateUpstreamNodes(schema);
+		
+		commitData(session, tx);
+		session.close();
 		
 		System.out.println();
 		System.out.println("############################################");

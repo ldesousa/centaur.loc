@@ -14,6 +14,7 @@
  * ***************************************************************************/
 package centaur.opt;
 
+import java.io.IOException;
 import java.lang.Math;
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -88,7 +89,7 @@ public class FloodedSegmentsDynamic extends FloodedSegments
 	 * Adds a new link to the list of flooded conduits. It also calculates the 
 	 * practical flow for the conduit.
 	 * @param l the link to add to the flooded list
-	 * @param linkMaxFlow theoritical flow of the conduit
+	 * @param linkMaxFlow theoretical flow of the conduit
 	 * @param downstreamPracticalFlow practical flow of the downstream conduit
 	 * @return the practical flow calculated.
 	 */
@@ -136,12 +137,13 @@ public class FloodedSegmentsDynamic extends FloodedSegments
 									   Math.sqrt(Math.pow(vc.getSlope().doubleValue(), 2) + 1);
 			
 			double energyLineOffset = projectPipeLength * energyLineSlope;
-
+			
 			VJunction j = (VJunction) session.get(VJunction.class, n.getId());
 			if(j != null) // Check if it is a manhole
 			{
 				currentOverflow += energyLineOffset;
 				energyOffsets.put(vc.getId(), energyLineOffset);
+				System.out.println("New current overflow: " + currentOverflow);
 			}
 		}
 		
@@ -198,5 +200,28 @@ public class FloodedSegmentsDynamic extends FloodedSegments
 		    			(currentOverflow - outletElev) / (inletElev - outletElev)));
 			session.save(f);
 		}
+	}
+	
+	/**
+	 * The required static main method.
+	 *
+	 * @param args the arguments
+	 */
+	public static void main(String[] args) throws IOException 
+	{
+		new FloodedSegmentsDynamic().doMain(args);
+	}
+	
+	/**
+	 * The main method.
+	 *
+	 * @param args the arguments
+	 */
+	public void doMain(String[] args)
+	{
+		if(args.length < 1)
+			System.out.println("Error. Please provide the database schema.");
+		else 
+			compute(args[0]);
 	}
 }

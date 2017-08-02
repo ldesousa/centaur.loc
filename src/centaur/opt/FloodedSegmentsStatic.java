@@ -14,22 +14,16 @@
  * ***************************************************************************/
 package centaur.opt;
 
-import java.lang.Math;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.Set;
-
-import org.hibernate.Query;
-import org.hibernate.Session;
 
 import centaur.db.Node;
 import centaur.db.Candidate;
 import centaur.db.Flooded;
 import centaur.db.Link;
-import centaur.db.VJunction;
 import centaur.db.VConduit;
 
 
@@ -140,4 +134,26 @@ public class FloodedSegmentsStatic extends FloodedSegments
 		}
 	}
 
+	/**
+	 * The required static main method.
+	 *
+	 * @param args the arguments
+	 */
+	public static void main(String[] args) throws IOException 
+	{
+		new FloodedSegmentsStatic().doMain(args);
+	}
+	
+	/**
+	 * The main method.
+	 *
+	 * @param args the arguments
+	 */
+	public void doMain(String[] args)
+	{
+		if(args.length < 1)
+			System.out.println("Error. Please provide the database schema.");
+		else 
+			compute(args[0]);
+	}
 }
