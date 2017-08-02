@@ -34,7 +34,7 @@ Executable classes
 
 This package contains a number of different executable classes (i.e. with a 
 main() menthod) that perform different tasks, from importing the data to 
-computing flooded volumes and locating gates. They must be used in order 
+computing flooded volumes and locating gates. They must be used in the order 
 presented below.
 
 ### 1. centaur.in/CreateDBSchema.java
