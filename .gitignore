@@ -3,3 +3,4 @@
 data/veolia/
 *.qgs~
 /console.out
+/target/
