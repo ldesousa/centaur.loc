@@ -45,17 +45,29 @@ desired schema. Takes as arguments (in this order):
  - database user password
  - new schema name 
  - database name
+This script requires access to the SQL scripts provided in the `data` directory. 
+ 
+Example of use, creating a schema for Dübendorf in a database named SWW:
+
+`$ java -jar CreateDBSchema.jar user password dubendorf sww`
+
+
  
 ### 2. centaur.in/CreateHibernateConfig.java
 
-Creates the Hibernate configuration files to access a given database schema. 
-These are necessary assets to use a new schema created with the CreateDBSchema
-class.  Takes as arguments (in this order):
+Creates the Hibernate configuration files, `.cfg.xml` and `.reveng.xml`, 
+necessary to access a given database schema. All subsequent classes require 
+these files to use a new schema created with the CreateDBSchema class.  Takes 
+as arguments (in this order):
  - database user name
  - database user password
  - new schema name 
- - database name (optional)
- - database port (optional)
+ - database name (optional, centaur by default)
+ - database port (optional, 5432 by default)
+  
+Example of use, creating a configuration for Dübendorf in a database named SWW:
+
+`$ java -jar CreateHibernateConfig.jar user password dubendorf sww 5433`
 
 ### 3. centaur.in/ImportSWMM.java
 
@@ -63,6 +75,10 @@ Imports the sewer network data present in a given SWMM file into a desired
 database schema. Takes as arguments (in this order): 
  - the path to the .inp file 
  - the database schema
+ 
+Example of use, importing data to the Dübendorf schema:
+
+`$ java -jar ImportSWMM.jar Dubendorf.inp dubendorf`
 
 ### 4. centaur.opt/FloodedSegmentsStatic.java
 
@@ -71,13 +87,21 @@ producing overflows. It fills (or updates) the contents of the `flooded` table.
 This algorithm uses a *Static* assumption, i.e. there is no flow and energy 
 lines are all flat. It takes as single argument the database schema.
 
+Example with the Dübendorf schema:
+
+`$ java -jar FloodedSegmentsStatic.jar dubendorf`
+
 ### 5. centaur.opt/FloodedSegmentsDynamic.java
 
 Computes for each node of the network the segments floodable by a gate without 
-producing overflows. It fills (or updates) the contents of the `flooded`table. 
+producing overflows. It fills (or updates) the contents of the `flooded` table. 
 This algorithm uses a *Dynamic* assumption, i.e. there is a flow and energy 
 lines are taken into account to determine the extent flooded in each segment. 
 It takes as single argument the database schema.
+
+Example with the Dübendorf schema:
+
+`$ java -jar FloodedSegmentsDynamic.jar dubendorf`
 
 ### 6. centaur.opt/LocateGates.java
 
@@ -106,12 +130,31 @@ The list of arguments:
  - `-n` N        : number of gates to locate
  - `-oa`         : use search function over Area (default: false)
  - `-s` VAL      : the database schema
+ 
+#### Examples 
+ 
+Locate 3 gates in the Dübendorf schema, using the V/A heuristic:
+
+`$ java -jar LocateGates.jar -n 3 -oa -s dubendorf`
+
+Locate 5 gates upstream of node 42 using the V * A heuristic:
+
+`$ java -jar LocateGates.jar -a -i 42 -n 5 -s dubendorf` 
+
+Locate 1 gate upstream of node 42 using the V / C heuristic:
+
+`$ java -jar LocateGates.jar -c -i 42 -n 1 -s dubendorf` 
+
 
 ### 7. centaur.opt/PlotGraphs.java
 
 Plots a series of graphs showing the rankings of each network node according to
 the variables used in the location algorithm. These graphs are displayed in a 
 Swing based GUI. It takes as single argument the database schema. 
+
+Example, again with the Dübendorf schema:
+
+`$ java -jar PlotGraphs.jar dubendorf`
 
 Licence
 -------------------------------------------------------------------------------
