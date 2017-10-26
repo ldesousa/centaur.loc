@@ -73,12 +73,12 @@ Example of use, creating a configuration for Dübendorf in a database named SWW:
 
 Imports the sewer network data present in a given SWMM file into a desired 
 database schema. Takes as arguments (in this order): 
+ - the database schema 
  - the path to the .inp file 
- - the database schema
  
 Example of use, importing data to the Dübendorf schema:
 
-`$ java -jar ImportSWMM.jar Dubendorf.inp dubendorf`
+`$ java -jar ImportSWMM.jar dubendorf Dubendorf.inp`
 
 ### 4. centaur.opt/FloodedSegmentsStatic.java
 
