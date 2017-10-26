@@ -20,9 +20,6 @@ import java.util.Random;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
-import org.postgresql.util.PGInterval;
-
-
 // TODO: Auto-generated Javadoc
 /**
  * The Class Raingage.
