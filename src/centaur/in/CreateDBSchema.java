@@ -111,7 +111,7 @@ public class CreateDBSchema
 		try 
 		{
 			Process p = Runtime.getRuntime().exec
-					("psql -U " + user + " -d " + db + " -f " + script, envp);
+					("psql -h localhost -U " + user + " -d " + db + " -f " + script, envp);
 			BufferedReader input =
 					new BufferedReader(new InputStreamReader(p.getInputStream()));
 			
