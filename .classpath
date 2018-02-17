@@ -11,21 +11,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/usr/local/lib/R/site-library/rJava/jri/REngine.jar">
-		<attributes>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="/usr/local/lib/R/site-library/rJava/jri"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="/usr/local/lib/R/site-library/rJava/jri/JRIEngine.jar">
-		<attributes>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="/usr/local/lib/R/site-library/rJava/jri"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="/usr/local/lib/R/site-library/rJava/jri/JRI.jar">
-		<attributes>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="/usr/local/lib/R/site-library/rJava/jri"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>

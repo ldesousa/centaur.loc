@@ -45,6 +45,7 @@ desired schema. Takes as arguments (in this order):
  - database user password
  - new schema name 
  - database name
+ 
 This script requires access to the SQL scripts provided in the `data` directory. 
  
 Example of use, creating a schema for Dübendorf in a database named SWW:
