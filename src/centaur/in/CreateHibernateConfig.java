@@ -59,7 +59,7 @@ public class CreateHibernateConfig
 	 */
 	protected static void checkArgs(String[] args)
 	{
-		if (args.length < 4)
+		if (args.length < 3)
 		{
 			System.out.println("ERROR: at least three parameters are required: user, password and schema.");
 			System.exit(-1);
