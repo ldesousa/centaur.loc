@@ -5,7 +5,7 @@ Network analysis for the CENTAUR project
 Copyright
 -------------------------------------------------------------------------------
 
-Copyright 2016-2017 EAWAG. All rights reserved. 
+Copyright 2016-2018 EAWAG. All rights reserved. 
 Any use of this document constitutes full acceptance of all terms of the 
 document licence.
 
@@ -17,9 +17,20 @@ It is being used within the CENTAUR project [0].
 
 [0] http://www.eawag.ch/en/department/sww/projects/centaur/
 
+Requirements
+-------------------------------------------------------------------------------
+This software requires a [Postgres](https://www.postgresql.org) database where 
+network elements and their relations are loaded. Therefore, Postgres must be 
+installed in the system, as also the [PostGIS](http://postgis.net/) extension 
+providing geo-spatial enablement.
+
+An empty database is required, where `centaur.loc` can then create new schemas to
+which it imports input networks. The SQL script `db/0010_createDataBase.sql` 
+contains the necessary commands. Note that superuser privileges are required to
+later activate the PostGIS extension in the database.
+
 Main Packages
 -------------------------------------------------------------------------------
-
  - *centaur.db*: contains the Java Hibernate classes and configuration files that 
    map database relations into Java classes.
    
@@ -157,10 +168,28 @@ Example, again with the Dübendorf schema:
 
 `$ java -jar PlotGraphs.jar dubendorf`
 
+
+Visualising
+-------------------------------------------------------------------------------
+
+The networks imported into the database and simulation results can be easily 
+visualised in a mapping programme capable of portraying PostGIS objects, like 
+[QGis](https://qgis.org). The database views with geo-spatial relevance are:
+ - v_flooded
+ - v_candidate
+ - v_conduit
+ - v_outfall
+ - v_junction
+ - v_pump
+ - v_storage
+ - v_weir
+ - v_subcatchment
+ 
+ In the `data` folder there are a few QGis project examples (`.qgs` files) that 
+ may be used as mapping templates.
+
 Licence
 -------------------------------------------------------------------------------
 
-This software is released under the EUPL 1.1 licence [1]. For further details please 
-consult the LICENCE file.
-
-[1] https://joinup.ec.europa.eu/community/eupl/og_page/eupl
+This software is released under the [EUPL 1.1 licence](https://joinup.ec.europa.eu/community/eupl/og_page/eupl). 
+For further details please consult the LICENCE file.
