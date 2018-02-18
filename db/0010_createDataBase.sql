@@ -1,7 +1,9 @@
-﻿-- Database: centaur
+﻿-- User (it must be super user to create the Postgis extension
+-- DROP ROLE centaur
+CREATE ROLE centaur PASSWORD 'secret' SUPERUSER;
 
+-- Database: centaur
 -- DROP DATABASE centaur;
-
 CREATE DATABASE centaur
   WITH OWNER = centaur
        ENCODING = 'UTF8'
