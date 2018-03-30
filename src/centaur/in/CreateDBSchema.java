@@ -15,27 +15,15 @@
 package centaur.in;
 
 import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
-
-import javax.persistence.EntityManager;
-
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.hql.internal.ast.tree.Statement;
 
 
 public class CreateDBSchema 
@@ -45,6 +33,8 @@ public class CreateDBSchema
 	static String schema = "";
 	static String db = "";
 	static String[] envp = {};
+	static String tempSuffix = ".tmp";
+	static ArrayList<Path> tempScripts;
 
 	public CreateDBSchema() 
 	{
@@ -64,6 +54,7 @@ public class CreateDBSchema
 		schema = args[2];
 		db = args[3];
 		envp = new String[]{"PGPASSWORD=" + pass};
+		tempScripts = new ArrayList<Path>();
 		
 		System.out.println("Creating Schema");
 		execScript(createTempScript("db/0100_createSchema.sql"));
@@ -83,6 +74,8 @@ public class CreateDBSchema
 		execScript(createTempScript("db/0701_f_optimal.sql"));
 		System.out.println("Creating optimal flow functions");
 		execScript(createTempScript("db/0702_f_flow.sql"));
+		System.out.println("Cleaning up ...");
+		removeTempScripts();
 		System.out.println("Done!");
     }
 	
@@ -142,8 +135,7 @@ public class CreateDBSchema
 	{
 		Path path = Paths.get(script); 
 		Charset charset = StandardCharsets.UTF_8;
-		Path tempPath = Paths.get("/tmp/" + 
-				String.valueOf(ThreadLocalRandom.current().nextInt(0, 10000)));
+		Path tempPath = Paths.get(String.valueOf(ThreadLocalRandom.current().nextInt(0, 10000)) + tempSuffix);
 		try 
 		{
 			String content = new String(Files.readAllBytes(path), charset);
@@ -157,7 +149,27 @@ public class CreateDBSchema
 			e.printStackTrace();
 			System.exit(-1);
 		}
+		tempScripts.add(tempPath);
 		return tempPath.toString();
 	}
-
+	
+	/**
+	 * Removes the temporary scripts created by the createTempScript method.
+	 */
+	protected static void removeTempScripts()
+	{
+		for (Path tempScript : tempScripts)
+		{
+			try 
+			{
+				Files.delete(tempScript);
+			}
+			catch (IOException e) 
+			{
+				System.out.println("Failed to delete temporary SQL script " + tempScript.toString());
+				e.printStackTrace();
+				System.exit(-1);
+			}
+		}
+	}
 }
