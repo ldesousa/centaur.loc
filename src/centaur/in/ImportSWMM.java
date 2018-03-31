@@ -41,7 +41,7 @@ public class ImportSWMM
 	/** The file scanner. */
 	static Scanner scanner;
 	
-	/** The database sesssion factory. */
+	/** The database session factory. */
 	static SessionFactory factory;
 	
 	/** The SWMM comment flag. */
@@ -88,7 +88,7 @@ public class ImportSWMM
 	
 	/** The header for Polygons. */
 	static String headPolygons = "[Polygons]";
-	
+	static String headPolygonsAlternative = "[POLYGONS]";
 	
 	/** The random generator. */
 	static Random generator = new Random();
@@ -143,7 +143,8 @@ public class ImportSWMM
 		
 		//Geometries
 		importObjects(Coordinates.class, headCoordinates, session, tx);
-		importObjects(Polygon.class, headPolygons, session, tx);
+		if(!importObjects(Polygon.class, headPolygons, session, tx))
+			importObjects(Polygon.class, headPolygonsAlternative, session, tx);
 		
 		createSpatialObjects(session, schema);
 				
@@ -253,8 +254,9 @@ public class ImportSWMM
 	 * @param head the header string identifying the Entity section in the input SWMM file.
 	 * @param session the database session.
 	 * @param tx the database transaction.
+	 * @return true if the section found was found, false otherwise.
 	 */
-	static void importObjects(Class dbClass, String head, Session session, Transaction tx)
+	static boolean importObjects(Class dbClass, String head, Session session, Transaction tx)
 	{
 		initScanner();
 			
@@ -279,9 +281,11 @@ public class ImportSWMM
 				}
 				line = scanner.nextLine();
 			}
+			commitData(session, tx);
+			System.out.println("=> Succesfully imported " + dbClass.getName());
+			return true;
 		}
-		commitData(session, tx);
-		System.out.println("=> Succesfully imported " + dbClass.getName());
+		else return false;
 	}
 	
 	/**
