@@ -39,30 +39,33 @@ CREATE OR REPLACE FUNCTION create_polygons() RETURNS NUMERIC AS $$
     subcatch_rec RECORD;
     poly_rec RECORD;
     line GEOMETRY;
+	num_points NUMERIC;
     ret NUMERIC;
   BEGIN
     FOR subcatch_rec IN SELECT id FROM subcatchment LOOP
 
-	-- Initialise line
-	line := ST_GeomFromText('LINESTRING(0 0, 0 0)', 3035);
-
-	-- Loop through the points of this catchment
-	FOR poly_rec IN 
-	  SELECT x,y 
-	    FROM polygon 
-	   WHERE id_subcatchment = subcatch_rec.id
-        LOOP
-          line := ST_AddPoint(line, 
-		ST_GeomFromText('POINT(' || poly_rec.x || ' ' || poly_rec.y || ')', 3035));
-        END LOOP;
-
-	-- Remove initialising points
-	line := ST_RemovePoint(line, 0);
-	line := ST_RemovePoint(line, 0);
-                        
-	UPDATE subcatchment 
-           SET geom = ST_MakePolygon(ST_AddPoint(line, ST_StartPoint(line)))
-         WHERE id = subcatch_rec.id;
+		-- Initialise line
+		line := ST_GeomFromText('LINESTRING(0 0, 0 0)', 3035);
+	
+		-- Loop through the points of this catchment
+		FOR poly_rec IN 
+		  SELECT x,y 
+		    FROM polygon 
+		   WHERE id_subcatchment = subcatch_rec.id
+	        LOOP
+	          line := ST_AddPoint(line, 
+			ST_GeomFromText('POINT(' || poly_rec.x || ' ' || poly_rec.y || ')', 3035));
+	        END LOOP;
+		-- Check if enough points were found to build the polygon
+		SELECT ST_NumPoints(line) INTO num_points;
+		IF num_points > 2 THEN  
+			-- Remove initialising points
+			line := ST_RemovePoint(line, 0);
+			line := ST_RemovePoint(line, 0);	                        
+			UPDATE subcatchment 
+		       SET geom = ST_MakePolygon(ST_AddPoint(line, ST_StartPoint(line)))
+		     WHERE id = subcatch_rec.id;
+		END IF; 
 
     END LOOP;
     
